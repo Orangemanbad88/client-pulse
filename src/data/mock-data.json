@@ -1,0 +1,738 @@
+{
+  "clients": [
+    {
+      "id": "cl_001",
+      "firstName": "Sarah",
+      "lastName": "Chen",
+      "email": "sarah.chen@email.com",
+      "phone": "(727) 555-0142",
+      "preferredContact": "text",
+      "clientType": "rental",
+      "status": "active",
+      "lifecycleStage": "active_search",
+      "source": "Referral - Mike Torres",
+      "assignedAgent": "Agent",
+      "notes": "Has 2 medium dogs (labs). Needs fenced yard. Works remote so home office space important.",
+      "createdAt": "2025-12-15T10:00:00Z",
+      "lastContact": "2026-02-12T14:30:00Z"
+    },
+    {
+      "id": "cl_002",
+      "firstName": "James",
+      "lastName": "Rodriguez",
+      "email": "j.rodriguez@outlook.com",
+      "phone": "(727) 555-0287",
+      "preferredContact": "email",
+      "clientType": "buyer",
+      "status": "active",
+      "lifecycleStage": "hot_decision",
+      "source": "Website",
+      "assignedAgent": "Agent",
+      "notes": "Pre-approved with Wells Fargo. Looking to close by April. Wants investment potential.",
+      "createdAt": "2026-01-08T09:00:00Z",
+      "lastContact": "2026-02-13T11:00:00Z"
+    },
+    {
+      "id": "cl_003",
+      "firstName": "Maria",
+      "lastName": "Gonzalez",
+      "email": "maria.g@gmail.com",
+      "phone": "(727) 555-0391",
+      "preferredContact": "phone",
+      "clientType": "rental",
+      "status": "active",
+      "lifecycleStage": "renewal_window",
+      "source": "MLS Listing",
+      "assignedAgent": "Agent",
+      "notes": "Current tenant at 215 Palm Dr. Great tenant, always pays on time. Wants to stay in Dunedin.",
+      "createdAt": "2025-03-20T08:00:00Z",
+      "lastContact": "2026-02-10T16:00:00Z"
+    },
+    {
+      "id": "cl_004",
+      "firstName": "David",
+      "lastName": "Park",
+      "email": "david.park@techcorp.com",
+      "phone": "(727) 555-0455",
+      "preferredContact": "email",
+      "clientType": "buyer",
+      "status": "active",
+      "lifecycleStage": "under_contract",
+      "source": "Zillow",
+      "assignedAgent": "Agent",
+      "notes": "Relocating from Atlanta for work. Closing on 890 Bay Blvd on March 5. Needs fast timeline.",
+      "createdAt": "2026-01-20T12:00:00Z",
+      "lastContact": "2026-02-14T09:00:00Z"
+    },
+    {
+      "id": "cl_005",
+      "firstName": "Ashley",
+      "lastName": "Williams",
+      "email": "ashley.w@icloud.com",
+      "phone": "(727) 555-0518",
+      "preferredContact": "text",
+      "clientType": "rental",
+      "status": "active",
+      "lifecycleStage": "new_lead",
+      "source": "Instagram",
+      "assignedAgent": "Agent",
+      "notes": "Just moved to area. Nurse at Mease Countryside. Needs something close to hospital.",
+      "createdAt": "2026-02-12T15:00:00Z",
+      "lastContact": "2026-02-12T15:00:00Z"
+    },
+    {
+      "id": "cl_006",
+      "firstName": "Robert",
+      "lastName": "Thompson",
+      "email": "r.thompson@email.com",
+      "phone": "(727) 555-0623",
+      "preferredContact": "phone",
+      "clientType": "investor",
+      "status": "active",
+      "lifecycleStage": "active_search",
+      "source": "Referral - Chamber of Commerce",
+      "assignedAgent": "Agent",
+      "notes": "Owns 4 rentals already. Looking for 5th. Cash buyer. Wants 8%+ cap rate.",
+      "createdAt": "2025-11-05T10:00:00Z",
+      "lastContact": "2026-02-08T13:00:00Z"
+    },
+    {
+      "id": "cl_007",
+      "firstName": "Jennifer",
+      "lastName": "Nguyen",
+      "email": "jen.nguyen@yahoo.com",
+      "phone": "(727) 555-0734",
+      "preferredContact": "text",
+      "clientType": "rental",
+      "status": "active",
+      "lifecycleStage": "active_client",
+      "source": "Referral - Sarah Chen",
+      "assignedAgent": "Agent",
+      "notes": "Leased 412 Cypress Ln in October. Happy with the place. Has a cat.",
+      "createdAt": "2025-09-18T11:00:00Z",
+      "lastContact": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": "cl_008",
+      "firstName": "Marcus",
+      "lastName": "Johnson",
+      "email": "marcus.j@gmail.com",
+      "phone": "(727) 555-0849",
+      "preferredContact": "email",
+      "clientType": "rental",
+      "status": "active",
+      "lifecycleStage": "hot_decision",
+      "source": "Apartments.com",
+      "assignedAgent": "Agent",
+      "notes": "Young professional, just got engaged. Looking for 2BR+. Toured 4 places last week. Very interested in Clearwater Beach area.",
+      "createdAt": "2026-01-28T14:00:00Z",
+      "lastContact": "2026-02-13T17:00:00Z"
+    },
+    {
+      "id": "cl_009",
+      "firstName": "Linda",
+      "lastName": "Martinez",
+      "email": "linda.martinez@email.com",
+      "phone": "(727) 555-0956",
+      "preferredContact": "phone",
+      "clientType": "buyer",
+      "status": "past_client",
+      "lifecycleStage": "past_client",
+      "source": "Referral - Robert Thompson",
+      "assignedAgent": "Agent",
+      "notes": "Purchased 1450 Sunset Dr in August 2025. First-time homebuyer. Very happy. Good referral source.",
+      "createdAt": "2025-04-10T09:00:00Z",
+      "lastContact": "2025-12-20T11:00:00Z"
+    },
+    {
+      "id": "cl_010",
+      "firstName": "Kevin",
+      "lastName": "O'Brien",
+      "email": "kevin.ob@proton.me",
+      "phone": "(727) 555-1067",
+      "preferredContact": "email",
+      "clientType": "rental",
+      "status": "inactive",
+      "lifecycleStage": "past_client",
+      "source": "Walk-in",
+      "assignedAgent": "Agent",
+      "notes": "Rented 330 Oak St for 2 years. Moved out of state to Oregon. Could return.",
+      "createdAt": "2024-01-15T10:00:00Z",
+      "lastContact": "2025-10-01T09:00:00Z"
+    }
+  ],
+  "preferences": [
+    {
+      "clientId": "cl_001",
+      "rental": {
+        "budgetMin": 2200,
+        "budgetMax": 2600,
+        "bedrooms": 3,
+        "bathrooms": 2,
+        "sqftMin": 1400,
+        "preferredAreas": ["Dunedin", "Palm Harbor"],
+        "propertyTypes": ["single_family", "townhouse"],
+        "mustHaveAmenities": ["pet_friendly", "fenced_yard", "washer_dryer"],
+        "pets": "2 medium Labrador mixes",
+        "moveInTimeline": "March 2026",
+        "leaseTermPref": "12 months",
+        "currentLeaseExpiration": "2026-03-15",
+        "currentAddress": "412 Main St, Dunedin, FL"
+      }
+    },
+    {
+      "clientId": "cl_002",
+      "buyer": {
+        "budgetMin": 350000,
+        "budgetMax": 475000,
+        "bedrooms": 3,
+        "bathrooms": 2,
+        "sqftMin": 1600,
+        "preferredAreas": ["Dunedin", "Clearwater", "Safety Harbor"],
+        "propertyTypes": ["single_family"],
+        "mustHaveFeatures": ["garage", "pool", "central_ac"],
+        "preApproved": true,
+        "preApprovalAmount": 500000,
+        "lenderContact": "Mike Davis, Wells Fargo - (727) 555-8800",
+        "downPayment": "20% ($90,000 available)",
+        "timeline": "Close by April 2026",
+        "investmentIntent": true
+      }
+    },
+    {
+      "clientId": "cl_003",
+      "rental": {
+        "budgetMin": 1800,
+        "budgetMax": 2200,
+        "bedrooms": 2,
+        "bathrooms": 2,
+        "sqftMin": 1100,
+        "preferredAreas": ["Dunedin"],
+        "propertyTypes": ["single_family", "condo", "townhouse"],
+        "mustHaveAmenities": ["central_ac", "washer_dryer"],
+        "pets": "None",
+        "moveInTimeline": "April 2026 (current lease end)",
+        "leaseTermPref": "12 months",
+        "currentLeaseExpiration": "2026-04-01",
+        "currentAddress": "215 Palm Dr, Dunedin, FL"
+      }
+    },
+    {
+      "clientId": "cl_004",
+      "buyer": {
+        "budgetMin": 400000,
+        "budgetMax": 550000,
+        "bedrooms": 4,
+        "bathrooms": 3,
+        "sqftMin": 2000,
+        "preferredAreas": ["Dunedin", "Palm Harbor", "Clearwater"],
+        "propertyTypes": ["single_family"],
+        "mustHaveFeatures": ["garage", "pool", "fenced_yard"],
+        "preApproved": true,
+        "preApprovalAmount": 575000,
+        "lenderContact": "Jane Smith, Chase - (813) 555-7700",
+        "downPayment": "25%",
+        "timeline": "Closing March 5, 2026",
+        "investmentIntent": false
+      }
+    },
+    {
+      "clientId": "cl_005",
+      "rental": {
+        "budgetMin": 1500,
+        "budgetMax": 2000,
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "sqftMin": 900,
+        "preferredAreas": ["Safety Harbor", "Clearwater", "Dunedin"],
+        "propertyTypes": ["apartment", "condo", "townhouse"],
+        "mustHaveAmenities": ["central_ac", "washer_dryer"],
+        "pets": "None",
+        "moveInTimeline": "ASAP - within 2 weeks",
+        "leaseTermPref": "12 months",
+        "currentAddress": "Temporary housing"
+      }
+    },
+    {
+      "clientId": "cl_006",
+      "buyer": {
+        "budgetMin": 250000,
+        "budgetMax": 400000,
+        "bedrooms": 3,
+        "bathrooms": 2,
+        "sqftMin": 1200,
+        "preferredAreas": ["Dunedin", "Clearwater", "Palm Harbor", "Tarpon Springs"],
+        "propertyTypes": ["single_family", "duplex", "triplex", "fourplex"],
+        "mustHaveFeatures": ["central_ac"],
+        "preApproved": false,
+        "lenderContact": "",
+        "downPayment": "Cash buyer",
+        "timeline": "Whenever right deal appears",
+        "investmentIntent": true
+      }
+    },
+    {
+      "clientId": "cl_008",
+      "rental": {
+        "budgetMin": 1800,
+        "budgetMax": 2400,
+        "bedrooms": 2,
+        "bathrooms": 2,
+        "sqftMin": 1000,
+        "preferredAreas": ["Clearwater Beach", "Clearwater", "Dunedin"],
+        "propertyTypes": ["condo", "apartment", "townhouse"],
+        "mustHaveAmenities": ["pool", "washer_dryer", "garage"],
+        "pets": "None",
+        "moveInTimeline": "March-April 2026",
+        "leaseTermPref": "12 months",
+        "currentAddress": "505 Harbor Way #204, Clearwater, FL"
+      }
+    }
+  ],
+  "activities": [
+    {
+      "id": "act_001",
+      "clientId": "cl_001",
+      "type": "showing",
+      "title": "Toured 670 Patricia Ave",
+      "description": "Showed 3BR/2BA in Dunedin. Sarah loved the layout and yard. Main concern: no W/D hookups. Spent 45 minutes.",
+      "propertyAddress": "670 Patricia Ave, Dunedin, FL",
+      "timestamp": "2026-02-11T14:00:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_002",
+      "clientId": "cl_001",
+      "type": "showing",
+      "title": "Toured 890 Pinehurst Rd",
+      "description": "3BR/2BA with fenced yard. Has W/D. Smaller than she wanted (1,250 sqft). 20 minute visit.",
+      "propertyAddress": "890 Pinehurst Rd, Dunedin, FL",
+      "timestamp": "2026-02-11T15:30:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_003",
+      "clientId": "cl_001",
+      "type": "text",
+      "title": "Follow-up after showings",
+      "description": "Sarah texted back saying she's still thinking about Patricia Ave. Asked if landlord would install W/D.",
+      "timestamp": "2026-02-12T14:30:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_004",
+      "clientId": "cl_002",
+      "type": "showing",
+      "title": "Toured 445 Bayshore Blvd",
+      "description": "4BR/3BA, pool, 2-car garage. James very interested. Within budget at $449K. Wants to make offer.",
+      "propertyAddress": "445 Bayshore Blvd, Dunedin, FL",
+      "timestamp": "2026-02-13T10:00:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_005",
+      "clientId": "cl_002",
+      "type": "comp_report",
+      "title": "Pulled comps for 445 Bayshore",
+      "description": "CompAtlas report showing comparable sales $425K-$470K range. Property fairly priced.",
+      "propertyAddress": "445 Bayshore Blvd, Dunedin, FL",
+      "timestamp": "2026-02-13T11:00:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_006",
+      "clientId": "cl_003",
+      "type": "call",
+      "title": "Lease renewal discussion",
+      "description": "Maria called to ask about renewal options. Wants to stay but hoping for same rate. Current: $2,000/mo. Market suggests $2,100-$2,200.",
+      "timestamp": "2026-02-10T16:00:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_007",
+      "clientId": "cl_004",
+      "type": "system",
+      "title": "Inspection scheduled",
+      "description": "Home inspection for 890 Bay Blvd scheduled for Feb 18. Inspector: Pinellas Home Inspections.",
+      "timestamp": "2026-02-14T09:00:00Z",
+      "agentName": "System"
+    },
+    {
+      "id": "act_008",
+      "clientId": "cl_005",
+      "type": "note",
+      "title": "Initial intake completed",
+      "description": "Ashley is a travel nurse starting at Mease Countryside next week. Needs a place within 15 min of hospital. Budget tight but flexible on size.",
+      "timestamp": "2026-02-12T15:00:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_009",
+      "clientId": "cl_008",
+      "type": "showing",
+      "title": "Toured 3 condos in Clearwater Beach",
+      "description": "Showed Marcus and his fiancée 3 units. They loved the Gulf views at 1200 Gulf Blvd #305 but it's at top of budget ($2,400). Also liked 880 Mandalay.",
+      "propertyAddress": "1200 Gulf Blvd #305, Clearwater Beach, FL",
+      "timestamp": "2026-02-10T11:00:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_010",
+      "clientId": "cl_008",
+      "type": "listing_viewed",
+      "title": "Viewed 6 listings online",
+      "description": "Marcus viewed multiple Clearwater Beach listings. Focused on 2BR condos with pool access. Spent most time on waterfront units.",
+      "timestamp": "2026-02-13T17:00:00Z",
+      "agentName": "System"
+    },
+    {
+      "id": "act_011",
+      "clientId": "cl_006",
+      "type": "email",
+      "title": "Sent investment analysis",
+      "description": "Emailed Robert cap rate analysis on 3 potential investment properties. Best one: triplex on Alt 19 showing 8.3% cap rate.",
+      "timestamp": "2026-02-08T13:00:00Z",
+      "agentName": "Agent"
+    },
+    {
+      "id": "act_012",
+      "clientId": "cl_007",
+      "type": "follow_up",
+      "title": "90-day check-in",
+      "description": "Called Jennifer for quarterly check-in. Everything going well at 412 Cypress. No maintenance issues. Happy tenant.",
+      "timestamp": "2026-01-15T10:00:00Z",
+      "agentName": "Agent"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "tx_001",
+      "clientId": "cl_007",
+      "propertyId": "prop_cypress",
+      "propertyAddress": "412 Cypress Ln, Dunedin, FL",
+      "type": "lease",
+      "date": "2025-10-01",
+      "amount": 2100,
+      "leaseEndDate": "2026-09-30",
+      "notes": "12-month lease. $2,100/mo. First/last/security collected."
+    },
+    {
+      "id": "tx_002",
+      "clientId": "cl_003",
+      "propertyId": "prop_palm",
+      "propertyAddress": "215 Palm Dr, Dunedin, FL",
+      "type": "lease",
+      "date": "2025-04-01",
+      "amount": 2000,
+      "leaseEndDate": "2026-04-01",
+      "notes": "12-month lease. $2,000/mo. Excellent tenant."
+    },
+    {
+      "id": "tx_003",
+      "clientId": "cl_009",
+      "propertyId": "prop_sunset",
+      "propertyAddress": "1450 Sunset Dr, Clearwater, FL",
+      "type": "sale",
+      "date": "2025-08-15",
+      "amount": 385000,
+      "notes": "First-time buyer. Clean closing."
+    },
+    {
+      "id": "tx_004",
+      "clientId": "cl_010",
+      "propertyId": "prop_oak",
+      "propertyAddress": "330 Oak St, Dunedin, FL",
+      "type": "lease",
+      "date": "2024-02-01",
+      "amount": 1850,
+      "leaseEndDate": "2025-09-30",
+      "notes": "Renewed once. Good tenant. Moved to Oregon."
+    }
+  ],
+  "matches": [
+    {
+      "id": "match_001",
+      "clientId": "cl_001",
+      "clientName": "Sarah Chen",
+      "listingId": "mls_28441",
+      "address": "725 Virginia Ln",
+      "city": "Dunedin",
+      "price": 2350,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "sqft": 1520,
+      "propertyType": "single_family",
+      "matchScore": 92,
+      "matchReasons": ["Pet-friendly", "Fenced yard", "W/D hookups", "3BR/2BA match", "Dunedin location", "Within budget"],
+      "status": "new",
+      "foundAt": "2026-02-14T08:00:00Z"
+    },
+    {
+      "id": "match_002",
+      "clientId": "cl_001",
+      "clientName": "Sarah Chen",
+      "listingId": "mls_28455",
+      "address": "1100 San Mateo Dr",
+      "city": "Dunedin",
+      "price": 2500,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "sqft": 1680,
+      "propertyType": "single_family",
+      "matchScore": 87,
+      "matchReasons": ["Pet-friendly", "W/D included", "3BR/2BA match", "Dunedin location"],
+      "status": "new",
+      "foundAt": "2026-02-14T08:00:00Z"
+    },
+    {
+      "id": "match_003",
+      "clientId": "cl_005",
+      "clientName": "Ashley Williams",
+      "listingId": "mls_28460",
+      "address": "2200 McMullen Booth Rd #112",
+      "city": "Safety Harbor",
+      "price": 1750,
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "sqft": 950,
+      "propertyType": "apartment",
+      "matchScore": 85,
+      "matchReasons": ["Within budget", "2BR match", "Close to Mease Countryside", "W/D in unit", "Available now"],
+      "status": "new",
+      "foundAt": "2026-02-14T08:00:00Z"
+    },
+    {
+      "id": "match_004",
+      "clientId": "cl_008",
+      "clientName": "Marcus Johnson",
+      "listingId": "mls_28448",
+      "address": "880 Mandalay Ave #210",
+      "city": "Clearwater Beach",
+      "price": 2200,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "sqft": 1150,
+      "propertyType": "condo",
+      "matchScore": 90,
+      "matchReasons": ["Pool access", "2BR/2BA match", "Clearwater Beach location", "Under budget", "Garage parking"],
+      "status": "sent",
+      "foundAt": "2026-02-12T08:00:00Z"
+    },
+    {
+      "id": "match_005",
+      "clientId": "cl_006",
+      "clientName": "Robert Thompson",
+      "listingId": "mls_28470",
+      "address": "1580 Alt 19 N",
+      "city": "Dunedin",
+      "price": 375000,
+      "bedrooms": 6,
+      "bathrooms": 3,
+      "sqft": 2800,
+      "propertyType": "triplex",
+      "matchScore": 88,
+      "matchReasons": ["Investment property", "Multi-family", "8.3% estimated cap rate", "Dunedin location", "Within budget"],
+      "status": "sent",
+      "foundAt": "2026-02-07T08:00:00Z"
+    }
+  ],
+  "aiProfiles": [
+    {
+      "clientId": "cl_001",
+      "summary": "Sarah Chen is an active rental client looking for a pet-friendly 3BR/2BA home in Dunedin or Palm Harbor, budget $2,200-$2,600/month. She has two medium Labrador mixes and needs a fenced yard. Her current lease at 412 Main St expires March 15, 2026 (29 days). She's viewed 8 properties in the last 30 days but hasn't committed — the main blocker is finding pet-friendly options with W/D hookups in her target areas. She works remotely and values a dedicated home office space. Priority: HIGH due to imminent lease expiration.",
+      "nextActions": [
+        {
+          "id": "na_001",
+          "title": "Send new listing: 725 Virginia Ln",
+          "description": "92% match — pet-friendly 3BR/2BA with fenced yard AND W/D hookups in Dunedin. $2,350/mo. This checks every box.",
+          "urgency": "high",
+          "category": "match",
+          "dueDate": "2026-02-14",
+          "completed": false
+        },
+        {
+          "id": "na_002",
+          "title": "Follow up on 670 Patricia Ave",
+          "description": "Sarah spent 45 minutes at this showing (longest of any tour). Check if landlord will install W/D — this could be the one.",
+          "urgency": "high",
+          "category": "follow_up",
+          "dueDate": "2026-02-15",
+          "completed": false
+        },
+        {
+          "id": "na_003",
+          "title": "Lease expiration planning",
+          "description": "29 days until current lease expires. Schedule a call to discuss backup plan if preferred properties don't work out. Consider month-to-month extension at current place.",
+          "urgency": "critical",
+          "category": "renewal",
+          "dueDate": "2026-02-16",
+          "completed": false
+        }
+      ],
+      "updatedAt": "2026-02-14T06:00:00Z"
+    },
+    {
+      "clientId": "cl_002",
+      "summary": "James Rodriguez is a pre-approved buyer ($500K) targeting 3BR/2BA single-family homes in Dunedin, Clearwater, or Safety Harbor, budget $350K-$475K. He wants investment potential and needs a pool and garage. He toured 445 Bayshore Blvd yesterday and is very interested — comps confirm fair pricing at $449K. He's motivated to close by April 2026. Priority: HIGH — ready to make an offer.",
+      "nextActions": [
+        {
+          "id": "na_004",
+          "title": "Prepare offer for 445 Bayshore Blvd",
+          "description": "James is ready. Comps support $425K-$470K range. Recommend offering $440K with escalation clause to $455K.",
+          "urgency": "critical",
+          "category": "admin",
+          "dueDate": "2026-02-14",
+          "completed": false
+        },
+        {
+          "id": "na_005",
+          "title": "Coordinate with Wells Fargo lender",
+          "description": "Contact Mike Davis to confirm pre-approval is current and get rate lock options before submitting offer.",
+          "urgency": "high",
+          "category": "admin",
+          "dueDate": "2026-02-14",
+          "completed": false
+        }
+      ],
+      "updatedAt": "2026-02-14T06:00:00Z"
+    },
+    {
+      "clientId": "cl_003",
+      "summary": "Maria Gonzalez is a current tenant at 215 Palm Dr, Dunedin. Excellent payment history, no issues. Her lease expires April 1, 2026 (46 days). She wants to renew but is hoping to keep the current $2,000/mo rate. Market analysis shows comparable rents at $2,100-$2,200. She's been a client since March 2025 and is low maintenance. Priority: MEDIUM — renewal conversation needed.",
+      "nextActions": [
+        {
+          "id": "na_006",
+          "title": "Prepare renewal offer",
+          "description": "Draft lease renewal at $2,100/mo (5% increase, still below market). Include RentAtlas comp report to justify. Maria is a great tenant — small increase keeps her happy and you competitive.",
+          "urgency": "medium",
+          "category": "renewal",
+          "dueDate": "2026-02-18",
+          "completed": false
+        }
+      ],
+      "updatedAt": "2026-02-14T06:00:00Z"
+    },
+    {
+      "clientId": "cl_005",
+      "summary": "Ashley Williams is a new lead — travel nurse starting at Mease Countryside Hospital next week. Needs a 2BR within 15 minutes of the hospital, budget $1,500-$2,000/mo. She's currently in temporary housing so timeline is URGENT. Best areas: Safety Harbor, Clearwater, Dunedin. No pets, flexible on amenities except needs W/D. Priority: HIGH — immediate housing need.",
+      "nextActions": [
+        {
+          "id": "na_007",
+          "title": "Send top 3 matches immediately",
+          "description": "Ashley needs a place this week. 2200 McMullen Booth Rd #112 is 85% match at $1,750. Find 2 more options and send all three today.",
+          "urgency": "critical",
+          "category": "match",
+          "dueDate": "2026-02-14",
+          "completed": false
+        },
+        {
+          "id": "na_008",
+          "title": "Schedule showings for tomorrow",
+          "description": "Given urgency, try to book 2-3 showings for Feb 15. Ashley works nights so mornings/early afternoon best.",
+          "urgency": "critical",
+          "category": "outreach",
+          "dueDate": "2026-02-14",
+          "completed": false
+        }
+      ],
+      "updatedAt": "2026-02-14T06:00:00Z"
+    },
+    {
+      "clientId": "cl_008",
+      "summary": "Marcus Johnson is a hot rental lead recently engaged, looking for a 2BR/2BA in Clearwater Beach area, budget $1,800-$2,400/mo. He's toured 4 properties last week and showed strong interest in both 1200 Gulf Blvd #305 ($2,400, at top of budget) and 880 Mandalay Ave #210 ($2,200). He's been actively viewing listings online, focused on waterfront condos with pool access. Target move: March-April 2026. Priority: HIGH — close to decision.",
+      "nextActions": [
+        {
+          "id": "na_009",
+          "title": "Check availability on both top picks",
+          "description": "Confirm 1200 Gulf Blvd #305 and 880 Mandalay #210 are still available. Marcus is close to deciding.",
+          "urgency": "high",
+          "category": "follow_up",
+          "dueDate": "2026-02-14",
+          "completed": false
+        },
+        {
+          "id": "na_010",
+          "title": "Send side-by-side comparison",
+          "description": "Create a comparison of the two units — price, sqft, amenities, proximity to beach. Help Marcus and his fiancée make a confident decision.",
+          "urgency": "medium",
+          "category": "outreach",
+          "dueDate": "2026-02-15",
+          "completed": false
+        }
+      ],
+      "updatedAt": "2026-02-14T06:00:00Z"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trg_001",
+      "clientId": "cl_001",
+      "clientName": "Sarah Chen",
+      "type": "lease_expiration",
+      "title": "Lease expires in 29 days",
+      "description": "Sarah's lease at 412 Main St expires March 15. She hasn't secured a new place yet.",
+      "fireDate": "2026-02-14",
+      "status": "fired",
+      "urgency": "critical",
+      "messageDraft": "Hi Sarah! Just checking in — your lease is up in about a month. I have a great new listing at 725 Virginia Ln that checks all your boxes (3BR, fenced yard, W/D, pet-friendly). Want to take a look this week?"
+    },
+    {
+      "id": "trg_002",
+      "clientId": "cl_003",
+      "clientName": "Maria Gonzalez",
+      "type": "lease_expiration",
+      "title": "Lease expires in 46 days",
+      "description": "Maria's lease at 215 Palm Dr expires April 1. She wants to renew. Need to prepare renewal offer.",
+      "fireDate": "2026-02-14",
+      "status": "fired",
+      "urgency": "medium",
+      "messageDraft": "Hi Maria! Your lease is coming up for renewal on April 1st. I'd love to have you stay — let's chat about renewal terms this week. When works best for a quick call?"
+    },
+    {
+      "id": "trg_003",
+      "clientId": "cl_005",
+      "clientName": "Ashley Williams",
+      "type": "new_client_followup",
+      "title": "New client — 24hr follow-up",
+      "description": "Ashley signed up 2 days ago and needs immediate housing. Follow up with property matches.",
+      "fireDate": "2026-02-14",
+      "status": "fired",
+      "urgency": "critical",
+      "messageDraft": "Hi Ashley! Welcome to the area! I found a few places near Mease Countryside that might work for you. Can I set up some showings for tomorrow?"
+    },
+    {
+      "id": "trg_004",
+      "clientId": "cl_007",
+      "clientName": "Jennifer Nguyen",
+      "type": "quarterly_touchbase",
+      "title": "Quarterly check-in due",
+      "description": "Jennifer's last check-in was Jan 15. Next quarterly touchbase due mid-April.",
+      "fireDate": "2026-04-15",
+      "status": "pending",
+      "urgency": "low"
+    },
+    {
+      "id": "trg_005",
+      "clientId": "cl_009",
+      "clientName": "Linda Martinez",
+      "type": "annual_review",
+      "title": "6-month post-purchase check-in",
+      "description": "Linda purchased 1450 Sunset Dr 6 months ago. Good time for a check-in and referral ask.",
+      "fireDate": "2026-02-15",
+      "status": "pending",
+      "urgency": "low",
+      "messageDraft": "Hi Linda! Can you believe it's been 6 months since you closed on Sunset Dr? Hope you're loving the place! If any friends or family are looking to buy or rent in the area, I'd love to help them out."
+    },
+    {
+      "id": "trg_006",
+      "clientId": "cl_008",
+      "clientName": "Marcus Johnson",
+      "type": "post_showing",
+      "title": "Post-showing follow-up",
+      "description": "Marcus toured 3 condos on Feb 10. Follow up on his favorites.",
+      "fireDate": "2026-02-11",
+      "status": "completed",
+      "urgency": "high"
+    }
+  ]
+}
