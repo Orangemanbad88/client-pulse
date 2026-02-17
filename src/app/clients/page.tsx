@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ClientList } from '@/components/clients/ClientList';
 import { IntakeForm } from '@/components/clients/IntakeForm';
@@ -8,18 +8,26 @@ import type { Client, ClientIntakeData } from '@/types/client';
 import * as svc from '@/services/mock-service';
 
 export default function ClientsPage() {
+  return <Suspense><ClientsContent /></Suspense>;
+}
+
+function ClientsContent() {
   const params = useSearchParams();
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => { svc.getClients().then((d) => { setClients(d); setLoading(false); }); }, []);
+  useEffect(() => { svc.getClients().then((d) => { setClients(d); setLoading(false); }).catch((err) => { console.error('Failed to load clients:', err); setLoading(false); }); }, []);
   useEffect(() => { if (params.get('new') === 'true') setShowForm(true); }, [params]);
 
   const onCreate = async (d: ClientIntakeData) => {
-    const c = await svc.createClient(d);
-    setClients((p) => [c, ...p]);
-    setShowForm(false);
+    try {
+      const c = await svc.createClient(d);
+      setClients((p) => [c, ...p]);
+      setShowForm(false);
+    } catch {
+      // TODO: show error toast when real backend is connected
+    }
   };
 
   if (loading) return <div className="flex items-center justify-center min-h-[400px]"><p className="text-[13px]" style={{ color: 'var(--text-tertiary)' }}>Loading...</p></div>;

@@ -14,8 +14,8 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
   const [step, setStep] = useState(1);
 
   const u = <K extends keyof ClientIntakeData>(k: K, v: ClientIntakeData[K]) => setF((p) => ({ ...p, [k]: v }));
-  const ur = (k: string, v: unknown) => setF((p) => ({ ...p, rentalPrefs: { ...p.rentalPrefs, [k]: v } }));
-  const ub = (k: string, v: unknown) => setF((p) => ({ ...p, buyerPrefs: { ...p.buyerPrefs, [k]: v } }));
+  const ur = <K extends keyof NonNullable<ClientIntakeData['rentalPrefs']>>(k: K, v: NonNullable<ClientIntakeData['rentalPrefs']>[K]) => setF((p) => ({ ...p, rentalPrefs: { ...p.rentalPrefs, [k]: v } }));
+  const ub = <K extends keyof NonNullable<ClientIntakeData['buyerPrefs']>>(k: K, v: NonNullable<ClientIntakeData['buyerPrefs']>[K]) => setF((p) => ({ ...p, buyerPrefs: { ...p.buyerPrefs, [k]: v } }));
 
   const isR = f.clientType === 'rental';
   const isB = f.clientType === 'buyer' || f.clientType === 'investor';
@@ -152,7 +152,7 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
         <div className="flex gap-2">
           {step > 1 && <button onClick={() => setStep(step - 1)} className="btn btn-secondary">Back</button>}
           {step < 4 ? <button onClick={() => setStep(step + 1)} className="btn btn-primary">Next</button>
-            : <button onClick={() => onSubmit(f)} className="btn btn-primary">Create Client</button>}
+            : <button onClick={() => { if (!f.firstName.trim() || !f.lastName.trim()) { setStep(1); return; } onSubmit(f); }} className="btn btn-primary">Create Client</button>}
         </div>
       </div>
     </div>

@@ -8,7 +8,8 @@ import * as svc from '@/services/mock-service';
 import Link from 'next/link';
 
 export default function ClientDetailPage() {
-  const { id } = useParams() as { id: string };
+  const params = useParams();
+  const id = Array.isArray(params.id) ? params.id[0] : (params.id ?? '');
   const [client, setClient] = useState<Client | null>(null);
   const [prefs, setPrefs] = useState<ClientPreferences | null>(null);
   const [acts, setActs] = useState<Activity[]>([]);
@@ -19,13 +20,21 @@ export default function ClientDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const [c, p, a, t, m, ap, tr] = await Promise.all([
-        svc.getClient(id), svc.getClientPreferences(id), svc.getClientActivities(id),
-        svc.getClientTransactions(id), svc.getClientMatches(id), svc.getAIProfile(id), svc.getClientTriggers(id)
-      ]);
-      setClient(c); setPrefs(p); setActs(a); setTxs(t); setMatches(m); setAi(ap); setTriggers(tr); setLoading(false);
+      try {
+        const [c, p, a, t, m, ap, tr] = await Promise.all([
+          svc.getClient(id), svc.getClientPreferences(id), svc.getClientActivities(id),
+          svc.getClientTransactions(id), svc.getClientMatches(id), svc.getAIProfile(id), svc.getClientTriggers(id)
+        ]);
+        if (!cancelled) {
+          setClient(c); setPrefs(p); setActs(a); setTxs(t); setMatches(m); setAi(ap); setTriggers(tr); setLoading(false);
+        }
+      } catch {
+        if (!cancelled) setLoading(false);
+      }
     })();
+    return () => { cancelled = true; };
   }, [id]);
 
   if (loading) return <div className="flex items-center justify-center min-h-[400px]"><p className="text-[13px]" style={{ color: 'var(--text-tertiary)' }}>Loading...</p></div>;

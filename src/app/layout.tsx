@@ -1,20 +1,16 @@
-'use client';
-
 import './globals.css';
+import { ClientShell } from '@/components/layout/ClientShell';
+
+export const metadata = {
+  title: 'ClientPulse',
+  description: 'AI-Powered Client Management',
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>ClientPulse</title>
-        <meta name="description" content="AI-Powered Client Management" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body>
-        {children}
+        <ClientShell>{children}</ClientShell>
       </body>
     </html>
   );

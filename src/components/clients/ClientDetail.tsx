@@ -2,14 +2,9 @@
 
 import type { Client, ClientPreferences, Activity, Transaction, PropertyMatch, AIProfile, Trigger } from '@/types/client';
 import { LIFECYCLE_LABELS, PROPERTY_TYPE_LABELS, AMENITY_LABELS, ACTIVITY_ICONS } from '@/types/client';
-import { getInitials, getClientName, formatCurrency, formatDate, formatRelativeDate, daysUntil, urgencyBadge, scoreColor, scoreBg, cn } from '@/lib/utils';
+import { getInitials, getClientName, formatCurrency, formatDate, formatRelativeDate, daysUntil, urgencyBadge, scoreColor, scoreBg, cn, stageBadge } from '@/lib/utils';
 import { AIProfileCard } from './AIProfileCard';
 import Link from 'next/link';
-
-const stageBadge: Record<string, string> = {
-  new_lead: 'badge-info', active_search: 'badge-accent', hot_decision: 'badge-warning',
-  under_contract: 'badge-accent', active_client: 'badge-success', renewal_window: 'badge-warning', past_client: 'badge-neutral',
-};
 
 interface Props { client: Client; preferences: ClientPreferences | null; activities: Activity[]; transactions: Transaction[]; matches: PropertyMatch[]; aiProfile: AIProfile | null; triggers: Trigger[]; }
 

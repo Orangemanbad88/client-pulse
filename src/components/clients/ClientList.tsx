@@ -3,13 +3,8 @@
 import { useState, useMemo } from 'react';
 import type { Client, ClientType, LifecycleStage } from '@/types/client';
 import { LIFECYCLE_LABELS } from '@/types/client';
-import { getInitials, getClientName, formatRelativeDate, cn } from '@/lib/utils';
+import { getInitials, getClientName, formatRelativeDate, cn, stageBadge } from '@/lib/utils';
 import Link from 'next/link';
-
-const stageBadge: Record<LifecycleStage, string> = {
-  new_lead: 'badge-info', active_search: 'badge-accent', hot_decision: 'badge-warning',
-  under_contract: 'badge-accent', active_client: 'badge-success', renewal_window: 'badge-warning', past_client: 'badge-neutral',
-};
 
 export const ClientList = ({ clients }: { clients: Client[] }) => {
   const [search, setSearch] = useState('');

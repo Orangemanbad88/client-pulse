@@ -9,10 +9,16 @@ export const formatCurrency = (value: number, monthly = false): string => {
   return monthly ? `${formatted}/mo` : formatted;
 };
 
-export const formatDate = (dateStr: string): string => new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+export const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return 'Unknown';
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
 
 export const formatRelativeDate = (dateStr: string): string => {
-  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return 'Unknown';
+  const diffMs = Date.now() - date.getTime();
   const mins = Math.floor(diffMs / 60000);
   const hrs = Math.floor(diffMs / 3600000);
   const days = Math.floor(diffMs / 86400000);
@@ -26,7 +32,8 @@ export const formatRelativeDate = (dateStr: string): string => {
 };
 
 export const daysUntil = (dateStr: string): number => Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86400000);
-export const getInitials = (first: string, last: string) => `${first[0]}${last[0]}`.toUpperCase();
+export const getInitials = (first: string, last: string) => `${(first || '?')[0]}${(last || '?')[0]}`.toUpperCase();
+export const getInitialsFromName = (name: string) => name.split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase() || '?';
 export const getClientName = (c: Client) => `${c.firstName} ${c.lastName}`;
 
 export const urgencyBadge: Record<UrgencyLevel, string> = {
@@ -34,6 +41,16 @@ export const urgencyBadge: Record<UrgencyLevel, string> = {
   high: 'badge-warning',
   medium: 'badge-info',
   low: 'badge-neutral',
+};
+
+export const stageBadge: Record<LifecycleStage, string> = {
+  new_lead: 'badge-info',
+  active_search: 'badge-accent',
+  hot_decision: 'badge-warning',
+  under_contract: 'badge-accent',
+  active_client: 'badge-success',
+  renewal_window: 'badge-warning',
+  past_client: 'badge-neutral',
 };
 
 export const lifecycleOrder: LifecycleStage[] = ['new_lead', 'active_search', 'hot_decision', 'under_contract', 'active_client', 'renewal_window', 'past_client'];
