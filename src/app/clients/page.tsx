@@ -33,9 +33,9 @@ function ClientsContent() {
   if (loading) return <div className="flex items-center justify-center min-h-[400px]"><p className="text-[13px]" style={{ color: 'var(--text-tertiary)' }}>Loading...</p></div>;
 
   return (
-    <div className="space-y-4">
+    <>
       <header
-        className="-mx-4 lg:-mx-8 -mt-4 lg:-mt-6 px-4 lg:px-8 py-3 lg:py-4 mb-2 border-b border-[#1E293B]/50 flex items-center justify-between"
+        className="px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
         style={{ background: 'linear-gradient(135deg, #475569 0%, #1E293B 50%, #475569 100%)' }}
       >
         <div>
@@ -47,15 +47,17 @@ function ClientsContent() {
           New Client
         </button>
       </header>
-      {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <IntakeForm onSubmit={onCreate} onCancel={() => setShowForm(false)} />
+      <div className="px-4 lg:px-8 py-4 lg:py-6 space-y-4">
+        {showForm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+            <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <IntakeForm onSubmit={onCreate} onCancel={() => setShowForm(false)} />
+            </div>
           </div>
-        </div>
-      )}
-      <ClientList clients={clients} />
-    </div>
+        )}
+        <ClientList clients={clients} />
+      </div>
+    </>
   );
 }
