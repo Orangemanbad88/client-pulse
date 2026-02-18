@@ -85,13 +85,17 @@ export default function AnalyticsPage() {
   const maxType = Math.max(...Object.values(typeCounts), 1);
 
   return (
-    <div className="px-4 lg:px-8 py-4 lg:py-6">
-      <div className="flex items-center justify-between mb-6">
+    <>
+      <header
+        className="px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #475569 0%, #1E293B 50%, #475569 100%)' }}
+      >
         <div>
-          <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">Analytics</h1>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Performance overview</p>
+          <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>Analytics</h1>
+          <p className="text-xs text-slate-400 mt-0.5">Performance overview</p>
         </div>
-      </div>
+      </header>
+      <div className="px-4 lg:px-8 py-4 lg:py-6">
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -129,5 +133,6 @@ export default function AnalyticsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

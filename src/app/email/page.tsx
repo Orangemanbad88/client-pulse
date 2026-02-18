@@ -65,16 +65,20 @@ export default function EmailPage() {
   );
 
   return (
-    <div className="px-4 lg:px-8 py-4 lg:py-6">
-      <div className="flex items-center justify-between mb-6">
+    <>
+      <header
+        className="px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #475569 0%, #1E293B 50%, #475569 100%)' }}
+      >
         <div>
-          <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">Email</h1>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{unreadCount} unread</p>
+          <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>Email</h1>
+          <p className="text-xs text-slate-400 mt-0.5">{unreadCount} unread</p>
         </div>
         <button className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm shadow-teal-600/20 active:scale-[0.97]">
           <Mail size={14} /> Compose
         </button>
-      </div>
+      </header>
+      <div className="px-4 lg:px-8 py-4 lg:py-6">
 
       <div className="flex gap-6">
         {/* Folder sidebar */}
@@ -235,5 +239,6 @@ export default function EmailPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

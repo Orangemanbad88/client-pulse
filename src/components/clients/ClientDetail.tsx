@@ -17,25 +17,25 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
     <div className="space-y-4 animate-in">
       {/* Header */}
       <div className="surface overflow-hidden">
-        <div className="px-5 py-4 flex items-center gap-4" style={{ background: 'var(--bg-1)' }}>
-          <Link href="/clients" className="btn btn-ghost btn-sm">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <div className="px-5 py-4 flex items-center gap-4 border-b border-[#1E293B]/50" style={{ background: 'linear-gradient(135deg, #475569 0%, #1E293B 50%, #475569 100%)' }}>
+          <Link href="/clients" className="p-1.5 rounded-lg hover:bg-white/10 transition-colors">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </Link>
-          <div className="w-11 h-11 rounded-full bg-[var(--accent)] flex items-center justify-center text-white text-sm font-bold">
+          <div className="w-11 h-11 rounded-full bg-teal-500 flex items-center justify-center text-white text-sm font-bold">
             {getInitials(client.firstName, client.lastName)}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2.5">
-              <h1 className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>{getClientName(client)}</h1>
+              <h1 className="text-lg font-bold text-white">{getClientName(client)}</h1>
               <span className={cn('badge text-[10px]', stageBadge[client.lifecycleStage])}>{LIFECYCLE_LABELS[client.lifecycleStage]}</span>
             </div>
-            <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
+            <p className="text-[12px] mt-0.5 text-slate-400">
               <span className="capitalize">{client.clientType}</span> · {client.source} · Since {formatDate(client.createdAt)}
             </p>
           </div>
           <div className="flex gap-2">
-            <button className="btn btn-secondary btn-sm">Edit</button>
-            <button className="btn btn-primary btn-sm">Message</button>
+            <button className="text-sm font-medium px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors">Edit</button>
+            <button className="text-sm font-medium px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white transition-colors shadow-sm shadow-teal-600/20">Message</button>
           </div>
         </div>
         <div className="grid grid-cols-4 divide-x" style={{ borderTop: '1px solid var(--border)', borderColor: 'var(--border)' }}>

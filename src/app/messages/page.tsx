@@ -58,13 +58,17 @@ export default function MessagesPage() {
   );
 
   return (
-    <div className="px-4 lg:px-8 py-4 lg:py-6">
-      <div className="flex items-center justify-between mb-6">
+    <>
+      <header
+        className="px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #475569 0%, #1E293B 50%, #475569 100%)' }}
+      >
         <div>
-          <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">Messages</h1>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{messages.length} communications</p>
+          <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>Messages</h1>
+          <p className="text-xs text-slate-400 mt-0.5">{messages.length} communications</p>
         </div>
-      </div>
+      </header>
+      <div className="px-4 lg:px-8 py-4 lg:py-6">
 
       {/* Filter tabs */}
       <div className="flex items-center gap-1 mb-5">
@@ -135,5 +139,6 @@ export default function MessagesPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
