@@ -12,6 +12,7 @@ const blank: ClientIntakeData = { firstName: '', lastName: '', email: '', phone:
 export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
   const [f, setF] = useState<ClientIntakeData>(blank);
   const [step, setStep] = useState(1);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const u = <K extends keyof ClientIntakeData>(k: K, v: ClientIntakeData[K]) => setF((p) => ({ ...p, [k]: v }));
   const ur = <K extends keyof NonNullable<ClientIntakeData['rentalPrefs']>>(k: K, v: NonNullable<ClientIntakeData['rentalPrefs']>[K]) => setF((p) => ({ ...p, rentalPrefs: { ...p.rentalPrefs, [k]: v } }));
@@ -54,12 +55,17 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
 
       <div className="p-5 space-y-3.5 min-h-[320px]">
         {step === 1 && <div className="space-y-3.5 animate-in">
+          {Object.keys(errors).length > 0 && (
+            <div className="p-2.5 rounded-lg text-[11px] font-medium" style={{ background: 'rgba(239,68,68,0.08)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.2)' }}>
+              {Object.values(errors).join(' · ')}
+            </div>
+          )}
           <div className="grid grid-cols-2 gap-3">
-            <div><Lbl>First Name</Lbl><input className="input" value={f.firstName} onChange={(e) => u('firstName', e.target.value)} placeholder="Sarah" /></div>
-            <div><Lbl>Last Name</Lbl><input className="input" value={f.lastName} onChange={(e) => u('lastName', e.target.value)} placeholder="Chen" /></div>
+            <div><Lbl>First Name</Lbl><input className={cn('input', errors.firstName && 'border-red-400')} value={f.firstName} onChange={(e) => { u('firstName', e.target.value); setErrors((prev) => { const { firstName: _, ...rest } = prev; return rest; }); }} placeholder="Sarah" /></div>
+            <div><Lbl>Last Name</Lbl><input className={cn('input', errors.lastName && 'border-red-400')} value={f.lastName} onChange={(e) => { u('lastName', e.target.value); setErrors((prev) => { const { lastName: _, ...rest } = prev; return rest; }); }} placeholder="Chen" /></div>
           </div>
-          <div><Lbl>Email</Lbl><input className="input" type="email" value={f.email} onChange={(e) => u('email', e.target.value)} placeholder="sarah@email.com" /></div>
-          <div><Lbl>Phone</Lbl><input className="input" type="tel" value={f.phone} onChange={(e) => u('phone', e.target.value)} placeholder="(727) 555-0142" /></div>
+          <div><Lbl>Email</Lbl><input className={cn('input', errors.email && 'border-red-400')} type="email" value={f.email} onChange={(e) => { u('email', e.target.value); setErrors((prev) => { const { email: _, ...rest } = prev; return rest; }); }} placeholder="sarah@email.com" /></div>
+          <div><Lbl>Phone</Lbl><input className={cn('input', errors.phone && 'border-red-400')} type="tel" value={f.phone} onChange={(e) => { u('phone', e.target.value); setErrors((prev) => { const { phone: _, ...rest } = prev; return rest; }); }} placeholder="(727) 555-0142" /></div>
           <div className="grid grid-cols-2 gap-3">
             <div><Lbl>Contact Pref</Lbl><select className="select" value={f.preferredContact} onChange={(e) => u('preferredContact', e.target.value as ContactMethod)}>
               <option value="any">Any</option><option value="email">Email</option><option value="phone">Phone</option><option value="text">Text</option>
@@ -152,7 +158,16 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
         <div className="flex gap-2">
           {step > 1 && <button onClick={() => setStep(step - 1)} className="btn btn-secondary">Back</button>}
           {step < 4 ? <button onClick={() => setStep(step + 1)} className="btn btn-primary">Next</button>
-            : <button onClick={() => { if (!f.firstName.trim() || !f.lastName.trim()) { setStep(1); return; } onSubmit(f); }} className="btn btn-primary">Create Client</button>}
+            : <button onClick={() => {
+              const errs: Record<string, string> = {};
+              if (!f.firstName.trim()) errs.firstName = 'First name is required';
+              if (!f.lastName.trim()) errs.lastName = 'Last name is required';
+              if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) errs.email = 'Invalid email format';
+              if (f.phone && !/[\d().\-+\s]{7,}/.test(f.phone)) errs.phone = 'Invalid phone format';
+              if (Object.keys(errs).length) { setErrors(errs); setStep(1); return; }
+              setErrors({});
+              onSubmit(f);
+            }} className="btn btn-primary">Create Client</button>}
         </div>
       </div>
     </div>

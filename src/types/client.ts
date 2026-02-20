@@ -26,16 +26,6 @@ export const LIFECYCLE_LABELS: Record<LifecycleStage, string> = {
   past_client: 'Past Client',
 };
 
-export const LIFECYCLE_COLORS: Record<LifecycleStage, string> = {
-  new_lead: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-  active_search: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300',
-  hot_decision: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
-  under_contract: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
-  active_client: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-  renewal_window: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
-  past_client: 'bg-gray-100 text-gray-800 dark:bg-gray-700/30 dark:text-gray-300',
-};
-
 export type PropertyType =
   | 'single_family'
   | 'condo'

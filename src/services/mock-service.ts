@@ -8,7 +8,6 @@ import type {
   AIProfile,
   Trigger,
   DashboardStats,
-  LifecycleStage,
   ClientIntakeData,
 } from '@/types/client';
 
@@ -48,12 +47,6 @@ export const getAllMatches = async (): Promise<PropertyMatch[]> => {
   return (mockData.matches as PropertyMatch[]).sort((a, b) => b.matchScore - a.matchScore);
 };
 
-export const getNewMatches = async (): Promise<PropertyMatch[]> => {
-  return (mockData.matches as PropertyMatch[])
-    .filter((m) => m.status === 'new')
-    .sort((a, b) => b.matchScore - a.matchScore);
-};
-
 export const getAIProfile = async (clientId: string): Promise<AIProfile | null> => {
   return (mockData.aiProfiles as AIProfile[]).find((p) => p.clientId === clientId) || null;
 };
@@ -62,12 +55,6 @@ export const getAllTriggers = async (): Promise<Trigger[]> => {
   return (mockData.triggers as Trigger[]).sort(
     (a, b) => new Date(a.fireDate).getTime() - new Date(b.fireDate).getTime()
   );
-};
-
-export const getActiveTriggers = async (): Promise<Trigger[]> => {
-  return (mockData.triggers as Trigger[])
-    .filter((t) => t.status === 'fired' || t.status === 'pending')
-    .sort((a, b) => new Date(a.fireDate).getTime() - new Date(b.fireDate).getTime());
 };
 
 export const getClientTriggers = async (clientId: string): Promise<Trigger[]> => {
@@ -108,25 +95,6 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
     conversionRate: 0.68,
     avgResponseTime: '2.4 hrs',
   };
-};
-
-export const getClientsByStage = async (): Promise<Record<LifecycleStage, Client[]>> => {
-  const clients = mockData.clients as Client[];
-  const stages: Record<LifecycleStage, Client[]> = {
-    new_lead: [],
-    active_search: [],
-    hot_decision: [],
-    under_contract: [],
-    active_client: [],
-    renewal_window: [],
-    past_client: [],
-  };
-  clients.forEach((c) => {
-    if (stages[c.lifecycleStage]) {
-      stages[c.lifecycleStage].push(c);
-    }
-  });
-  return stages;
 };
 
 export const createClient = async (data: ClientIntakeData): Promise<Client> => {

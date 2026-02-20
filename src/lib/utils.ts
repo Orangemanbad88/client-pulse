@@ -53,7 +53,5 @@ export const stageBadge: Record<LifecycleStage, string> = {
   past_client: 'badge-neutral',
 };
 
-export const lifecycleOrder: LifecycleStage[] = ['new_lead', 'active_search', 'hot_decision', 'under_contract', 'active_client', 'renewal_window', 'past_client'];
-
 export const scoreColor = (s: number) => s >= 90 ? 'text-emerald-500' : s >= 75 ? 'text-blue-500' : s >= 60 ? 'text-amber-500' : 'text-[var(--text-tertiary)]';
 export const scoreBg = (s: number) => s >= 90 ? 'bg-emerald-500/10' : s >= 75 ? 'bg-blue-500/10' : s >= 60 ? 'bg-amber-500/10' : 'bg-[var(--bg-2)]';

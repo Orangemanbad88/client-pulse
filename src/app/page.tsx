@@ -4,6 +4,11 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { Users, Clock, AlertTriangle, TrendingUp, ArrowUpRight, Send, Check, ChevronRight, Phone, Mail, MessageSquare, Filter, Bell, Plus } from "lucide-react";
 import { useDark } from '@/hooks/useDark';
 import { MatchScore } from '@/components/ui/MatchScore';
+import { Avatar } from '@/components/ui/Avatar';
+import { Badge, type BadgeVariant } from '@/components/ui/Badge';
+import { ProgressBar } from '@/components/ui/ProgressBar';
+import { SparkLine } from '@/components/ui/SparkLine';
+import { MiniDonut } from '@/components/ui/MiniDonut';
 
 const useCountUp = (target: number, duration = 1200) => {
   const [value, setValue] = useState(0);
@@ -26,92 +31,6 @@ const useCountUp = (target: number, duration = 1200) => {
 const AnimatedNumber = ({ value }: { value: number }) => {
   const count = useCountUp(value);
   return <span className="font-data animate-count-up">{count}</span>;
-};
-
-const Avatar = ({ name, size = 36 }: { name: string; size?: number }) => {
-  const initials = name.split(" ").map(n => n[0]).join("");
-  return (
-    <div
-      className="bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 rounded-full flex items-center justify-center font-semibold shrink-0"
-      style={{ width: size, height: size, fontSize: size * 0.38 }}
-    >
-      {initials}
-    </div>
-  );
-};
-
-type BadgeVariant = 'critical' | 'high' | 'medium' | 'new' | 'sent' | 'default';
-const Badge = ({ children, variant = "default" }: { children: React.ReactNode; variant?: BadgeVariant }) => {
-  const styles: Record<BadgeVariant, string> = {
-    critical: "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-800/30 animate-badge-pulse",
-    high: "bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800/30",
-    medium: "bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 border border-teal-100 dark:border-teal-800/30",
-    new: "bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 border border-teal-100 dark:border-teal-800/30",
-    sent: "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700",
-    default: "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700",
-  };
-  return (
-    <span className={`${styles[variant]} text-xs font-medium px-2 py-0.5 rounded-full`}>
-      {children}
-    </span>
-  );
-};
-
-const MiniDonut = ({ segments, size = 120, dark }: { segments: { label: string; value: number; color: string }[]; size?: number; dark: boolean }) => {
-  const total = segments.reduce((s, seg) => s + seg.value, 0) || 1;
-  const r = 42;
-  const circ = 2 * Math.PI * r;
-  let accum = 0;
-  return (
-    <div className="relative" style={{ width: size, height: size }}>
-      <svg width={size} height={size} viewBox="0 0 120 120">
-        <circle cx="60" cy="60" r={r} fill="none" stroke={dark ? "#134e4a" : "#f0fdfa"} strokeWidth="14" />
-        {segments.map((seg) => {
-          const pct = seg.value / total;
-          const dashLen = pct * circ;
-          const dashOff = -accum * circ;
-          accum += pct;
-          return (
-            <circle key={seg.label} cx="60" cy="60" r={r} fill="none" stroke={seg.color}
-              strokeWidth="14" strokeDasharray={`${dashLen} ${circ - dashLen}`}
-              strokeDashoffset={dashOff}
-              style={{ transform: "rotate(-90deg)", transformOrigin: "center" }}
-            />
-          );
-        })}
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xl font-bold font-data text-gray-800 dark:text-gray-100">{total}</span>
-        <span className="text-xs text-gray-400 dark:text-gray-500">total</span>
-      </div>
-    </div>
-  );
-};
-
-const ProgressBar = ({ current, total, color = "#0d9488" }: { current: number; total: number; color?: string }) => {
-  const pct = Math.min((current / total) * 100, 100);
-  return (
-    <div className="w-full h-1.5 bg-teal-50 dark:bg-teal-900/20 rounded-full overflow-hidden">
-      <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, backgroundColor: color }} />
-    </div>
-  );
-};
-
-const SparkLine = ({ data, color = "#0d9488", width = 80, height = 28 }: { data: number[]; color?: string; width?: number; height?: number }) => {
-  if (data.length < 2) return <svg width={width} height={height} className="shrink-0" />;
-  const max = Math.max(...data);
-  const min = Math.min(...data);
-  const range = max - min || 1;
-  const points = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * width;
-    const y = height - ((v - min) / range) * (height - 4) - 2;
-    return `${x},${y}`;
-  }).join(" ");
-  return (
-    <svg width={width} height={height} className="shrink-0">
-      <polyline points={points} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
 };
 
 const metricCards = [
