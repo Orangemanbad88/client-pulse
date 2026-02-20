@@ -15,12 +15,14 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
   const [mounted, setMounted] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [clients, setClients] = useState<Client[]>([]);
+  const [matchCount, setMatchCount] = useState(0);
 
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem('clientpulse-dark');
     if (saved === 'true') setDark(true);
     service.getClients().then(setClients).catch((err) => console.error('Failed to load clients for shell:', err));
+    service.getAllMatches().then((m) => setMatchCount(m.length)).catch((err) => console.error('Failed to load matches count:', err));
   }, []);
 
   useEffect(() => {
@@ -42,8 +44,8 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/' },
-    { id: 'clients', label: 'Clients', icon: Users, href: '/clients', count: 10 },
-    { id: 'properties', label: 'Properties', icon: Building2, href: '/properties', count: 24 },
+    { id: 'clients', label: 'Clients', icon: Users, href: '/clients', count: clients.length || undefined },
+    { id: 'properties', label: 'Properties', icon: Building2, href: '/properties', count: matchCount || undefined },
     { id: 'calendar', label: 'Calendar', icon: Calendar, href: '/calendar', badge: '2' },
     { id: 'messages', label: 'Messages', icon: MessageSquare, href: '/messages', count: 3 },
     { id: 'email', label: 'Email', icon: Mail, href: '/email' },
@@ -51,8 +53,8 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
   ];
 
   const toolItems = [
-    { label: 'CompAtlas', icon: Download, href: '/comp-atlas', port: ':3001' },
-    { label: 'RentAtlas', icon: Home, href: '/rent-atlas', port: ':3002' },
+    { label: 'CompAtlas', icon: Download, href: '/comp-atlas' },
+    { label: 'RentAtlas', icon: Home, href: '/rent-atlas' },
   ];
 
   const isActive = (href: string) => {
@@ -142,7 +144,6 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                 >
                   <tool.icon size={18} strokeWidth={active ? 2 : 1.5} />
                   {tool.label}
-                  <span className="ml-auto text-xs text-gray-400 dark:text-gray-500 font-mono">{tool.port}</span>
                 </Link>
               );
             })}
