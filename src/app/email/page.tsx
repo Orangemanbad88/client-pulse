@@ -120,9 +120,38 @@ export default function EmailPage() {
     setSelectedTemplate(template.name);
   };
 
-  const handleSendEmail = () => {
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
+
+  const handleSendEmail = async () => {
     if (!composeTo || !composeSubject) return;
     const client = clients.find((c) => `${c.firstName} ${c.lastName}` === composeTo);
+    const recipientEmail = client?.email;
+
+    setSending(true);
+    setSendError('');
+
+    // Send via API if we have a real email address
+    if (recipientEmail) {
+      try {
+        const res = await fetch('/api/email/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: recipientEmail, subject: composeSubject, body: composeBody }),
+        });
+        const result = await res.json();
+        if (!result.success) {
+          setSendError(result.error || 'Failed to send email');
+          setSending(false);
+          return;
+        }
+      } catch (err) {
+        setSendError('Network error — email not sent');
+        setSending(false);
+        return;
+      }
+    }
+
     const newEmail: EmailThread = {
       id: `e_${Date.now()}`,
       clientId: client?.id || composeToClientId || 'unknown',
@@ -136,6 +165,7 @@ export default function EmailPage() {
       folder: 'sent',
     };
     setEmails((prev) => [newEmail, ...prev]);
+    setSending(false);
     setShowCompose(false);
     setComposeTo('');
     setComposeToClientId('');
@@ -428,20 +458,27 @@ export default function EmailPage() {
             </div>
           </div>
 
-          <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 flex items-center justify-end gap-2">
-            <button
-              onClick={() => setShowCompose(false)}
-              className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
-            >
-              Discard
-            </button>
-            <button
-              onClick={handleSendEmail}
-              disabled={!composeTo || !composeSubject}
-              className="flex items-center gap-1.5 text-xs font-medium text-white bg-teal-600 hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-teal-600/20 active:scale-[0.97]"
-            >
-              <Send size={13} /> Send Email
-            </button>
+          <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
+            {sendError ? (
+              <p className="text-xs text-red-500 dark:text-red-400">{sendError}</p>
+            ) : (
+              <div />
+            )}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowCompose(false)}
+                className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+              >
+                Discard
+              </button>
+              <button
+                onClick={handleSendEmail}
+                disabled={!composeTo || !composeSubject || sending}
+                className="flex items-center gap-1.5 text-xs font-medium text-white bg-teal-600 hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-teal-600/20 active:scale-[0.97]"
+              >
+                <Send size={13} /> {sending ? 'Sending...' : 'Send Email'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
