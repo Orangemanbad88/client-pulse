@@ -51,6 +51,8 @@ function CalendarContent() {
   const [localEvents, setLocalEvents] = useState<CalendarEvent[]>([]);
   const [googleConnected, setGoogleConnected] = useState(false);
   const [googleEvents, setGoogleEvents] = useState<CalendarEvent[]>([]);
+  const [googleStatus, setGoogleStatus] = useState<'idle' | 'loading' | 'loaded' | 'error'>('idle');
+  const [googleError, setGoogleError] = useState('');
   const [newEvent, setNewEvent] = useState<NewEvent>({ title: '', date: '', time: '09:00', clientName: '', description: '' });
 
   useEffect(() => {
@@ -73,6 +75,7 @@ function CalendarContent() {
   useEffect(() => {
     if (!googleConnected) return;
     const fetchGoogleEvents = async () => {
+      setGoogleStatus('loading');
       try {
         const res = await fetch('/api/calendar/events');
         const result = await res.json();
@@ -85,9 +88,15 @@ function CalendarContent() {
             description: ev.description || undefined,
           }));
           setGoogleEvents(mapped);
+          setGoogleStatus('loaded');
+          setGoogleError(`${mapped.length} events fetched`);
+        } else {
+          setGoogleStatus('error');
+          setGoogleError(result.error || 'Unknown error');
         }
       } catch (err) {
-        console.error('Failed to fetch Google Calendar events:', err);
+        setGoogleStatus('error');
+        setGoogleError(err instanceof Error ? err.message : 'Fetch failed');
       }
     };
     fetchGoogleEvents();
@@ -219,17 +228,30 @@ function CalendarContent() {
         </div>
         <div className="flex items-center gap-2">
           {googleConnected ? (
-            <button
-              onClick={async () => {
-                await fetch('/api/auth/google/disconnect', { method: 'POST' });
-                localStorage.removeItem('google_calendar_connected');
-                setGoogleConnected(false);
-                setGoogleEvents([]);
-              }}
-              className="flex items-center gap-1.5 text-xs text-teal-400 hover:text-red-400 font-medium px-3 py-2 bg-teal-900/20 hover:bg-red-900/20 rounded-lg border border-teal-800/30 hover:border-red-800/30 transition-colors"
-            >
-              <Link2 size={13} /> Google Connected — Unlink
-            </button>
+            <div className="flex items-center gap-2">
+              {googleStatus === 'loading' && (
+                <span className="text-[10px] text-slate-400">Syncing...</span>
+              )}
+              {googleStatus === 'loaded' && (
+                <span className="text-[10px] text-teal-400">{googleError}</span>
+              )}
+              {googleStatus === 'error' && (
+                <span className="text-[10px] text-red-400">{googleError}</span>
+              )}
+              <button
+                onClick={async () => {
+                  await fetch('/api/auth/google/disconnect', { method: 'POST' });
+                  localStorage.removeItem('google_calendar_connected');
+                  setGoogleConnected(false);
+                  setGoogleEvents([]);
+                  setGoogleStatus('idle');
+                  setGoogleError('');
+                }}
+                className="flex items-center gap-1.5 text-xs text-teal-400 hover:text-red-400 font-medium px-3 py-2 bg-teal-900/20 hover:bg-red-900/20 rounded-lg border border-teal-800/30 hover:border-red-800/30 transition-colors"
+              >
+                <Link2 size={13} /> Unlink
+              </button>
+            </div>
           ) : (
             <a
               href="/api/auth/google"
