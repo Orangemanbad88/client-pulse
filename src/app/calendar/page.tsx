@@ -219,9 +219,17 @@ function CalendarContent() {
         </div>
         <div className="flex items-center gap-2">
           {googleConnected ? (
-            <span className="flex items-center gap-1.5 text-xs text-teal-400 font-medium px-3 py-2 bg-teal-900/20 rounded-lg border border-teal-800/30">
-              <Link2 size={13} /> Google Connected
-            </span>
+            <button
+              onClick={async () => {
+                await fetch('/api/auth/google/disconnect', { method: 'POST' });
+                localStorage.removeItem('google_calendar_connected');
+                setGoogleConnected(false);
+                setGoogleEvents([]);
+              }}
+              className="flex items-center gap-1.5 text-xs text-teal-400 hover:text-red-400 font-medium px-3 py-2 bg-teal-900/20 hover:bg-red-900/20 rounded-lg border border-teal-800/30 hover:border-red-800/30 transition-colors"
+            >
+              <Link2 size={13} /> Google Connected — Unlink
+            </button>
           ) : (
             <a
               href="/api/auth/google"
