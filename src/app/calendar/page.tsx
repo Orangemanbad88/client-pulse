@@ -12,7 +12,7 @@ interface CalendarEvent {
   id: string;
   title: string;
   date: string;
-  type: 'trigger' | 'activity';
+  type: 'trigger' | 'activity' | 'google';
   clientName?: string;
   clientId?: string;
   description?: string;
@@ -50,6 +50,7 @@ function CalendarContent() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [localEvents, setLocalEvents] = useState<CalendarEvent[]>([]);
   const [googleConnected, setGoogleConnected] = useState(false);
+  const [googleEvents, setGoogleEvents] = useState<CalendarEvent[]>([]);
   const [newEvent, setNewEvent] = useState<NewEvent>({ title: '', date: '', time: '09:00', clientName: '', description: '' });
 
   useEffect(() => {
@@ -67,6 +68,30 @@ function CalendarContent() {
       setGoogleConnected(localStorage.getItem('google_calendar_connected') === 'true');
     }
   }, [searchParams]);
+
+  // Fetch Google Calendar events when connected
+  useEffect(() => {
+    if (!googleConnected) return;
+    const fetchGoogleEvents = async () => {
+      try {
+        const res = await fetch('/api/calendar/events');
+        const result = await res.json();
+        if (result.success && result.data) {
+          const mapped: CalendarEvent[] = result.data.map((ev: { id: string; summary: string; start: string; description?: string }) => ({
+            id: `g_${ev.id}`,
+            title: ev.summary,
+            date: ev.start,
+            type: 'google' as const,
+            description: ev.description || undefined,
+          }));
+          setGoogleEvents(mapped);
+        }
+      } catch (err) {
+        console.error('Failed to fetch Google Calendar events:', err);
+      }
+    };
+    fetchGoogleEvents();
+  }, [googleConnected]);
 
   const allEvents = useMemo<CalendarEvent[]>(() => {
     const triggerEvents: CalendarEvent[] = triggers
@@ -91,8 +116,8 @@ function CalendarContent() {
       description: a.description,
     }));
 
-    return [...triggerEvents, ...activityEvents, ...localEvents];
-  }, [triggers, activities, localEvents]);
+    return [...triggerEvents, ...activityEvents, ...localEvents, ...googleEvents];
+  }, [triggers, activities, localEvents, googleEvents]);
 
   const eventsByDate = useMemo(() => {
     const map: Record<string, CalendarEvent[]> = {};
@@ -255,6 +280,7 @@ function CalendarContent() {
                   const dayEvents = eventsByDate[key] || [];
                   const triggerCount = dayEvents.filter((e) => e.type === 'trigger').length;
                   const activityCount = dayEvents.filter((e) => e.type === 'activity').length;
+                  const googleCount = dayEvents.filter((e) => e.type === 'google').length;
 
                   return (
                     <button
@@ -288,6 +314,12 @@ function CalendarContent() {
                             <span className="text-[10px] text-teal-600 dark:text-teal-400 font-medium truncate">{activityCount} activit{activityCount > 1 ? 'ies' : 'y'}</span>
                           </div>
                         )}
+                        {googleCount > 0 && (
+                          <div className="flex items-center gap-1">
+                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                            <span className="text-[10px] text-blue-600 dark:text-blue-400 font-medium truncate">{googleCount} google</span>
+                          </div>
+                        )}
                       </div>
                     </button>
                   );
@@ -317,10 +349,14 @@ function CalendarContent() {
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
                               ev.type === 'trigger'
                                 ? 'bg-amber-50 dark:bg-amber-900/20'
+                                : ev.type === 'google'
+                                ? 'bg-blue-50 dark:bg-blue-900/20'
                                 : 'bg-teal-50 dark:bg-teal-900/30'
                             }`}>
                               {ev.type === 'trigger' ? (
                                 <Clock size={16} className="text-amber-600 dark:text-amber-400" />
+                              ) : ev.type === 'google' ? (
+                                <CalendarDays size={16} className="text-blue-600 dark:text-blue-400" />
                               ) : (
                                 <MapPin size={16} className="text-teal-600 dark:text-teal-400" />
                               )}
