@@ -125,8 +125,11 @@ function CalendarContent() {
       description: a.description,
     }));
 
-    return [...triggerEvents, ...activityEvents, ...localEvents, ...googleEvents];
-  }, [triggers, activities, localEvents, googleEvents]);
+    if (googleConnected && googleEvents.length >= 0) {
+      return [...googleEvents, ...localEvents];
+    }
+    return [...triggerEvents, ...activityEvents, ...localEvents];
+  }, [triggers, activities, localEvents, googleEvents, googleConnected]);
 
   const eventsByDate = useMemo(() => {
     const map: Record<string, CalendarEvent[]> = {};
