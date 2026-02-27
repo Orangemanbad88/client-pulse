@@ -68,9 +68,9 @@ export default function DashboardPage() {
   const greeting = time.getHours() < 12 ? "Good morning" : time.getHours() < 17 ? "Good afternoon" : "Good evening";
 
   const donutSegments = useMemo(() => [
-    { label: "Active", value: 5, color: dark ? "#e8b810" : "#d4a00a" },
-    { label: "Searching", value: 3, color: "#f5c518" },
-    { label: "Pending", value: 2, color: dark ? "#713f12" : "#fef3c7" },
+    { label: "Active", value: 5, color: dark ? "#EAB308" : "#CA8A04" },
+    { label: "Searching", value: 3, color: "#FACC15" },
+    { label: "Pending", value: 2, color: dark ? "#A16207" : "#fef3c7" },
   ], [dark]);
 
   return (
@@ -119,7 +119,7 @@ export default function DashboardPage() {
                   </span>
                   <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{card.change}</p>
                 </div>
-                <SparkLine data={card.sparkData} color={dark ? "#e8b810" : "#d4a00a"} />
+                <SparkLine data={card.sparkData} color={dark ? "#EAB308" : "#CA8A04"} />
               </div>
             </div>
           ))}
@@ -163,7 +163,7 @@ export default function DashboardPage() {
                           <ProgressBar
                             current={action.totalDays - action.daysLeft}
                             total={action.totalDays}
-                            color={action.priority === "critical" ? "#ef4444" : action.priority === "high" ? "#f59e0b" : "#d4a00a"}
+                            color={action.priority === "critical" ? "#ef4444" : action.priority === "high" ? "#f59e0b" : "#CA8A04"}
                           />
                           <span className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap font-data">{action.daysLeft}d left</span>
                         </div>

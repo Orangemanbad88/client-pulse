@@ -17,8 +17,9 @@ const config: Config = {
         burgundy: '#7c2d36',
         walnut: '#475569',
         gold: {
-          DEFAULT: '#d4a00a',
-          light: '#e8b810',
+          DEFAULT: '#CA8A04',
+          light: '#EAB308',
+          muted: '#A16207',
         },
         cream: '#faf8f5',
         charcoal: '#1a1a2e',

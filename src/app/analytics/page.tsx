@@ -47,8 +47,8 @@ export default function AnalyticsPage() {
   const dark = useDark();
 
   const stageColors = useMemo(() => [
-    dark ? '#e8b810' : '#d4a00a',
-    dark ? '#f5c518' : '#d4a00a',
+    dark ? '#EAB308' : '#CA8A04',
+    dark ? '#FACC15' : '#CA8A04',
     '#f59e0b',
     '#8b5cf6',
     '#22c55e',
