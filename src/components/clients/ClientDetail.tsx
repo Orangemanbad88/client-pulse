@@ -17,7 +17,7 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
     <div className="space-y-4 animate-in">
       {/* Header */}
       <div className="surface overflow-hidden">
-        <div className="px-5 py-4 flex items-center gap-4 border-b border-[#1E293B]/50" style={{ background: 'linear-gradient(135deg, #475569 0%, #1E293B 50%, #475569 100%)' }}>
+        <div className="px-5 py-4 flex items-center gap-4 border-b border-[#1E293B]/50" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
           <Link href="/clients" className="p-1.5 rounded-lg hover:bg-white/10 transition-colors">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </Link>
