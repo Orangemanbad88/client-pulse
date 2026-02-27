@@ -56,7 +56,7 @@ export default function PropertiesPage() {
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               filter === f
-                ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400'
+                ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400'
                 : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
             }`}
           >
@@ -71,7 +71,7 @@ export default function PropertiesPage() {
         {filtered.map((prop) => (
           <div
             key={prop.id}
-            className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm hover:shadow-md hover:shadow-teal-500/10 dark:hover:shadow-teal-500/5 transition-all overflow-hidden"
+            className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm hover:shadow-md hover:shadow-yellow-500/10 dark:hover:shadow-yellow-500/5 transition-all overflow-hidden"
           >
             <div className="p-5">
               <div className="flex items-start gap-4">
@@ -81,7 +81,7 @@ export default function PropertiesPage() {
                     <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{prop.address}</span>
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                       prop.status === 'new'
-                        ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 border border-teal-100 dark:border-teal-800/30'
+                        ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400 border border-yellow-100dark:border-yellow-800/30'
                         : prop.status === 'interested'
                         ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800/30'
                         : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700'
@@ -104,12 +104,12 @@ export default function PropertiesPage() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-teal-600 dark:text-teal-400 font-data">
+                    <span className="text-sm font-bold text-yellow-600 dark:text-yellow-400 font-data">
                       ${prop.price.toLocaleString()}{prop.price < 10000 ? '/mo' : ''}
                     </span>
                     <Link
                       href={`/clients/${prop.clientId}`}
-                      className="flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400 font-medium hover:text-teal-700 dark:hover:text-teal-300 transition-colors"
+                      className="flex items-center gap-1 text-xs text-yellow-600 dark:text-yellow-400 font-medium hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors"
                     >
                       {prop.clientName} <ArrowUpRight size={11} />
                     </Link>
@@ -120,7 +120,7 @@ export default function PropertiesPage() {
               {/* Match reasons */}
               <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-amber-100/30 dark:border-gray-800/60">
                 {prop.matchReasons.map((reason) => (
-                  <span key={reason} className="text-xs bg-teal-50/50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400 border border-teal-100/60 dark:border-teal-800/30 px-2 py-0.5 rounded-md">
+                  <span key={reason} className="text-xs bg-yellow-50/50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-100/60 dark:border-yellow-800/30 px-2 py-0.5 rounded-md">
                     {reason}
                   </span>
                 ))}

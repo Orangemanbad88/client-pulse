@@ -192,7 +192,7 @@ export default function EmailPage() {
         </div>
         <button
           onClick={() => openCompose()}
-          className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm shadow-teal-600/20 active:scale-[0.97]"
+          className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]"
         >
           <Mail size={14} /> Compose
         </button>
@@ -209,14 +209,14 @@ export default function EmailPage() {
                 onClick={() => { setFolder(f.id); setSelectedEmail(null); }}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   folder === f.id
-                    ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400'
+                    ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400'
                     : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
                 }`}
               >
                 <f.icon size={16} strokeWidth={folder === f.id ? 2 : 1.5} />
                 {f.label}
                 {f.count > 0 && (
-                  <span className="ml-auto text-xs font-bold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 rounded-full px-1.5 py-0.5 font-data">{f.count}</span>
+                  <span className="ml-auto text-xs font-bold text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 rounded-full px-1.5 py-0.5 font-data">{f.count}</span>
                 )}
               </button>
             ))}
@@ -233,9 +233,9 @@ export default function EmailPage() {
                 <button
                   key={client.id}
                   onClick={() => openCompose(`${client.firstName} ${client.lastName}`, client.id)}
-                  className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-teal-50/50 dark:hover:bg-teal-900/10 transition-colors"
+                  className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-yellow-900/10 transition-colors"
                 >
-                  <div className="w-5 h-5 rounded-full bg-teal-50 dark:bg-teal-900/30 flex items-center justify-center text-[9px] font-bold text-teal-600 dark:text-teal-400 shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center text-[9px] font-bold text-yellow-600 dark:text-yellow-400 shrink-0">
                     {getInitials(`${client.firstName} ${client.lastName}`)}
                   </div>
                   <span className="truncate">{client.firstName} {client.lastName}</span>
@@ -253,7 +253,7 @@ export default function EmailPage() {
               onClick={() => { setFolder(f.id); setSelectedEmail(null); }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 folder === f.id
-                  ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400'
+                  ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400'
                   : 'text-gray-500 dark:text-gray-400'
               }`}
             >
@@ -293,11 +293,11 @@ export default function EmailPage() {
               <div className="p-5">
                 <h2 className="text-base font-bold text-gray-800 dark:text-gray-100 mb-3">{selectedEmail.subject}</h2>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-full bg-teal-50 dark:bg-teal-900/30 flex items-center justify-center text-xs font-bold text-teal-600 dark:text-teal-400">
+                  <div className="w-9 h-9 rounded-full bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center text-xs font-bold text-yellow-600 dark:text-yellow-400">
                     {getInitials(selectedEmail.clientName)}
                   </div>
                   <div>
-                    <Link href={`/clients/${selectedEmail.clientId}`} className="text-sm font-semibold text-gray-800 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400">
+                    <Link href={`/clients/${selectedEmail.clientId}`} className="text-sm font-semibold text-gray-800 dark:text-gray-100 hover:text-yellow-600 dark:hover:text-yellow-400">
                       {selectedEmail.clientName}
                     </Link>
                     <p className="text-xs text-gray-400 dark:text-gray-500">
@@ -315,7 +315,7 @@ export default function EmailPage() {
                 </div>
               </div>
               <div className="px-5 py-3 border-t border-amber-100/30 dark:border-gray-800/60">
-                <button className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors">
+                <button className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors">
                   <Reply size={13} /> Reply
                 </button>
               </div>
@@ -335,12 +335,12 @@ export default function EmailPage() {
                     <button
                       key={email.id}
                       onClick={() => setSelectedEmail(email)}
-                      className={`w-full text-left px-5 py-4 hover:bg-teal-50/30 dark:hover:bg-teal-900/10 transition-colors ${
-                        !email.read ? 'bg-teal-50/20 dark:bg-teal-900/5' : ''
+                      className={`w-full text-left px-5 py-4 hover:bg-yellow-50/30 dark:hover:bg-yellow-900/10 transition-colors ${
+                        !email.read ? 'bg-yellow-50/20 dark:bg-yellow-900/5' : ''
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-full bg-teal-50 dark:bg-teal-900/30 flex items-center justify-center text-xs font-bold text-teal-600 dark:text-teal-400 shrink-0 mt-0.5">
+                        <div className="w-9 h-9 rounded-full bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center text-xs font-bold text-yellow-600 dark:text-yellow-400 shrink-0 mt-0.5">
                           {getInitials(email.clientName)}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -388,7 +388,7 @@ export default function EmailPage() {
         <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl overflow-hidden">
           <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-1.5 h-5 rounded-full bg-teal-500" />
+              <div className="w-1.5 h-5 rounded-full bg-yellow-500" />
               <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">New Email</h2>
             </div>
             <button onClick={() => setShowCompose(false)} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -409,7 +409,7 @@ export default function EmailPage() {
                   onClick={() => applyTemplate(tpl)}
                   className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
                     selectedTemplate === tpl.name
-                      ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400 border border-teal-200 dark:border-teal-800/30'
+                      ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800/30'
                       : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
@@ -427,7 +427,7 @@ export default function EmailPage() {
                 value={composeTo}
                 onChange={(e) => setComposeTo(e.target.value)}
                 list="client-list"
-                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500"
                 placeholder="Client name"
               />
               <datalist id="client-list">
@@ -442,7 +442,7 @@ export default function EmailPage() {
                 type="text"
                 value={composeSubject}
                 onChange={(e) => setComposeSubject(e.target.value)}
-                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500"
                 placeholder="Email subject"
               />
             </div>
@@ -452,7 +452,7 @@ export default function EmailPage() {
                 value={composeBody}
                 onChange={(e) => setComposeBody(e.target.value)}
                 rows={10}
-                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 resize-none"
+                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500 resize-none"
                 placeholder="Write your message..."
               />
             </div>
@@ -474,7 +474,7 @@ export default function EmailPage() {
               <button
                 onClick={handleSendEmail}
                 disabled={!composeTo || !composeSubject || sending}
-                className="flex items-center gap-1.5 text-xs font-medium text-white bg-teal-600 hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-teal-600/20 active:scale-[0.97]"
+                className="flex items-center gap-1.5 text-xs font-medium text-white bg-yellow-600 hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]"
               >
                 <Send size={13} /> {sending ? 'Sending...' : 'Send Email'}
               </button>

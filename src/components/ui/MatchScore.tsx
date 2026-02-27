@@ -1,8 +1,8 @@
 'use client';
 
 export const MatchScore = ({ score, dark }: { score: number; dark: boolean }) => {
-  const color = score >= 85 ? (dark ? "#2dd4bf" : "#0d9488") : "#94a3b8";
-  const trackColor = dark ? "#134e4a" : "#f0fdfa";
+  const color = score >= 85 ? (dark ? "#e8b810" : "#d4a00a") : "#94a3b8";
+  const trackColor = dark ? "#713f12" : "#fefce8";
   const r = 20;
   const circ = 2 * Math.PI * r;
   const offset = circ - (score / 100) * circ;

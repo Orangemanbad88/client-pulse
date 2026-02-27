@@ -78,7 +78,7 @@ export default function MessagesPage() {
             onClick={() => setFilter(f)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               filter === f
-                ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400'
+                ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400'
                 : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
             }`}
           >
@@ -96,16 +96,16 @@ export default function MessagesPage() {
             const timeAgo = formatRelativeDate(msg.timestamp);
 
             return (
-              <div key={msg.id} className="px-5 py-4 hover:bg-teal-50/30 dark:hover:bg-teal-900/10 transition-colors group">
+              <div key={msg.id} className="px-5 py-4 hover:bg-yellow-50/30 dark:hover:bg-yellow-900/10 transition-colors group">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-teal-50 dark:bg-teal-900/30 flex items-center justify-center text-xs font-bold text-teal-600 dark:text-teal-400 shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center text-xs font-bold text-yellow-600 dark:text-yellow-400 shrink-0">
                     {getInitials(msg.clientId)}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <Link
                         href={`/clients/${msg.clientId}`}
-                        className="text-sm font-semibold text-gray-800 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                        className="text-sm font-semibold text-gray-800 dark:text-gray-100 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"
                       >
                         {getClientName(msg.clientId)}
                       </Link>

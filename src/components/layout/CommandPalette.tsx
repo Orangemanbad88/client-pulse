@@ -31,7 +31,7 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
       id: c.id,
       label: getClientName(c),
       sublabel: `${c.clientType} · ${LIFECYCLE_LABELS[c.lifecycleStage]}`,
-      icon: <div className="w-5 h-5 rounded-full bg-teal-50 dark:bg-teal-900/30 flex items-center justify-center text-[9px] font-bold text-teal-600 dark:text-teal-400">{getInitials(c.firstName, c.lastName)}</div>,
+      icon: <div className="w-5 h-5 rounded-full bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center text-[9px] font-bold text-yellow-600 dark:text-yellow-400">{getInitials(c.firstName, c.lastName)}</div>,
       action: () => { router.push(`/clients/${c.id}`); onClose(); },
     })),
   ];
@@ -83,11 +83,11 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
               onClick={item.action}
               className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                 idx === activeIdx
-                  ? 'bg-teal-50 dark:bg-teal-900/20'
+                  ? 'bg-yellow-50 dark:bg-yellow-900/20'
                   : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
               }`}
             >
-              <span className={idx === activeIdx ? 'text-teal-600 dark:text-teal-400' : 'text-gray-400'}>{item.icon}</span>
+              <span className={idx === activeIdx ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-400'}>{item.icon}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-medium truncate text-gray-800 dark:text-gray-100">{item.label}</p>
                 <p className="text-[11px] truncate text-gray-400 dark:text-gray-500">{item.sublabel}</p>

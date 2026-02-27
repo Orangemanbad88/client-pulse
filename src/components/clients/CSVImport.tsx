@@ -137,7 +137,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
         {/* Header */}
         <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-1.5 h-5 rounded-full bg-teal-500" />
+            <div className="w-1.5 h-5 rounded-full bg-yellow-500" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Import Clients from CSV</h2>
           </div>
           <button onClick={onClose} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -151,7 +151,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
             <div key={s} className="flex items-center gap-2">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                 step >= s
-                  ? 'bg-teal-600 text-white'
+                  ? 'bg-yellow-600 text-white'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-400'
               }`}>
                 {step > s ? <Check size={12} /> : s}
@@ -174,17 +174,17 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               onDrop={handleDrop}
               className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors ${
                 dragOver
-                  ? 'border-teal-500 bg-teal-50/30 dark:bg-teal-900/10'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-700'
+                  ? 'border-yellow-500 bg-yellow-50/30 dark:bg-yellow-900/10'
+                  : 'border-gray-200 dark:border-gray-700 hover:border-yellow-300 dark:hover:border-yellow-700'
               }`}
             >
-              <FileSpreadsheet size={40} className="text-teal-500 mx-auto mb-4" />
+              <FileSpreadsheet size={40} className="text-yellow-500 mx-auto mb-4" />
               <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-1">Drag & drop your CSV file here</p>
               <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">or click to browse</p>
               <input ref={fileRef} type="file" accept=".csv" onChange={handleInputChange} className="hidden" />
               <button
                 onClick={() => fileRef.current?.click()}
-                className="inline-flex items-center gap-2 text-xs font-medium text-white bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg transition-colors shadow-sm shadow-teal-600/20 active:scale-[0.97]"
+                className="inline-flex items-center gap-2 text-xs font-medium text-white bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]"
               >
                 <Upload size={13} /> Browse Files
               </button>
@@ -221,9 +221,9 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                         return next;
                       });
                     }}
-                    className={`flex-1 px-3 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 ${
+                    className={`flex-1 px-3 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500 ${
                       columnMapping[idx]
-                        ? 'bg-teal-50/50 dark:bg-teal-900/10 border-teal-200 dark:border-teal-800/30 text-teal-700 dark:text-teal-400'
+                        ? 'bg-yellow-50/50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-800/30 text-yellow-700 dark:text-yellow-400'
                         : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400'
                     }`}
                   >
@@ -258,7 +258,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                   </thead>
                   <tbody className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
                     {previewRows.map((row, i) => (
-                      <tr key={i} className="hover:bg-teal-50/20 dark:hover:bg-teal-900/5">
+                      <tr key={i} className="hover:bg-yellow-50/20 dark:hover:bg-yellow-900/5">
                         {Object.values(columnMapping).map((field) => (
                           <td key={field} className="px-3 py-2 text-gray-700 dark:text-gray-300 whitespace-nowrap max-w-[200px] truncate">
                             {row[field] || '—'}
@@ -291,7 +291,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               <button
                 onClick={() => setStep(3)}
                 disabled={Object.keys(columnMapping).length === 0}
-                className="flex items-center gap-1.5 text-xs font-medium text-white bg-teal-600 hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-teal-600/20 active:scale-[0.97]"
+                className="flex items-center gap-1.5 text-xs font-medium text-white bg-yellow-600 hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]"
               >
                 Preview <ChevronRight size={13} />
               </button>
@@ -299,7 +299,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
             {step === 3 && (
               <button
                 onClick={handleConfirmImport}
-                className="flex items-center gap-1.5 text-xs font-medium text-white bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg transition-colors shadow-sm shadow-teal-600/20 active:scale-[0.97]"
+                className="flex items-center gap-1.5 text-xs font-medium text-white bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]"
               >
                 <Check size={13} /> Import {csvRows.length} Clients
               </button>

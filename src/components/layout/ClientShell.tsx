@@ -76,7 +76,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 bg-white/90 dark:bg-gray-900/95 backdrop-blur-xl border-r border-amber-200/25 dark:border-gray-800 flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           {/* Logo */}
           <div className="px-5 py-5 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center shadow-md shadow-teal-500/15">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center shadow-md shadow-yellow-500/15">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 2L2 6v4l6 4 6-4V6L8 2z" stroke="white" strokeWidth="1.5" fill="none" />
                 <circle cx="8" cy="8" r="2" fill="white" />
@@ -96,7 +96,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
             >
               <Search size={14} />
               <span>Search...</span>
-              <span className="ml-auto text-xs bg-white dark:bg-gray-800 border border-teal-100 dark:border-gray-700 rounded px-1.5 py-0.5 text-gray-400 font-medium">⌘K</span>
+              <span className="ml-auto text-xs bg-white dark:bg-gray-800 border border-yellow-100 dark:border-gray-700 rounded px-1.5 py-0.5 text-gray-400 font-medium">⌘K</span>
             </button>
           </div>
 
@@ -112,17 +112,17 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                   onClick={() => setSidebarOpen(false)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
                     active
-                      ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400'
-                      : 'text-gray-500 dark:text-gray-400 hover:bg-teal-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300'
+                      ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
                   <item.icon size={18} strokeWidth={active ? 2 : 1.5} />
                   {item.label}
                   {item.count && (
-                    <span className="ml-auto text-xs text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 rounded-full px-2 py-0.5 font-data">{item.count}</span>
+                    <span className="ml-auto text-xs text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 rounded-full px-2 py-0.5 font-data">{item.count}</span>
                   )}
                   {item.badge && (
-                    <span className="ml-auto text-xs text-white bg-teal-500 rounded-full px-1.5 py-0.5 font-data font-bold min-w-[20px] text-center">{item.badge}</span>
+                    <span className="ml-auto text-xs text-white bg-yellow-500 rounded-full px-1.5 py-0.5 font-data font-bold min-w-[20px] text-center">{item.badge}</span>
                   )}
                 </Link>
               );
@@ -138,8 +138,8 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                   onClick={() => setSidebarOpen(false)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
                     active
-                      ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400'
-                      : 'text-gray-500 dark:text-gray-400 hover:bg-teal-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300'
+                      ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
                   <tool.icon size={18} strokeWidth={active ? 2 : 1.5} />
@@ -151,12 +151,12 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
 
           {/* Bottom */}
           <div className="px-3 py-4 border-t border-amber-200/25 dark:border-gray-800">
-            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-teal-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300 mb-0.5">
+            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300 mb-0.5">
               <Settings size={18} strokeWidth={1.5} /> Settings
             </button>
             <button
               onClick={() => setDark(d => !d)}
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-teal-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300"
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300"
             >
               {dark ? <Sun size={18} strokeWidth={1.5} /> : <Moon size={18} strokeWidth={1.5} />}
               {dark ? 'Light Mode' : 'Dark Mode'}
@@ -169,7 +169,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
           {/* Mobile header bar */}
           <div className="sticky top-0 z-10 bg-white/50 dark:bg-gray-900/70 backdrop-blur-xl border-b border-amber-200/25 dark:border-gray-800/60 lg:hidden">
             <div className="px-4 py-3 flex items-center gap-3">
-              <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-teal-50 dark:hover:bg-gray-800 transition-colors">
+              <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-yellow-50 dark:hover:bg-gray-800 transition-colors">
                 <Menu size={20} className="text-gray-600 dark:text-gray-400" />
               </button>
               <span className="font-bold text-sm text-gray-900 dark:text-white">ClientPulse</span>
