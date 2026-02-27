@@ -73,7 +73,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         )}
 
         {/* Sidebar */}
-        <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 bg-[#1e293b] dark:bg-[#0f172a] border-r border-[#334155] dark:border-[#1e293b] flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 border-r border-[#334155] dark:border-[#1e293b] flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: dark ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' : 'linear-gradient(180deg, #475569 0%, #1E293B 50%, #475569 100%)' }}>
           {/* Logo */}
           <div className="px-5 py-5 flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center shadow-md shadow-yellow-500/15">
@@ -167,7 +167,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
           {/* Mobile header bar */}
-          <div className="sticky top-0 z-10 bg-[#1e293b]/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border-b border-[#334155] lg:hidden">
+          <div className="sticky top-0 z-10 backdrop-blur-xl border-b border-[#334155] lg:hidden" style={{ background: dark ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' : 'linear-gradient(135deg, #475569 0%, #1E293B 50%, #475569 100%)' }}>
             <div className="px-4 py-3 flex items-center gap-3">
               <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-white/10 transition-colors">
                 <Menu size={20} className="text-slate-400" />
