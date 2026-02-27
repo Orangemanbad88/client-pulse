@@ -73,7 +73,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         )}
 
         {/* Sidebar */}
-        <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 bg-white/90 dark:bg-gray-900/95 backdrop-blur-xl border-r border-amber-200/25 dark:border-gray-800 flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 bg-[#1e293b] dark:bg-[#0f172a] border-r border-[#334155] dark:border-[#1e293b] flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           {/* Logo */}
           <div className="px-5 py-5 flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center shadow-md shadow-yellow-500/15">
@@ -82,9 +82,9 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                 <circle cx="8" cy="8" r="2" fill="white" />
               </svg>
             </div>
-            <span className="font-bold text-base tracking-tight text-gray-900 dark:text-white">ClientPulse</span>
-            <button onClick={() => setSidebarOpen(false)} className="ml-auto p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden transition-colors">
-              <X size={18} className="text-gray-500" />
+            <span className="font-bold text-base tracking-tight text-white">ClientPulse</span>
+            <button onClick={() => setSidebarOpen(false)} className="ml-auto p-1.5 rounded-lg hover:bg-white/10 lg:hidden transition-colors">
+              <X size={18} className="text-slate-400" />
             </button>
           </div>
 
@@ -92,17 +92,17 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
           <div className="px-4 mb-4">
             <button
               onClick={() => { setCmdOpen(true); setSidebarOpen(false); }}
-              className="w-full flex items-center gap-2 bg-amber-50/40 dark:bg-gray-800/50 rounded-lg px-3 py-2 text-sm text-gray-400 border border-amber-200/25 dark:border-gray-700/50 transition-colors hover:bg-amber-50/60 dark:hover:bg-gray-800/70"
+              className="w-full flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 text-sm text-slate-400 border border-white/10 transition-colors hover:bg-white/10"
             >
               <Search size={14} />
               <span>Search...</span>
-              <span className="ml-auto text-xs bg-white dark:bg-gray-800 border border-yellow-100 dark:border-gray-700 rounded px-1.5 py-0.5 text-gray-400 font-medium">⌘K</span>
+              <span className="ml-auto text-xs bg-white/10 border border-white/10 rounded px-1.5 py-0.5 text-slate-500 font-medium">⌘K</span>
             </button>
           </div>
 
           {/* Nav */}
           <nav className="px-3 flex-1 overflow-y-auto">
-            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 mb-2">Main</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 mb-2">Main</p>
             {navItems.map(item => {
               const active = isActive(item.href);
               return (
@@ -112,23 +112,23 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                   onClick={() => setSidebarOpen(false)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
                     active
-                      ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400'
-                      : 'text-gray-500 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300'
+                      ? 'bg-yellow-500/15 text-yellow-400'
+                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
                   }`}
                 >
                   <item.icon size={18} strokeWidth={active ? 2 : 1.5} />
                   {item.label}
                   {item.count && (
-                    <span className="ml-auto text-xs text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 rounded-full px-2 py-0.5 font-data">{item.count}</span>
+                    <span className="ml-auto text-xs text-yellow-400 bg-yellow-500/15 rounded-full px-2 py-0.5 font-data">{item.count}</span>
                   )}
                   {item.badge && (
-                    <span className="ml-auto text-xs text-white bg-yellow-500 rounded-full px-1.5 py-0.5 font-data font-bold min-w-[20px] text-center">{item.badge}</span>
+                    <span className="ml-auto text-xs text-white bg-yellow-600 rounded-full px-1.5 py-0.5 font-data font-bold min-w-[20px] text-center">{item.badge}</span>
                   )}
                 </Link>
               );
             })}
 
-            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 mb-2 mt-6">Tools</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 mb-2 mt-6">Tools</p>
             {toolItems.map((tool) => {
               const active = isActive(tool.href);
               return (
@@ -138,8 +138,8 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                   onClick={() => setSidebarOpen(false)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
                     active
-                      ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400'
-                      : 'text-gray-500 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300'
+                      ? 'bg-yellow-500/15 text-yellow-400'
+                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
                   }`}
                 >
                   <tool.icon size={18} strokeWidth={active ? 2 : 1.5} />
@@ -150,13 +150,13 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
           </nav>
 
           {/* Bottom */}
-          <div className="px-3 py-4 border-t border-amber-200/25 dark:border-gray-800">
-            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300 mb-0.5">
+          <div className="px-3 py-4 border-t border-white/10">
+            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-slate-200 mb-0.5">
               <Settings size={18} strokeWidth={1.5} /> Settings
             </button>
             <button
               onClick={() => setDark(d => !d)}
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-yellow-50/50 dark:hover:bg-gray-800/50 hover:text-gray-700 dark:hover:text-gray-300"
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-slate-200"
             >
               {dark ? <Sun size={18} strokeWidth={1.5} /> : <Moon size={18} strokeWidth={1.5} />}
               {dark ? 'Light Mode' : 'Dark Mode'}
@@ -167,12 +167,12 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
           {/* Mobile header bar */}
-          <div className="sticky top-0 z-10 bg-white/50 dark:bg-gray-900/70 backdrop-blur-xl border-b border-amber-200/25 dark:border-gray-800/60 lg:hidden">
+          <div className="sticky top-0 z-10 bg-[#1e293b]/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border-b border-[#334155] lg:hidden">
             <div className="px-4 py-3 flex items-center gap-3">
-              <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-yellow-50 dark:hover:bg-gray-800 transition-colors">
-                <Menu size={20} className="text-gray-600 dark:text-gray-400" />
+              <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                <Menu size={20} className="text-slate-400" />
               </button>
-              <span className="font-bold text-sm text-gray-900 dark:text-white">ClientPulse</span>
+              <span className="font-bold text-sm text-white">ClientPulse</span>
             </div>
           </div>
           <div className={`${mounted ? '' : 'opacity-0'}`}>

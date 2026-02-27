@@ -15,6 +15,11 @@ const config: Config = {
       },
       colors: {
         burgundy: '#7c2d36',
+        navy: {
+          DEFAULT: '#1e293b',
+          dark: '#0f172a',
+          light: '#334155',
+        },
         walnut: '#475569',
         gold: {
           DEFAULT: '#CA8A04',
