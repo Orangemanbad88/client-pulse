@@ -76,7 +76,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 border-r border-[#334155] dark:border-[#1e293b] flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: dark ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' : 'linear-gradient(180deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
           {/* Logo */}
           <div className="px-5 py-5 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center shadow-md shadow-yellow-500/15">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-md shadow-gold/15">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 2L2 6v4l6 4 6-4V6L8 2z" stroke="white" strokeWidth="1.5" fill="none" />
                 <circle cx="8" cy="8" r="2" fill="white" />
@@ -112,17 +112,17 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                   onClick={() => setSidebarOpen(false)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
                     active
-                      ? 'bg-yellow-500/15 text-yellow-400'
+                      ? 'bg-gold/15 text-gold-light'
                       : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
                   }`}
                 >
                   <item.icon size={18} strokeWidth={active ? 2 : 1.5} />
                   {item.label}
                   {item.count && (
-                    <span className="ml-auto text-xs text-yellow-400 bg-yellow-500/15 rounded-full px-2 py-0.5 font-data">{item.count}</span>
+                    <span className="ml-auto text-xs text-gold-light bg-gold/15 rounded-full px-2 py-0.5 font-data">{item.count}</span>
                   )}
                   {item.badge && (
-                    <span className="ml-auto text-xs text-white bg-yellow-600 rounded-full px-1.5 py-0.5 font-data font-bold min-w-[20px] text-center">{item.badge}</span>
+                    <span className="ml-auto text-xs text-white bg-gold rounded-full px-1.5 py-0.5 font-data font-bold min-w-[20px] text-center">{item.badge}</span>
                   )}
                 </Link>
               );
@@ -138,7 +138,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                   onClick={() => setSidebarOpen(false)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
                     active
-                      ? 'bg-yellow-500/15 text-yellow-400'
+                      ? 'bg-gold/15 text-gold-light'
                       : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
                   }`}
                 >

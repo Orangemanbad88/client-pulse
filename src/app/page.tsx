@@ -68,9 +68,9 @@ export default function DashboardPage() {
   const greeting = time.getHours() < 12 ? "Good morning" : time.getHours() < 17 ? "Good afternoon" : "Good evening";
 
   const donutSegments = useMemo(() => [
-    { label: "Active", value: 5, color: dark ? "#EAB308" : "#CA8A04" },
-    { label: "Searching", value: 3, color: "#FACC15" },
-    { label: "Pending", value: 2, color: dark ? "#A16207" : "#fef3c7" },
+    { label: "Active", value: 5, color: dark ? "#D4A84B" : "#B8860B" },
+    { label: "Searching", value: 3, color: "#C9A227" },
+    { label: "Pending", value: 2, color: dark ? "#8B6914" : "#FDE8B8" },
   ], [dark]);
 
   return (
@@ -79,7 +79,7 @@ export default function DashboardPage() {
       <header className="sticky top-0 z-10 hidden lg:block border-b border-[#1E293B]/50" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
         <div className="px-4 lg:px-8 py-3 lg:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-4 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center shadow-sm shadow-yellow-500/15 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15 shrink-0">
               <span className="text-white font-bold text-sm">TM</span>
             </div>
             <div className="min-w-0">
@@ -91,10 +91,10 @@ export default function DashboardPage() {
           </div>
           <div className="flex items-center gap-2.5 shrink-0">
             <button className="relative p-2.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 transition-colors">
-              <Bell size={16} className="text-yellow-400" />
+              <Bell size={16} className="text-gold-light" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-slate-800 animate-soft-pulse" />
             </button>
-            <a href="/clients?new=true" className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]">
+            <a href="/clients?new=true" className="flex items-center gap-2 bg-gold hover:bg-gold-muted text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors shadow-sm shadow-gold/20 active:scale-[0.97]">
               <Plus size={14} /> Add Client
             </a>
           </div>
@@ -105,21 +105,21 @@ export default function DashboardPage() {
         {/* Metric Cards */}
         <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4 mb-4 lg:mb-6 ${mounted ? 'stagger-children' : ''}`}>
           {metricCards.map((card) => (
-            <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm shadow-yellow-500/5 dark:shadow-none hover:shadow-md hover:shadow-yellow-500/10 dark:hover:shadow-yellow-500/5 hover:scale-[1.02] transition-all duration-200 cursor-default">
+            <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:scale-[1.02] transition-all duration-200 cursor-default">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{card.label}</span>
-                <div className="w-7 h-7 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center">
-                  <card.icon size={14} className="text-yellow-600 dark:text-yellow-400" />
+                <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                  <card.icon size={14} className="text-gold dark:text-gold-light" />
                 </div>
               </div>
               <div className="flex items-end justify-between">
                 <div>
-                  <span className="text-2xl lg:text-3xl font-bold text-yellow-700 dark:text-yellow-400">
+                  <span className="text-2xl lg:text-3xl font-bold text-gold-muted dark:text-gold-light">
                     <AnimatedNumber value={card.value} />
                   </span>
                   <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{card.change}</p>
                 </div>
-                <SparkLine data={card.sparkData} color={dark ? "#EAB308" : "#CA8A04"} />
+                <SparkLine data={card.sparkData} color={dark ? "#D4A84B" : "#B8860B"} />
               </div>
             </div>
           ))}
@@ -132,9 +132,9 @@ export default function DashboardPage() {
             <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
               <div className="px-5 py-4 flex items-center justify-between rounded-t-xl" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-5 rounded-full bg-yellow-400" />
+                  <div className="w-1.5 h-5 rounded-full bg-gold-light" />
                   <h2 className="text-sm font-bold text-white tracking-tight">Today&apos;s Actions</h2>
-                  <span className="text-xs font-bold text-yellow-300 bg-white/10 rounded-full px-2.5 py-0.5 font-data">{actions.length}</span>
+                  <span className="text-xs font-bold text-gold-light bg-white/10 rounded-full px-2.5 py-0.5 font-data">{actions.length}</span>
                 </div>
                 <button className="text-xs text-slate-300 hover:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-white/10 transition-colors">
                   <Filter size={12} /> Filter
@@ -143,17 +143,17 @@ export default function DashboardPage() {
 
               <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
                 {actions.map((action) => (
-                  <div key={action.client} className="card-hover-slide px-5 py-4 hover:bg-yellow-50/30 dark:hover:bg-yellow-900/10 transition-colors group">
+                  <div key={action.client} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors group">
                     <div className="flex items-start gap-3">
                       <Avatar name={action.client} size={38} />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <Badge variant={action.priority}>{action.priority}</Badge>
-                          <span className="text-sm font-semibold text-yellow-700 dark:text-yellow-400">{action.client}</span>
+                          <span className="text-sm font-semibold text-gold-muted dark:text-gold-light">{action.client}</span>
                           <div className="ml-auto flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                            <button className="p-1.5 rounded-md hover:bg-yellow-50 dark:hover:bg-gray-800 transition-colors"><Phone size={13} className="text-gray-400" /></button>
-                            <button className="p-1.5 rounded-md hover:bg-yellow-50 dark:hover:bg-gray-800 transition-colors"><Mail size={13} className="text-gray-400" /></button>
-                            <button className="p-1.5 rounded-md hover:bg-yellow-50 dark:hover:bg-gray-800 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
+                            <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><Phone size={13} className="text-gray-400" /></button>
+                            <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><Mail size={13} className="text-gray-400" /></button>
+                            <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
                           </div>
                         </div>
                         <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-1">{action.title}</p>
@@ -163,19 +163,19 @@ export default function DashboardPage() {
                           <ProgressBar
                             current={action.totalDays - action.daysLeft}
                             total={action.totalDays}
-                            color={action.priority === "critical" ? "#ef4444" : action.priority === "high" ? "#f59e0b" : "#CA8A04"}
+                            color={action.priority === "critical" ? "#ef4444" : action.priority === "high" ? "#f59e0b" : "#B8860B"}
                           />
                           <span className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap font-data">{action.daysLeft}d left</span>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <button className="flex items-center gap-1.5 text-xs font-medium text-white bg-yellow-600 hover:bg-yellow-700 px-3 py-1.5 rounded-lg transition-colors shadow-sm shadow-yellow-600/15 active:scale-[0.97]">
+                          <button className="flex items-center gap-1.5 text-xs font-medium text-white bg-gold hover:bg-gold-muted px-3 py-1.5 rounded-lg transition-colors shadow-sm shadow-gold/15 active:scale-[0.97]">
                             <Send size={11} /> Send
                           </button>
                           <button className="flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors active:scale-[0.97]">
                             <Check size={11} /> Done
                           </button>
-                          <button className="flex items-center gap-1 text-xs text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 font-medium ml-1">
+                          <button className="flex items-center gap-1 text-xs text-gold dark:text-gold-light hover:text-gold-muted dark:hover:text-gold-light font-medium ml-1">
                             <ChevronRight size={12} /> Draft message
                           </button>
                         </div>
@@ -192,7 +192,7 @@ export default function DashboardPage() {
             {/* Client Overview Donut */}
             <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
               <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
-                <div className="w-1.5 h-5 rounded-full bg-yellow-400" />
+                <div className="w-1.5 h-5 rounded-full bg-gold-light" />
                 <h2 className="text-sm font-bold text-white tracking-tight">Client Overview</h2>
               </div>
               <div className="p-5 flex items-center gap-6">
@@ -215,7 +215,7 @@ export default function DashboardPage() {
             <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
               <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-5 rounded-full bg-yellow-400" />
+                  <div className="w-1.5 h-5 rounded-full bg-gold-light" />
                   <h2 className="text-sm font-bold text-white tracking-tight">Property Matches</h2>
                 </div>
                 <button className="text-xs text-slate-300 hover:text-white font-medium transition-colors">View All</button>
@@ -223,7 +223,7 @@ export default function DashboardPage() {
 
               <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
                 {properties.map((prop) => (
-                  <div key={prop.address} className="card-hover-slide px-5 py-4 hover:bg-yellow-50/30 dark:hover:bg-yellow-900/10 transition-colors">
+                  <div key={prop.address} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors">
                     <div className="flex items-start gap-3">
                       <MatchScore score={prop.score} dark={dark} />
                       <div className="flex-1 min-w-0">
@@ -233,12 +233,12 @@ export default function DashboardPage() {
                         </div>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{prop.details}</p>
                         <div className="flex items-center gap-2 mb-2.5">
-                          <span className="text-sm font-bold text-yellow-600 dark:text-yellow-400 font-data">{prop.price}</span>
+                          <span className="text-sm font-bold text-gold dark:text-gold-light font-data">{prop.price}</span>
                           <span className="text-xs text-gray-400 dark:text-gray-500">{prop.client}</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {prop.tags.map((tag) => (
-                            <span key={tag} className="text-xs bg-yellow-50/50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-100/60 dark:border-yellow-800/30 px-2 py-0.5 rounded-md">
+                            <span key={tag} className="text-xs bg-amber-50/50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/60 dark:border-gold-muted/30 px-2 py-0.5 rounded-md">
                               {tag}
                             </span>
                           ))}

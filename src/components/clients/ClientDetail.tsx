@@ -21,7 +21,7 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
           <Link href="/clients" className="p-1.5 rounded-lg hover:bg-white/10 transition-colors">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </Link>
-          <div className="w-11 h-11 rounded-full bg-yellow-500 flex items-center justify-center text-white text-sm font-bold">
+          <div className="w-11 h-11 rounded-full bg-gold flex items-center justify-center text-white text-sm font-bold">
             {getInitials(client.firstName, client.lastName)}
           </div>
           <div className="flex-1">
@@ -35,7 +35,7 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
           </div>
           <div className="flex gap-2">
             <button className="text-sm font-medium px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors">Edit</button>
-            <button className="text-sm font-medium px-3 py-1.5 rounded-lg bg-yellow-600 hover:bg-yellow-700 text-white transition-colors shadow-sm shadow-yellow-600/20">Message</button>
+            <button className="text-sm font-medium px-3 py-1.5 rounded-lg bg-gold hover:bg-gold-muted text-white transition-colors shadow-sm shadow-gold/20">Message</button>
           </div>
         </div>
         <div className="grid grid-cols-4 divide-x" style={{ borderTop: '1px solid var(--border)', borderColor: 'var(--border)' }}>

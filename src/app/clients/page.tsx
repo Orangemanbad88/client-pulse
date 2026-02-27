@@ -42,7 +42,7 @@ function ClientsContent() {
           <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>Clients</h1>
           <p className="text-xs text-slate-400 mt-0.5">{clients.length} total</p>
         </div>
-        <button onClick={() => setShowForm(true)} className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]">
+        <button onClick={() => setShowForm(true)} className="flex items-center gap-2 bg-gold hover:bg-gold-muted text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm shadow-gold/20 active:scale-[0.97]">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
           New Client
         </button>

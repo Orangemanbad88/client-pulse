@@ -236,7 +236,7 @@ function CalendarContent() {
                 <span className="text-[10px] text-slate-400">Syncing...</span>
               )}
               {googleStatus === 'loaded' && (
-                <span className="text-[10px] text-yellow-400">{googleError}</span>
+                <span className="text-[10px] text-gold-light">{googleError}</span>
               )}
               {googleStatus === 'error' && (
                 <span className="text-[10px] text-red-400">{googleError}</span>
@@ -250,7 +250,7 @@ function CalendarContent() {
                   setGoogleStatus('idle');
                   setGoogleError('');
                 }}
-                className="flex items-center gap-1.5 text-xs text-yellow-400 hover:text-red-400 font-medium px-3 py-2 bg-yellow-900/20 hover:bg-red-900/20 rounded-lg border border-yellow-800/30 hover:border-red-800/30 transition-colors"
+                className="flex items-center gap-1.5 text-xs text-gold-light hover:text-red-400 font-medium px-3 py-2 bg-amber-900/20 hover:bg-red-900/20 rounded-lg border border-gold-muted/30 hover:border-red-800/30 transition-colors"
               >
                 <Link2 size={13} /> Unlink
               </button>
@@ -265,7 +265,7 @@ function CalendarContent() {
           )}
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]"
+            className="flex items-center gap-2 bg-gold hover:bg-gold-muted text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm shadow-gold/20 active:scale-[0.97]"
           >
             <Plus size={14} /> Add Event
           </button>
@@ -290,7 +290,7 @@ function CalendarContent() {
                     <ChevronRight size={16} className="text-gray-500 dark:text-gray-400" />
                   </button>
                 </div>
-                <button onClick={goToday} className="text-xs text-yellow-600 dark:text-yellow-400 font-medium hover:text-yellow-700 dark:hover:text-yellow-300 px-2 py-1 rounded hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors">
+                <button onClick={goToday} className="text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light px-2 py-1 rounded hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors">
                   Today
                 </button>
               </div>
@@ -321,15 +321,15 @@ function CalendarContent() {
                       onClick={() => setSelectedDay(isSelected ? null : key)}
                       className={`relative min-h-[80px] lg:min-h-[90px] p-1.5 border-b border-r border-amber-100/20 dark:border-gray-800/40 text-left transition-colors ${
                         isSelected
-                          ? 'bg-yellow-50/50 dark:bg-yellow-900/20'
-                          : 'hover:bg-yellow-50/20 dark:hover:bg-yellow-900/5'
+                          ? 'bg-amber-50/50 dark:bg-amber-900/20'
+                          : 'hover:bg-amber-50/20 dark:hover:bg-amber-900/5'
                       } ${!isCurrentMonth ? 'opacity-40' : ''}`}
                     >
                       <span className={`text-xs font-medium inline-flex items-center justify-center w-6 h-6 rounded-full ${
                         isToday
-                          ? 'bg-yellow-600 text-white font-bold'
+                          ? 'bg-gold text-white font-bold'
                           : isSelected
-                          ? 'text-yellow-700 dark:text-yellow-400 font-bold'
+                          ? 'text-gold-muted dark:text-gold-light font-bold'
                           : 'text-gray-600 dark:text-gray-400'
                       }`}>
                         {date.getDate()}
@@ -343,8 +343,8 @@ function CalendarContent() {
                         )}
                         {activityCount > 0 && (
                           <div className="flex items-center gap-1">
-                            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
-                            <span className="text-[10px] text-yellow-600 dark:text-yellow-400 font-medium truncate">{activityCount} activit{activityCount > 1 ? 'ies' : 'y'}</span>
+                            <div className="w-1.5 h-1.5 rounded-full bg-gold" />
+                            <span className="text-[10px] text-gold dark:text-gold-light font-medium truncate">{activityCount} activit{activityCount > 1 ? 'ies' : 'y'}</span>
                           </div>
                         )}
                         {googleCount > 0 && (
@@ -364,11 +364,11 @@ function CalendarContent() {
             {selectedDay && (
               <div className="mt-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center gap-3">
-                  <div className="w-1.5 h-5 rounded-full bg-yellow-500" />
+                  <div className="w-1.5 h-5 rounded-full bg-gold" />
                   <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">
                     {new Date(selectedDay + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                   </h2>
-                  <span className="text-xs font-bold text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 rounded-full px-2.5 py-0.5 font-data">{selectedDayEvents.length}</span>
+                  <span className="text-xs font-bold text-gold dark:text-gold-light bg-amber-50 dark:bg-amber-900/30 rounded-full px-2.5 py-0.5 font-data">{selectedDayEvents.length}</span>
                 </div>
                 <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
                   {selectedDayEvents.length === 0 ? (
@@ -377,21 +377,21 @@ function CalendarContent() {
                     selectedDayEvents.map((ev) => {
                       const date = new Date(ev.date);
                       return (
-                        <div key={ev.id} className="px-5 py-4 hover:bg-yellow-50/30 dark:hover:bg-yellow-900/10 transition-colors">
+                        <div key={ev.id} className="px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors">
                           <div className="flex items-start gap-3">
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
                               ev.type === 'trigger'
                                 ? 'bg-amber-50 dark:bg-amber-900/20'
                                 : ev.type === 'google'
                                 ? 'bg-blue-50 dark:bg-blue-900/20'
-                                : 'bg-yellow-50 dark:bg-yellow-900/30'
+                                : 'bg-amber-50 dark:bg-amber-900/30'
                             }`}>
                               {ev.type === 'trigger' ? (
                                 <Clock size={16} className="text-amber-600 dark:text-amber-400" />
                               ) : ev.type === 'google' ? (
                                 <CalendarDays size={16} className="text-blue-600 dark:text-blue-400" />
                               ) : (
-                                <MapPin size={16} className="text-yellow-600 dark:text-yellow-400" />
+                                <MapPin size={16} className="text-gold dark:text-gold-light" />
                               )}
                             </div>
                             <div className="flex-1 min-w-0">
@@ -403,7 +403,7 @@ function CalendarContent() {
                                 {ev.clientId ? (
                                   <Link
                                     href={`/clients/${ev.clientId}`}
-                                    className="text-xs text-yellow-600 dark:text-yellow-400 font-medium hover:text-yellow-700 dark:hover:text-yellow-300"
+                                    className="text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light"
                                   >
                                     {ev.clientName}
                                   </Link>
@@ -440,9 +440,9 @@ function CalendarContent() {
           <div className="lg:col-span-4">
             <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
               <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center gap-3">
-                <div className="w-1.5 h-5 rounded-full bg-yellow-500" />
+                <div className="w-1.5 h-5 rounded-full bg-gold" />
                 <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Next 14 Days</h2>
-                <span className="text-xs font-bold text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 rounded-full px-2.5 py-0.5 font-data">{next14Days.length}</span>
+                <span className="text-xs font-bold text-gold dark:text-gold-light bg-amber-50 dark:bg-amber-900/30 rounded-full px-2.5 py-0.5 font-data">{next14Days.length}</span>
               </div>
               <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60 max-h-[600px] overflow-y-auto">
                 {next14Days.length === 0 ? (
@@ -455,21 +455,21 @@ function CalendarContent() {
                       <button
                         key={ev.id}
                         onClick={() => setSelectedDay(toDateKey(date))}
-                        className="w-full text-left px-5 py-3.5 hover:bg-yellow-50/30 dark:hover:bg-yellow-900/10 transition-colors"
+                        className="w-full text-left px-5 py-3.5 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors"
                       >
                         <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 flex flex-col items-center justify-center shrink-0">
-                            <span className="text-[10px] font-semibold text-yellow-600 dark:text-yellow-400 uppercase">{date.toLocaleDateString('en-US', { month: 'short' })}</span>
-                            <span className="text-sm font-bold text-yellow-700 dark:text-yellow-300 font-data leading-none">{date.getDate()}</span>
+                          <div className="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex flex-col items-center justify-center shrink-0">
+                            <span className="text-[10px] font-semibold text-gold dark:text-gold-light uppercase">{date.toLocaleDateString('en-US', { month: 'short' })}</span>
+                            <span className="text-sm font-bold text-gold-muted dark:text-gold-light font-data leading-none">{date.getDate()}</span>
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-0.5 truncate">{ev.title}</p>
                             <div className="flex items-center gap-2">
                               {ev.clientName && (
-                                <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium truncate">{ev.clientName}</span>
+                                <span className="text-xs text-gold dark:text-gold-light font-medium truncate">{ev.clientName}</span>
                               )}
                               <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                                daysOut <= 0 ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400' :
+                                daysOut <= 0 ? 'bg-amber-50 dark:bg-amber-900/20 text-gold dark:text-gold-light' :
                                 daysOut <= 2 ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400' :
                                 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
                               }`}>
@@ -495,7 +495,7 @@ function CalendarContent() {
           <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-md overflow-hidden">
             <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-1.5 h-5 rounded-full bg-yellow-500" />
+                <div className="w-1.5 h-5 rounded-full bg-gold" />
                 <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Add Event</h2>
               </div>
               <button onClick={() => setShowAddModal(false)} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -509,7 +509,7 @@ function CalendarContent() {
                   type="text"
                   value={newEvent.title}
                   onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-                  className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500"
+                  className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                   placeholder="e.g. Property showing"
                 />
               </div>
@@ -520,7 +520,7 @@ function CalendarContent() {
                     type="date"
                     value={newEvent.date}
                     onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500"
+                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                   />
                 </div>
                 <div>
@@ -529,7 +529,7 @@ function CalendarContent() {
                     type="time"
                     value={newEvent.time}
                     onChange={(e) => setNewEvent({ ...newEvent, time: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500"
+                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                   />
                 </div>
               </div>
@@ -539,7 +539,7 @@ function CalendarContent() {
                   type="text"
                   value={newEvent.clientName}
                   onChange={(e) => setNewEvent({ ...newEvent, clientName: e.target.value })}
-                  className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500"
+                  className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                   placeholder="Optional"
                 />
               </div>
@@ -549,7 +549,7 @@ function CalendarContent() {
                   value={newEvent.description}
                   onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
                   placeholder="Optional"
                 />
               </div>
@@ -564,7 +564,7 @@ function CalendarContent() {
               <button
                 onClick={handleAddEvent}
                 disabled={!newEvent.title || !newEvent.date}
-                className="flex items-center gap-1.5 text-xs font-medium text-white bg-yellow-600 hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-yellow-600/20 active:scale-[0.97]"
+                className="flex items-center gap-1.5 text-xs font-medium text-white bg-gold hover:bg-gold-muted disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-gold/20 active:scale-[0.97]"
               >
                 <Plus size={13} /> Add Event
               </button>

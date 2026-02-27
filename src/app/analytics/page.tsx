@@ -11,8 +11,8 @@ const StatCard = ({ label, value, change, positive, icon: Icon }: { label: strin
   <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-5 shadow-sm">
     <div className="flex items-center justify-between mb-3">
       <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{label}</span>
-      <div className="w-8 h-8 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center">
-        <Icon size={16} className="text-yellow-600 dark:text-yellow-400" />
+      <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+        <Icon size={16} className="text-gold dark:text-gold-light" />
       </div>
     </div>
     <p className="text-2xl font-bold text-gray-800 dark:text-gray-100 font-data mb-1">{value}</p>
@@ -47,8 +47,8 @@ export default function AnalyticsPage() {
   const dark = useDark();
 
   const stageColors = useMemo(() => [
-    dark ? '#EAB308' : '#CA8A04',
-    dark ? '#FACC15' : '#CA8A04',
+    dark ? '#D4A84B' : '#B8860B',
+    dark ? '#C9A227' : '#B8860B',
     '#f59e0b',
     '#8b5cf6',
     '#22c55e',
@@ -109,7 +109,7 @@ export default function AnalyticsPage() {
         {/* Pipeline Distribution */}
         <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-1.5 h-5 rounded-full bg-yellow-500" />
+            <div className="w-1.5 h-5 rounded-full bg-gold" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Pipeline Distribution</h2>
           </div>
           <div className="space-y-3">
@@ -122,7 +122,7 @@ export default function AnalyticsPage() {
         {/* Client Types */}
         <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-1.5 h-5 rounded-full bg-yellow-400" />
+            <div className="w-1.5 h-5 rounded-full bg-gold-light" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Client Types</h2>
           </div>
           <div className="space-y-3">
