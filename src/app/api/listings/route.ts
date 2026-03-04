@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 const COMP_SEARCH_URL = process.env.COMP_SEARCH_URL || 'https://comp-search.vercel.app';
 
 export async function GET() {
