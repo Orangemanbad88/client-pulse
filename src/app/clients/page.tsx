@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { ClientList } from '@/components/clients/ClientList';
 import { IntakeForm } from '@/components/clients/IntakeForm';
 import type { Client, ClientIntakeData } from '@/types/client';
-import * as svc from '@/services/mock-service';
+import * as svc from '@/services';
 
 export default function ClientsPage() {
   return <Suspense><ClientsContent /></Suspense>;

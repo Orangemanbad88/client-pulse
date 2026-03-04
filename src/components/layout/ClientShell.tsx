@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search, LayoutDashboard, Users, Building2, Calendar, MessageSquare, BarChart3, Download, Home, Settings, Moon, Sun, Menu, X, Mail } from 'lucide-react';
 import type { Client } from '@/types/client';
-import * as service from '@/services/mock-service';
+import * as service from '@/services';
 import { CommandPalette } from '@/components/layout/CommandPalette';
 
 export const ClientShell = ({ children }: { children: React.ReactNode }) => {

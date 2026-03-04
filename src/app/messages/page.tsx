@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Mail, Phone, MessageSquare, Clock } from 'lucide-react';
 import type { Activity, Client } from '@/types/client';
 import { formatRelativeDate } from '@/lib/utils';
-import * as svc from '@/services/mock-service';
+import * as svc from '@/services';
 
 export default function MessagesPage() {
   const [activities, setActivities] = useState<Activity[]>([]);

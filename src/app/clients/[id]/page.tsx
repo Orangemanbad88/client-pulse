@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ClientDetail } from '@/components/clients/ClientDetail';
 import type { Client, ClientPreferences, Activity, Transaction, PropertyMatch, AIProfile, Trigger } from '@/types/client';
-import * as svc from '@/services/mock-service';
+import * as svc from '@/services';
 import Link from 'next/link';
 
 export default function ClientDetailPage() {

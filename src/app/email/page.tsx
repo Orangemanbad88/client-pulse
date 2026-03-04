@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Mail, Send, Star, Archive, Inbox, Clock, Paperclip, Reply, Forward, Trash2, X, FileText, Users } from 'lucide-react';
 import type { Client } from '@/types/client';
 import { getInitialsFromName } from '@/lib/utils';
-import * as svc from '@/services/mock-service';
+import * as svc from '@/services';
 
 interface EmailThread {
   id: string;

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Clock, MapPin, Plus, X, CalendarDays, Link2 } from 'lucide-react';
 import type { Trigger, Activity } from '@/types/client';
 import { getInitialsFromName } from '@/lib/utils';
-import * as svc from '@/services/mock-service';
+import * as svc from '@/services';
 
 interface CalendarEvent {
   id: string;
