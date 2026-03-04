@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Mail, Phone, MessageSquare, Clock } from 'lucide-react';
 import type { Activity, Client } from '@/types/client';
 import { formatRelativeDate } from '@/lib/utils';
-import * as svc from '@/services';
 
 export default function MessagesPage() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -14,7 +13,9 @@ export default function MessagesPage() {
   const [filter, setFilter] = useState<'all' | 'email' | 'call' | 'text'>('all');
 
   useEffect(() => {
-    Promise.all([svc.getRecentActivities(50), svc.getClients()])
+    import('@/services').then((svc) =>
+      Promise.all([svc.getRecentActivities(50), svc.getClients()])
+    )
       .then(([a, c]) => { setActivities(a); setClients(c); setLoading(false); })
       .catch((err) => { console.error('Failed to load messages:', err); setLoading(false); });
   }, []);

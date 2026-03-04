@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import { ClientList } from '@/components/clients/ClientList';
 import { IntakeForm } from '@/components/clients/IntakeForm';
 import type { Client, ClientIntakeData } from '@/types/client';
-import * as svc from '@/services';
 
 export default function ClientsPage() {
   return <Suspense><ClientsContent /></Suspense>;
@@ -17,11 +16,12 @@ function ClientsContent() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => { svc.getClients().then((d) => { setClients(d); setLoading(false); }).catch((err) => { console.error('Failed to load clients:', err); setLoading(false); }); }, []);
+  useEffect(() => { import('@/services').then((svc) => svc.getClients()).then((d) => { setClients(d); setLoading(false); }).catch((err) => { console.error('Failed to load clients:', err); setLoading(false); }); }, []);
   useEffect(() => { if (params.get('new') === 'true') setShowForm(true); }, [params]);
 
   const onCreate = async (d: ClientIntakeData) => {
     try {
+      const svc = await import('@/services');
       const c = await svc.createClient(d);
       setClients((p) => [c, ...p]);
       setShowForm(false);

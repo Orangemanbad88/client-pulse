@@ -259,6 +259,29 @@ export interface Trigger {
   urgency: UrgencyLevel;
 }
 
+// ---- Write Inputs ----
+
+export interface CreateActivityInput {
+  clientId: string;
+  type: ActivityType;
+  title: string;
+  description: string;
+  propertyId?: string;
+  propertyAddress?: string;
+  agentName: string;
+}
+
+export interface CreateTriggerInput {
+  clientId: string;
+  clientName: string;
+  type: TriggerType;
+  title: string;
+  description: string;
+  fireDate: string;
+  messageDraft?: string;
+  urgency: UrgencyLevel;
+}
+
 // ---- MLS Listing (from CompSearch) ----
 
 export interface MLSListing {

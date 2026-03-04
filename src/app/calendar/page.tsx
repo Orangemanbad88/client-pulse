@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Clock, MapPin, Plus, X, CalendarDays, Link2 } from 'lucide-react';
 import type { Trigger, Activity } from '@/types/client';
 import { getInitialsFromName } from '@/lib/utils';
-import * as svc from '@/services';
 
 interface CalendarEvent {
   id: string;
@@ -56,7 +55,9 @@ function CalendarContent() {
   const [newEvent, setNewEvent] = useState<NewEvent>({ title: '', date: '', time: '09:00', clientName: '', description: '' });
 
   useEffect(() => {
-    Promise.all([svc.getAllTriggers(), svc.getRecentActivities(50)])
+    import('@/services').then((svc) =>
+      Promise.all([svc.getAllTriggers(), svc.getRecentActivities(50)])
+    )
       .then(([t, a]) => { setTriggers(t); setActivities(a); setLoading(false); })
       .catch((err) => { console.error('Failed to load calendar data:', err); setLoading(false); });
   }, []);

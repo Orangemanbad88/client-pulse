@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import type { Client, ClientPreferences, Activity, Transaction, PropertyMatch, AIProfile, Trigger } from '@/types/client';
 import { LIFECYCLE_LABELS, PROPERTY_TYPE_LABELS, AMENITY_LABELS, ACTIVITY_ICONS } from '@/types/client';
 import { getInitials, getClientName, formatCurrency, formatDate, formatRelativeDate, daysUntil, urgencyBadge, scoreColor, scoreBg, cn, stageBadge } from '@/lib/utils';
@@ -8,10 +9,47 @@ import Link from 'next/link';
 
 interface Props { client: Client; preferences: ClientPreferences | null; activities: Activity[]; transactions: Transaction[]; matches: PropertyMatch[]; aiProfile: AIProfile | null; triggers: Trigger[]; }
 
-export const ClientDetail = ({ client, preferences, activities, transactions, matches, aiProfile, triggers }: Props) => {
+export const ClientDetail = ({ client, preferences, activities, transactions, matches: initialMatches, aiProfile, triggers: initialTriggers }: Props) => {
   const rp = preferences?.rental;
   const bp = preferences?.buyer;
   const leaseExp = rp?.currentLeaseExpiration ? daysUntil(rp.currentLeaseExpiration) : null;
+
+  const [matchList, setMatchList] = useState(initialMatches);
+  const [triggerList, setTriggerList] = useState(initialTriggers);
+  const [matchLoading, setMatchLoading] = useState<string | null>(null);
+  const [triggerLoading, setTriggerLoading] = useState<string | null>(null);
+
+  const handleSendMatch = async (matchId: string) => {
+    setMatchLoading(matchId);
+    try {
+      const svc = await import('@/services');
+      await svc.updateMatchStatus(matchId, 'sent');
+      setMatchList((prev) => prev.map((m) => (m.id === matchId ? { ...m, status: 'sent' as const } : m)));
+    } catch {
+      // keep original on failure
+    } finally {
+      setMatchLoading(null);
+    }
+  };
+
+  const handleTriggerAction = async (triggerId: string, action: 'completed' | 'dismissed') => {
+    setTriggerLoading(triggerId);
+    try {
+      const svc = await import('@/services');
+      await svc.updateTriggerStatus(triggerId, action);
+      setTriggerList((prev) => prev.map((t) => (t.id === triggerId ? { ...t, status: action } : t)));
+    } catch {
+      // keep original on failure
+    } finally {
+      setTriggerLoading(null);
+    }
+  };
+
+  const handleMessage = () => {
+    if (client.email) {
+      window.open(`mailto:${client.email}`);
+    }
+  };
 
   return (
     <div className="space-y-4 animate-in">
@@ -35,7 +73,7 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
           </div>
           <div className="flex gap-2">
             <button className="text-sm font-medium px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors">Edit</button>
-            <button className="text-sm font-medium px-3 py-1.5 rounded-lg bg-gold hover:bg-gold-muted text-white transition-colors shadow-sm shadow-gold/20">Message</button>
+            <button onClick={handleMessage} className="text-sm font-medium px-3 py-1.5 rounded-lg bg-gold hover:bg-gold-muted text-white transition-colors shadow-sm shadow-gold/20">Message</button>
           </div>
         </div>
         <div className="grid grid-cols-4 divide-x" style={{ borderTop: '1px solid var(--border)', borderColor: 'var(--border)' }}>
@@ -111,13 +149,13 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
 
         {/* Right: Matches + Triggers + Activity */}
         <div className="lg:col-span-2 space-y-4">
-          {matches.length > 0 && (
+          {matchList.length > 0 && (
             <div className="surface overflow-hidden">
               <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
                 <h3 className="text-[13px] font-bold" style={{ color: 'var(--text-primary)' }}>Property Matches</h3>
               </div>
               <div className="divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
-                {matches.map((m) => (
+                {matchList.map((m) => (
                   <div key={m.id} className="px-4 py-3 hover:bg-[var(--surface-hover)] transition-colors">
                     <div className="flex items-start gap-3">
                       <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center text-[12px] font-bold font-mono', scoreBg(m.matchScore), scoreColor(m.matchScore))}>{m.matchScore}</div>
@@ -127,7 +165,18 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
                         <span className="text-[12px] font-bold font-mono" style={{ color: 'var(--accent-text)' }}>{formatCurrency(m.price, m.price < 10000)}</span>
                         <div className="flex flex-wrap gap-1 mt-1">{m.matchReasons.map((r) => <span key={r} className="pill text-[10px]">{r}</span>)}</div>
                       </div>
-                      <button className="btn btn-primary btn-xs">Send</button>
+                      <div className="flex items-center gap-1.5">
+                        {m.status === 'sent' && <span className="badge badge-accent text-[10px]">Sent</span>}
+                        {m.status !== 'sent' && (
+                          <button
+                            disabled={matchLoading === m.id}
+                            onClick={() => handleSendMatch(m.id)}
+                            className={cn('btn btn-primary btn-xs', matchLoading === m.id && 'opacity-50 cursor-wait')}
+                          >
+                            {matchLoading === m.id ? '...' : 'Send'}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -135,17 +184,33 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
             </div>
           )}
 
-          {triggers.filter((t) => t.status !== 'completed').length > 0 && (
+          {triggerList.filter((t) => t.status !== 'completed' && t.status !== 'dismissed').length > 0 && (
             <div className="surface overflow-hidden">
               <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
                 <h3 className="text-[13px] font-bold" style={{ color: 'var(--text-primary)' }}>Triggers</h3>
               </div>
               <div className="divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
-                {triggers.filter((t) => t.status !== 'completed').map((t) => (
+                {triggerList.filter((t) => t.status !== 'completed' && t.status !== 'dismissed').map((t) => (
                   <div key={t.id} className="px-4 py-3">
                     <div className="flex items-center gap-2 mb-1">
                       <span className={cn('badge text-[10px]', urgencyBadge[t.urgency])}>{t.urgency}</span>
                       <span className="pill text-[10px] capitalize">{t.status}</span>
+                      <div className="ml-auto flex items-center gap-1.5">
+                        <button
+                          disabled={triggerLoading === t.id}
+                          onClick={() => handleTriggerAction(t.id, 'completed')}
+                          className={cn('text-[11px] font-medium px-2 py-1 rounded bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors', triggerLoading === t.id && 'opacity-50 cursor-wait')}
+                        >
+                          Complete
+                        </button>
+                        <button
+                          disabled={triggerLoading === t.id}
+                          onClick={() => handleTriggerAction(t.id, 'dismissed')}
+                          className={cn('text-[11px] font-medium px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors', triggerLoading === t.id && 'opacity-50 cursor-wait')}
+                        >
+                          Dismiss
+                        </button>
+                      </div>
                     </div>
                     <p className="text-[12px] font-medium" style={{ color: 'var(--text-primary)' }}>{t.title}</p>
                     <p className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>{t.description}</p>

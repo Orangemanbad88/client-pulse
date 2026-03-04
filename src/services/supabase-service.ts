@@ -10,6 +10,9 @@ import type {
   Trigger,
   DashboardStats,
   ClientIntakeData,
+  CreateActivityInput,
+  CreateTriggerInput,
+  NextAction,
 } from '@/types/client';
 
 const db = () => createServerSupabaseClient();
@@ -198,7 +201,9 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
 // ---- Create ----
 
 export const createClient = async (data: ClientIntakeData): Promise<Client> => {
-  const { data: inserted, error } = await db()
+  const supabase = db();
+
+  const { data: inserted, error } = await supabase
     .from('clients')
     .insert({
       first_name: data.firstName,
@@ -217,5 +222,110 @@ export const createClient = async (data: ClientIntakeData): Promise<Client> => {
     .single();
 
   if (error) throw new Error(`createClient: ${error.message}`);
+
+  // Save preferences
+  if (data.rentalPrefs || data.buyerPrefs) {
+    const { error: prefError } = await supabase
+      .from('client_preferences')
+      .insert({
+        client_id: inserted.id,
+        rental: data.rentalPrefs || null,
+        buyer: data.buyerPrefs || null,
+      });
+    if (prefError) throw new Error(`createClient prefs: ${prefError.message}`);
+  }
+
   return snakeToCamel<Client>(inserted);
+};
+
+// ---- Write Operations ----
+
+export const updateTriggerStatus = async (id: string, status: 'completed' | 'dismissed'): Promise<void> => {
+  const { error } = await db()
+    .from('triggers')
+    .update({ status })
+    .eq('id', id);
+  if (error) throw new Error(`updateTriggerStatus: ${error.message}`);
+};
+
+export const updateMatchStatus = async (id: string, status: 'sent' | 'dismissed' | 'interested'): Promise<void> => {
+  const { error } = await db()
+    .from('property_matches')
+    .update({ status })
+    .eq('id', id);
+  if (error) throw new Error(`updateMatchStatus: ${error.message}`);
+};
+
+export const updateClient = async (id: string, data: Partial<Client>): Promise<Client> => {
+  const { camelToSnake } = await import('@/lib/case-utils');
+  const snakeData = camelToSnake(data as Record<string, unknown>);
+  delete snakeData.id;
+  delete snakeData.created_at;
+
+  const { data: updated, error } = await db()
+    .from('clients')
+    .update(snakeData)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw new Error(`updateClient: ${error.message}`);
+  return snakeToCamel<Client>(updated);
+};
+
+export const createActivity = async (input: CreateActivityInput): Promise<Activity> => {
+  const { data, error } = await db()
+    .from('activities')
+    .insert({
+      client_id: input.clientId,
+      type: input.type,
+      title: input.title,
+      description: input.description,
+      property_id: input.propertyId || null,
+      property_address: input.propertyAddress || null,
+      agent_name: input.agentName,
+    })
+    .select()
+    .single();
+
+  if (error) throw new Error(`createActivity: ${error.message}`);
+  return snakeToCamel<Activity>(data);
+};
+
+export const createTrigger = async (input: CreateTriggerInput): Promise<Trigger> => {
+  const { data, error } = await db()
+    .from('triggers')
+    .insert({
+      client_id: input.clientId,
+      client_name: input.clientName,
+      type: input.type,
+      title: input.title,
+      description: input.description,
+      fire_date: input.fireDate,
+      status: 'fired',
+      message_draft: input.messageDraft || null,
+      urgency: input.urgency,
+    })
+    .select()
+    .single();
+
+  if (error) throw new Error(`createTrigger: ${error.message}`);
+  return snakeToCamel<Trigger>(data);
+};
+
+export const upsertAIProfile = async (
+  clientId: string,
+  summary: string,
+  actions: NextAction[],
+): Promise<void> => {
+  const { error } = await db()
+    .from('ai_profiles')
+    .upsert({
+      client_id: clientId,
+      summary,
+      next_actions: actions,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'client_id' });
+
+  if (error) throw new Error(`upsertAIProfile: ${error.message}`);
 };

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Mail, Send, Star, Archive, Inbox, Clock, Paperclip, Reply, Forward, Trash2, X, FileText, Users } from 'lucide-react';
 import type { Client } from '@/types/client';
 import { getInitialsFromName } from '@/lib/utils';
-import * as svc from '@/services';
 
 interface EmailThread {
   id: string;
@@ -78,7 +77,7 @@ export default function EmailPage() {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   useEffect(() => {
-    svc.getClients()
+    import('@/services').then((svc) => svc.getClients())
       .then((c) => { setClients(c); setLoading(false); })
       .catch((err) => { console.error('Failed to load email data:', err); setLoading(false); });
   }, []);

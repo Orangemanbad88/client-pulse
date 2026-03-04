@@ -5,7 +5,42 @@ import type { AIProfile } from '@/types/client';
 import { urgencyBadge, formatRelativeDate, cn } from '@/lib/utils';
 
 export const AIProfileCard = ({ profile }: { profile: AIProfile | null }) => {
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const initialCompleted = new Set(
+    profile?.nextActions.filter((a) => a.completed).map((a) => a.id) || [],
+  );
+  const [completed, setCompleted] = useState<Set<string>>(initialCompleted);
+  const [saving, setSaving] = useState<string | null>(null);
+
+  const toggleAction = async (actionId: string) => {
+    if (!profile) return;
+    const isDone = completed.has(actionId);
+    const next = new Set(Array.from(completed));
+    if (isDone) {
+      next.delete(actionId);
+    } else {
+      next.add(actionId);
+    }
+    setCompleted(next);
+    setSaving(actionId);
+
+    try {
+      const res = await fetch('/api/ai/update-action', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientId: profile.clientId,
+          actionId,
+          completed: !isDone,
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to save');
+    } catch {
+      // Revert on failure
+      setCompleted(isDone ? new Set([...Array.from(next), actionId]) : (() => { const r = new Set(Array.from(next)); r.delete(actionId); return r; })());
+    } finally {
+      setSaving(null);
+    }
+  };
 
   if (!profile) return (
     <div className="surface p-6 text-center">
@@ -25,7 +60,16 @@ export const AIProfileCard = ({ profile }: { profile: AIProfile | null }) => {
           </div>
           <h3 className="text-[13px] font-bold" style={{ color: 'var(--text-primary)' }}>AI Insights</h3>
         </div>
-        <span className="text-[10px] font-mono" style={{ color: 'var(--text-quaternary)' }}>{formatRelativeDate(profile.updatedAt)}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] font-mono" style={{ color: 'var(--text-quaternary)' }}>{formatRelativeDate(profile.updatedAt)}</span>
+          <button
+            disabled
+            title="API key required"
+            className="text-[10px] font-medium px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+          >
+            Regenerate
+          </button>
+        </div>
       </div>
       <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
         <p className="text-[12px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{profile.summary}</p>
@@ -39,9 +83,13 @@ export const AIProfileCard = ({ profile }: { profile: AIProfile | null }) => {
               <div key={a.id} className={cn('p-2.5 rounded-lg border transition-all', isDone ? 'opacity-40' : 'hover:border-[var(--border-strong)]')}
                 style={{ borderColor: 'var(--border)' }}>
                 <div className="flex items-start gap-2">
-                  <button onClick={() => setCompleted((p) => { const n = new Set(Array.from(p)); isDone ? n.delete(a.id) : n.add(a.id); return n; })}
+                  <button
+                    disabled={saving === a.id}
+                    onClick={() => toggleAction(a.id)}
                     className={cn('w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all',
-                      isDone ? 'border-[var(--success)] bg-[var(--success)]' : 'border-[var(--border-strong)]')}>
+                      isDone ? 'border-[var(--success)] bg-[var(--success)]' : 'border-[var(--border-strong)]',
+                      saving === a.id && 'opacity-50',
+                    )}>
                     {isDone && <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M20 6L9 17l-5-5"/></svg>}
                   </button>
                   <div className="flex-1 min-w-0">

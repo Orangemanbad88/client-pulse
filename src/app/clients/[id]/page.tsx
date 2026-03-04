@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ClientDetail } from '@/components/clients/ClientDetail';
 import type { Client, ClientPreferences, Activity, Transaction, PropertyMatch, AIProfile, Trigger } from '@/types/client';
-import * as svc from '@/services';
 import Link from 'next/link';
 
 export default function ClientDetailPage() {
@@ -23,6 +22,7 @@ export default function ClientDetailPage() {
     let cancelled = false;
     (async () => {
       try {
+        const svc = await import('@/services');
         const [c, p, a, t, m, ap, tr] = await Promise.all([
           svc.getClient(id), svc.getClientPreferences(id), svc.getClientActivities(id),
           svc.getClientTransactions(id), svc.getClientMatches(id), svc.getAIProfile(id), svc.getClientTriggers(id)

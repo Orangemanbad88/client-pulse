@@ -4,7 +4,6 @@ import { useEffect, useState, useMemo } from 'react';
 import { BarChart3, Users, TrendingUp, Clock, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import type { DashboardStats, Client } from '@/types/client';
 import { LIFECYCLE_LABELS } from '@/types/client';
-import * as svc from '@/services';
 import { useDark } from '@/hooks/useDark';
 
 const StatCard = ({ label, value, change, positive, icon: Icon }: { label: string; value: string; change: string; positive: boolean; icon: typeof Users }) => (
@@ -57,7 +56,9 @@ export default function AnalyticsPage() {
   ], [dark]);
 
   useEffect(() => {
-    Promise.all([svc.getDashboardStats(), svc.getClients()])
+    import('@/services').then((svc) =>
+      Promise.all([svc.getDashboardStats(), svc.getClients()])
+    )
       .then(([s, c]) => { setStats(s); setClients(c); setLoading(false); })
       .catch((err) => { console.error('Failed to load analytics data:', err); setLoading(false); });
   }, []);

@@ -1,14 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from "react";
-import { Users, Clock, AlertTriangle, TrendingUp, ArrowUpRight, Send, Check, ChevronRight, Phone, Mail, MessageSquare, Filter, Bell, Plus } from "lucide-react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { Users, Clock, AlertTriangle, TrendingUp, ArrowUpRight, Bell, Plus, Filter } from "lucide-react";
 import { useDark } from '@/hooks/useDark';
-import { MatchScore } from '@/components/ui/MatchScore';
-import { Avatar } from '@/components/ui/Avatar';
-import { Badge, type BadgeVariant } from '@/components/ui/Badge';
-import { ProgressBar } from '@/components/ui/ProgressBar';
 import { SparkLine } from '@/components/ui/SparkLine';
 import { MiniDonut } from '@/components/ui/MiniDonut';
+import { DashboardActions } from '@/components/dashboard/DashboardActions';
+import { DashboardMatches } from '@/components/dashboard/DashboardMatches';
+import type { DashboardStats, Trigger, PropertyMatch } from '@/types/client';
 
 const useCountUp = (target: number, duration = 1200) => {
   const [value, setValue] = useState(0);
@@ -33,45 +32,66 @@ const AnimatedNumber = ({ value }: { value: number }) => {
   return <span className="font-data animate-count-up">{count}</span>;
 };
 
-const metricCards = [
-  { label: "Active Clients", value: 8, change: "+2 this week", icon: Users, sparkData: [4, 5, 5, 6, 6, 7, 8] },
-  { label: "Pending Actions", value: 3, change: "2 critical", icon: Clock, sparkData: [5, 4, 6, 3, 4, 3, 3] },
-  { label: "Lease Expirations", value: 1, change: "29 days out", icon: AlertTriangle, sparkData: [3, 2, 2, 1, 2, 1, 1] },
-  { label: "New Matches", value: 3, change: "2 high score", icon: TrendingUp, sparkData: [1, 0, 2, 1, 3, 2, 3] },
-  { label: "Leads This Week", value: 1, change: "via referral", icon: ArrowUpRight, sparkData: [2, 1, 3, 2, 1, 0, 1] },
-];
-
-const actions = [
-  { priority: "critical" as BadgeVariant, client: "Sarah Chen", title: "Lease expires in 29 days", desc: "Sarah\u2019s lease at 412 Main St expires March 15. She hasn\u2019t secured a new place yet.", daysLeft: 29, totalDays: 60 },
-  { priority: "critical" as BadgeVariant, client: "Ashley Williams", title: "New client \u2014 24hr follow-up", desc: "Ashley signed up 2 days ago and needs immediate housing. Follow up with property matches.", daysLeft: 1, totalDays: 1 },
-  { priority: "high" as BadgeVariant, client: "Marcus Johnson", title: "Property tour confirmation", desc: "Marcus has a tour scheduled for 880 Mandalay Ave #210 tomorrow at 2pm. Confirm attendance.", daysLeft: 1, totalDays: 3 },
-  { priority: "medium" as BadgeVariant, client: "Robert Thompson", title: "Investment property follow-up", desc: "Robert viewed 1580 Alt 19 N last week. Check if he wants to proceed with an offer.", daysLeft: 4, totalDays: 7 },
-];
-
-const properties = [
-  { score: 92, address: "725 Virginia Ln", status: "new" as BadgeVariant, details: "Dunedin \u00b7 3/2 \u00b7 1,520sf \u00b7 Single Family", price: "$2,350/mo", client: "Sarah Chen", tags: ["Pet-friendly", "Fenced yard", "W/D hookups", "3BR/2BA match"] },
-  { score: 90, address: "880 Mandalay Ave #210", status: "sent" as BadgeVariant, details: "Clearwater Beach \u00b7 2/2 \u00b7 1,150sf \u00b7 Condo", price: "$2,200/mo", client: "Marcus Johnson", tags: ["Pool access", "2BR/2BA match", "Clearwater Beach", "Under budget"] },
-  { score: 88, address: "1580 Alt 19 N", status: "sent" as BadgeVariant, details: "Dunedin \u00b7 6/3 \u00b7 2,800sf \u00b7 Triplex", price: "$375,000", client: "Robert Thompson", tags: ["Investment", "Multi-family", "8.3% cap rate"] },
-];
-
 export default function DashboardPage() {
   const [time, setTime] = useState(new Date());
   const [mounted, setMounted] = useState(false);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [triggers, setTriggers] = useState<Trigger[]>([]);
+  const [matches, setMatches] = useState<PropertyMatch[]>([]);
   const dark = useDark();
 
   useEffect(() => {
     setMounted(true);
     const t = setInterval(() => setTime(new Date()), 60000);
+
+    const loadData = async () => {
+      try {
+        const svc = await import('@/services');
+        const [s, tr, ma] = await Promise.all([
+          svc.getDashboardStats(),
+          svc.getAllTriggers(),
+          svc.getAllMatches(),
+        ]);
+        setStats(s);
+        setTriggers(tr);
+        setMatches(ma);
+      } catch (err) {
+        console.error('Dashboard load failed:', err);
+      }
+    };
+    loadData();
+
     return () => clearInterval(t);
+  }, []);
+
+  const handleTriggerComplete = useCallback(async (id: string) => {
+    const svc = await import('@/services');
+    await svc.updateTriggerStatus(id, 'completed');
+  }, []);
+
+  const handleMatchSend = useCallback(async (id: string) => {
+    const svc = await import('@/services');
+    await svc.updateMatchStatus(id, 'sent');
   }, []);
 
   const greeting = time.getHours() < 12 ? "Good morning" : time.getHours() < 17 ? "Good afternoon" : "Good evening";
 
+  const metricCards = useMemo(() => {
+    if (!stats) return [];
+    return [
+      { label: "Active Clients", value: stats.totalActiveClients, change: `${stats.leadsThisWeek} new this week`, icon: Users, sparkData: [4, 5, 5, 6, 6, 7, stats.totalActiveClients] },
+      { label: "Pending Actions", value: stats.pendingFollowUps, change: `${stats.pendingFollowUps} to review`, icon: Clock, sparkData: [5, 4, 6, 3, 4, 3, stats.pendingFollowUps] },
+      { label: "Lease Expirations", value: stats.leaseExpirationsThisMonth, change: "this month", icon: AlertTriangle, sparkData: [3, 2, 2, 1, 2, 1, stats.leaseExpirationsThisMonth] },
+      { label: "New Matches", value: stats.matchesPending, change: "pending review", icon: TrendingUp, sparkData: [1, 0, 2, 1, 3, 2, stats.matchesPending] },
+      { label: "Leads This Week", value: stats.leadsThisWeek, change: `${stats.conversionRate ? Math.round(stats.conversionRate * 100) : 0}% conversion`, icon: ArrowUpRight, sparkData: [2, 1, 3, 2, 1, 0, stats.leadsThisWeek] },
+    ];
+  }, [stats]);
+
   const donutSegments = useMemo(() => [
-    { label: "Active", value: 5, color: dark ? "#D4A84B" : "#B8860B" },
-    { label: "Searching", value: 3, color: "#C9A227" },
-    { label: "Pending", value: 2, color: dark ? "#8B6914" : "#FDE8B8" },
-  ], [dark]);
+    { label: "Active", value: stats?.totalActiveClients || 0, color: dark ? "#D4A84B" : "#B8860B" },
+    { label: "Searching", value: stats?.matchesPending || 0, color: "#C9A227" },
+    { label: "Pending", value: stats?.pendingFollowUps || 0, color: dark ? "#8B6914" : "#FDE8B8" },
+  ], [dark, stats]);
 
   return (
     <>
@@ -92,7 +112,9 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2.5 shrink-0">
             <button className="relative p-2.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 transition-colors">
               <Bell size={16} className="text-gold-light" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-slate-800 animate-soft-pulse" />
+              {triggers.filter((t) => t.status === 'fired').length > 0 && (
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-slate-800 animate-soft-pulse" />
+              )}
             </button>
             <a href="/clients?new=true" className="flex items-center gap-2 bg-gold hover:bg-gold-muted text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors shadow-sm shadow-gold/20 active:scale-[0.97]">
               <Plus size={14} /> Add Client
@@ -129,62 +151,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
           {/* Today's Actions */}
           <div className={`lg:col-span-7 ${mounted ? 'animate-fade-slide-up' : ''}`} style={{ animationDelay: '300ms', animationFillMode: 'backwards' }}>
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
-              <div className="px-5 py-4 flex items-center justify-between rounded-t-xl" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-5 rounded-full bg-gold-light" />
-                  <h2 className="text-sm font-bold text-white tracking-tight">Today&apos;s Actions</h2>
-                  <span className="text-xs font-bold text-gold-light bg-white/10 rounded-full px-2.5 py-0.5 font-data">{actions.length}</span>
-                </div>
-                <button className="text-xs text-slate-300 hover:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-white/10 transition-colors">
-                  <Filter size={12} /> Filter
-                </button>
-              </div>
-
-              <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
-                {actions.map((action) => (
-                  <div key={action.client} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors group">
-                    <div className="flex items-start gap-3">
-                      <Avatar name={action.client} size={38} />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Badge variant={action.priority}>{action.priority}</Badge>
-                          <span className="text-sm font-semibold text-gold-muted dark:text-gold-light">{action.client}</span>
-                          <div className="ml-auto flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                            <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><Phone size={13} className="text-gray-400" /></button>
-                            <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><Mail size={13} className="text-gray-400" /></button>
-                            <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
-                          </div>
-                        </div>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-1">{action.title}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-2.5">{action.desc}</p>
-
-                        <div className="flex items-center gap-2 mb-3">
-                          <ProgressBar
-                            current={action.totalDays - action.daysLeft}
-                            total={action.totalDays}
-                            color={action.priority === "critical" ? "#ef4444" : action.priority === "high" ? "#f59e0b" : "#B8860B"}
-                          />
-                          <span className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap font-data">{action.daysLeft}d left</span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <button className="flex items-center gap-1.5 text-xs font-medium text-white bg-gold hover:bg-gold-muted px-3 py-1.5 rounded-lg transition-colors shadow-sm shadow-gold/15 active:scale-[0.97]">
-                            <Send size={11} /> Send
-                          </button>
-                          <button className="flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors active:scale-[0.97]">
-                            <Check size={11} /> Done
-                          </button>
-                          <button className="flex items-center gap-1 text-xs text-gold dark:text-gold-light hover:text-gold-muted dark:hover:text-gold-light font-medium ml-1">
-                            <ChevronRight size={12} /> Draft message
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <DashboardActions triggers={triggers} onComplete={handleTriggerComplete} />
           </div>
 
           {/* Right Column */}
@@ -212,43 +179,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Property Matches */}
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
-              <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
-                <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-5 rounded-full bg-gold-light" />
-                  <h2 className="text-sm font-bold text-white tracking-tight">Property Matches</h2>
-                </div>
-                <button className="text-xs text-slate-300 hover:text-white font-medium transition-colors">View All</button>
-              </div>
-
-              <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
-                {properties.map((prop) => (
-                  <div key={prop.address} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors">
-                    <div className="flex items-start gap-3">
-                      <MatchScore score={prop.score} dark={dark} />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{prop.address}</span>
-                          <Badge variant={prop.status}>{prop.status}</Badge>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{prop.details}</p>
-                        <div className="flex items-center gap-2 mb-2.5">
-                          <span className="text-sm font-bold text-gold dark:text-gold-light font-data">{prop.price}</span>
-                          <span className="text-xs text-gray-400 dark:text-gray-500">{prop.client}</span>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {prop.tags.map((tag) => (
-                            <span key={tag} className="text-xs bg-amber-50/50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/60 dark:border-gold-muted/30 px-2 py-0.5 rounded-md">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <DashboardMatches matches={matches} onSend={handleMatchSend} />
           </div>
         </div>
       </div>
