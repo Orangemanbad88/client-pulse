@@ -259,6 +259,29 @@ export interface Trigger {
   urgency: UrgencyLevel;
 }
 
+// ---- MLS Listing (from CompSearch) ----
+
+export interface MLSListing {
+  id: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  bedrooms: number;
+  bathrooms: number;
+  sqft: number;
+  yearBuilt: number;
+  propertyType: string;
+  saleDate: string;
+  salePrice: number;
+  daysOnMarket: number;
+  lat: number;
+  lng: number;
+  photos: string[];
+  pricePerSqft: number;
+  similarityScore: number;
+}
+
 // ---- Dashboard Stats ----
 
 export interface DashboardStats {

@@ -1,142 +1,438 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
-import Link from 'next/link';
-import { Building2, MapPin, Bed, Bath, Maximize, ArrowUpRight } from 'lucide-react';
-import type { PropertyMatch } from '@/types/client';
-import { PROPERTY_TYPE_LABELS } from '@/types/client';
-import { MatchScore } from '@/components/ui/MatchScore';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import {
+  Building2,
+  MapPin,
+  Bed,
+  Bath,
+  Maximize,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Pause,
+  Play,
+  TrendingUp,
+  Clock,
+  Home,
+  Loader2,
+} from 'lucide-react';
+import type { MLSListing } from '@/types/client';
 import { useDark } from '@/hooks/useDark';
-import * as svc from '@/services/mock-service';
+
+const COMP_SEARCH_PHOTO_URL = 'https://comp-search.vercel.app/api/photos';
+const CYCLE_INTERVAL = 6000;
+
+function getPhotoUrl(listingId: string, idx = 0): string {
+  return `${COMP_SEARCH_PHOTO_URL}/${listingId}?idx=${idx}`;
+}
+
+function formatPrice(price: number): string {
+  if (price >= 1_000_000) return `$${(price / 1_000_000).toFixed(2)}M`;
+  if (price >= 1_000) return `$${(price / 1_000).toFixed(0)}K`;
+  return `$${price.toLocaleString()}`;
+}
+
+function daysAgoLabel(days: number): string {
+  if (days === 0) return 'Listed today';
+  if (days === 1) return '1 day ago';
+  return `${days} days ago`;
+}
 
 export default function PropertiesPage() {
-  const [matches, setMatches] = useState<PropertyMatch[]>([]);
+  const [listings, setListings] = useState<MLSListing[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<'all' | 'new' | 'sent' | 'interested'>('all');
+  const [error, setError] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [filter, setFilter] = useState<'all' | 'Single Family' | 'Condo' | 'Townhouse'>('all');
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
+  const [visibleCount, setVisibleCount] = useState(9);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dark = useDark();
 
   useEffect(() => {
-    svc.getAllMatches()
-      .then((m) => { setMatches(m); setLoading(false); })
-      .catch((err) => { console.error('Failed to load properties:', err); setLoading(false); });
+    fetch('/api/listings')
+      .then((res) => {
+        if (!res.ok) throw new Error(`API returned ${res.status}`);
+        return res.json();
+      })
+      .then((data: MLSListing[]) => {
+        if (data.length === 0) {
+          setError('No MLS listings available');
+        }
+        setListings(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to load MLS listings:', err);
+        setError('Could not connect to MLS feed');
+        setLoading(false);
+      });
   }, []);
 
-  const filtered = filter === 'all' ? matches : matches.filter((m) => m.status === filter);
-  const counts = useMemo(() => ({
-    all: matches.length,
-    new: matches.filter((m) => m.status === 'new').length,
-    sent: matches.filter((m) => m.status === 'sent').length,
-    interested: matches.filter((m) => m.status === 'interested').length,
-  }), [matches]);
+  const filtered = filter === 'all' ? listings : listings.filter((l) => l.propertyType === filter);
 
-  if (loading) return (
-    <div className="flex items-center justify-center min-h-[400px]">
-      <p className="text-sm text-gray-400">Loading...</p>
-    </div>
+  const goTo = useCallback(
+    (idx: number, dir: 'next' | 'prev') => {
+      if (filtered.length === 0) return;
+      setDirection(dir);
+      setActiveIndex(((idx % filtered.length) + filtered.length) % filtered.length);
+    },
+    [filtered.length],
   );
+
+  const next = useCallback(() => goTo(activeIndex + 1, 'next'), [activeIndex, goTo]);
+  const prev = useCallback(() => goTo(activeIndex - 1, 'prev'), [activeIndex, goTo]);
+
+  // Auto-cycle
+  useEffect(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (playing && filtered.length > 1) {
+      timerRef.current = setInterval(next, CYCLE_INTERVAL);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [playing, next, filtered.length]);
+
+  // Reset index and visible count when filter changes
+  useEffect(() => {
+    setActiveIndex(0);
+    setVisibleCount(9);
+  }, [filter]);
+
+  const featured = filtered[activeIndex];
+
+  const typeCounts = {
+    all: listings.length,
+    'Single Family': listings.filter((l) => l.propertyType === 'Single Family').length,
+    Condo: listings.filter((l) => l.propertyType === 'Condo').length,
+    Townhouse: listings.filter((l) => l.propertyType === 'Townhouse').length,
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[500px] gap-3">
+        <Loader2 size={28} className="text-gold animate-spin" />
+        <p className="text-sm text-gray-400">Fetching MLS listings...</p>
+      </div>
+    );
+  }
 
   return (
     <>
+      {/* Header */}
       <header
         className="px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
         style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}
       >
         <div>
-          <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>Properties</h1>
-          <p className="text-xs text-slate-400 mt-0.5">{matches.length} matched properties</p>
+          <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>
+            Properties
+          </h1>
+          <p className="text-xs text-slate-400 mt-0.5">
+            {listings.length} active MLS listings
+            {listings.length > 0 && (
+              <span className="ml-2 inline-flex items-center gap-1 text-emerald-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Live feed
+              </span>
+            )}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setPlaying(!playing)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300"
+          >
+            {playing ? <Pause size={13} /> : <Play size={13} />}
+            {playing ? 'Pause' : 'Play'}
+          </button>
         </div>
       </header>
-      <div className="px-4 lg:px-8 py-4 lg:py-6">
 
-      {/* Filter tabs */}
-      <div className="flex items-center gap-1 mb-5">
-        {(['all', 'new', 'sent', 'interested'] as const).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              filter === f
-                ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
-                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
-            }`}
-          >
-            {f.charAt(0).toUpperCase() + f.slice(1)}
-            <span className="ml-1.5 text-[10px] font-data">{counts[f]}</span>
-          </button>
-        ))}
-      </div>
+      <div className="px-4 lg:px-8 py-4 lg:py-6 space-y-6">
+        {/* Filter tabs */}
+        <div className="flex items-center gap-1">
+          {(['all', 'Single Family', 'Condo', 'Townhouse'] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
+                filter === f
+                  ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+              }`}
+            >
+              {f === 'all' ? 'All' : f}
+              <span className="ml-1.5 text-[10px] font-data opacity-60">{typeCounts[f]}</span>
+            </button>
+          ))}
+        </div>
 
-      {/* Property cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {filtered.map((prop) => (
-          <div
-            key={prop.id}
-            className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 transition-all overflow-hidden"
-          >
-            <div className="p-5">
-              <div className="flex items-start gap-4">
-                <MatchScore score={prop.matchScore} dark={dark} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{prop.address}</span>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                      prop.status === 'new'
-                        ? 'bg-amber-50 dark:bg-amber-900/20 text-gold dark:text-gold-light border border-gold-light dark:border-gold-muted/30'
-                        : prop.status === 'interested'
-                        ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800/30'
-                        : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700'
-                    }`}>
-                      {prop.status}
-                    </span>
-                  </div>
+        {error && filtered.length === 0 ? (
+          <div className="text-center py-16">
+            <Building2 size={40} className="text-gray-300 dark:text-gray-700 mx-auto mb-4" />
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{error}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">
+              Make sure the CompSearch MLS feed is running
+            </p>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-16">
+            <Home size={40} className="text-gray-300 dark:text-gray-700 mx-auto mb-4" />
+            <p className="text-sm text-gray-400">No {filter} listings found</p>
+          </div>
+        ) : (
+          <>
+            {/* Featured Listing - Hero Carousel */}
+            {featured && (
+              <div className="relative group">
+                <div
+                  className="relative overflow-hidden rounded-2xl border border-amber-200/30 dark:border-gray-700/60 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-lg shadow-gold/5 dark:shadow-black/20 transition-all duration-500"
+                >
+                  <div className="flex flex-col lg:flex-row">
+                    {/* Photo */}
+                    <div className="relative lg:w-[420px] h-[240px] lg:h-[320px] flex-shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                      <img
+                        key={featured.id}
+                        src={getPhotoUrl(featured.id)}
+                        alt={featured.address}
+                        className="w-full h-full object-cover transition-opacity duration-700 ease-out"
+                        style={{ animation: `${direction === 'next' ? 'slideInRight' : 'slideInLeft'} 0.5s ease` }}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '';
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
-                  <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 mb-2">
-                    <MapPin size={12} />
-                    <span>{prop.city}</span>
-                    <span className="text-gray-300 dark:text-gray-700">·</span>
-                    <span>{PROPERTY_TYPE_LABELS[prop.propertyType]}</span>
-                  </div>
+                      {/* Listing counter */}
+                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white text-xs font-data font-medium">
+                        {activeIndex + 1} / {filtered.length}
+                      </div>
 
-                  <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-300 mb-3">
-                    <span className="flex items-center gap-1"><Bed size={13} /> {prop.bedrooms}</span>
-                    <span className="flex items-center gap-1"><Bath size={13} /> {prop.bathrooms}</span>
-                    <span className="flex items-center gap-1"><Maximize size={13} /> {prop.sqft.toLocaleString()}sf</span>
-                  </div>
+                      {/* Days on market badge */}
+                      <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white text-xs font-medium flex items-center gap-1">
+                        <Clock size={11} />
+                        {daysAgoLabel(featured.daysOnMarket)}
+                      </div>
+                    </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-gold dark:text-gold-light font-data">
-                      ${prop.price.toLocaleString()}{prop.price < 10000 ? '/mo' : ''}
-                    </span>
-                    <Link
-                      href={`/clients/${prop.clientId}`}
-                      className="flex items-center gap-1 text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light transition-colors"
-                    >
-                      {prop.clientName} <ArrowUpRight size={11} />
-                    </Link>
+                    {/* Details */}
+                    <div className="flex-1 p-5 lg:p-6 flex flex-col justify-between">
+                      <div>
+                        {/* Price */}
+                        <div className="flex items-baseline gap-3 mb-1">
+                          <span className="text-2xl lg:text-3xl font-bold font-data text-gold dark:text-gold-light">
+                            {formatPrice(featured.salePrice)}
+                          </span>
+                          {featured.pricePerSqft > 0 && (
+                            <span className="text-xs text-gray-400 font-data">
+                              ${Math.round(featured.pricePerSqft)}/sqft
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Address */}
+                        <h2 className="text-base lg:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-0.5">
+                          {featured.address}
+                        </h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 mb-4">
+                          <MapPin size={13} />
+                          {featured.city}, {featured.state} {featured.zip}
+                        </p>
+
+                        {/* Stats row */}
+                        <div className="flex items-center gap-5 mb-4">
+                          <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                            <Bed size={16} className="text-gray-400" />
+                            <span className="font-data font-semibold">{featured.bedrooms}</span>
+                            <span className="text-xs text-gray-400">beds</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                            <Bath size={16} className="text-gray-400" />
+                            <span className="font-data font-semibold">{featured.bathrooms}</span>
+                            <span className="text-xs text-gray-400">baths</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                            <Maximize size={16} className="text-gray-400" />
+                            <span className="font-data font-semibold">{featured.sqft.toLocaleString()}</span>
+                            <span className="text-xs text-gray-400">sqft</span>
+                          </div>
+                          {featured.yearBuilt > 0 && (
+                            <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                              <Calendar size={16} className="text-gray-400" />
+                              <span className="font-data font-semibold">{featured.yearBuilt}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-2">
+                          <span className="text-xs px-2.5 py-1 rounded-lg bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20 font-medium">
+                            {featured.propertyType}
+                          </span>
+                          {featured.daysOnMarket <= 7 && (
+                            <span className="text-xs px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200/40 dark:border-emerald-800/30 font-medium flex items-center gap-1">
+                              <TrendingUp size={11} /> New Listing
+                            </span>
+                          )}
+                          {featured.photos.length > 1 && (
+                            <span className="text-xs px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200/40 dark:border-gray-700/40">
+                              {featured.photos.length} photos
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Progress dots */}
+                      <div className="flex items-center gap-1.5 mt-4 lg:mt-0">
+                        {filtered.slice(0, Math.min(filtered.length, 20)).map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => goTo(i, i > activeIndex ? 'next' : 'prev')}
+                            className={`h-1.5 rounded-full transition-all duration-500 ${
+                              i === activeIndex
+                                ? 'w-6 bg-gold dark:bg-gold-light'
+                                : 'w-1.5 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400'
+                            }`}
+                          />
+                        ))}
+                        {filtered.length > 20 && (
+                          <span className="text-[10px] text-gray-400 ml-1">+{filtered.length - 20}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Match reasons */}
-              <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-amber-100/30 dark:border-gray-800/60">
-                {prop.matchReasons.map((reason) => (
-                  <span key={reason} className="text-xs bg-amber-50/50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/60 dark:border-gold-muted/30 px-2 py-0.5 rounded-md">
-                    {reason}
-                  </span>
+                {/* Nav arrows */}
+                <button
+                  onClick={prev}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center text-gray-600 dark:text-gray-300 opacity-0 group-hover:opacity-100 hover:scale-110 transition-all duration-300"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  onClick={next}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center text-gray-600 dark:text-gray-300 opacity-0 group-hover:opacity-100 hover:scale-110 transition-all duration-300"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+
+            {/* Listings Grid */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                All Listings
+                <span className="ml-2 text-xs font-normal text-gray-400">
+                  Showing {Math.min(visibleCount, filtered.length)} of {filtered.length}
+                </span>
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {filtered.slice(0, visibleCount).map((listing, i) => (
+                  <div
+                    key={listing.id}
+                    onClick={() => {
+                      goTo(i, i > activeIndex ? 'next' : 'prev');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={`group/card cursor-pointer rounded-xl border overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.01] ${
+                      i === activeIndex
+                        ? 'border-gold/40 dark:border-gold-light/30 shadow-md shadow-gold/10 ring-1 ring-gold/20'
+                        : 'border-amber-200/25 dark:border-gray-800/60 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md shadow-sm hover:shadow-gold/10'
+                    }`}
+                    style={{ animationDelay: `${i * 40}ms` }}
+                  >
+                    {/* Thumbnail */}
+                    <div className="relative h-36 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                      <img
+                        src={getPhotoUrl(listing.id)}
+                        alt={listing.address}
+                        className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                      <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-sm text-white text-xs font-data font-bold">
+                        {formatPrice(listing.salePrice)}
+                      </div>
+                      {listing.daysOnMarket <= 3 && (
+                        <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-emerald-500/90 text-white text-[10px] font-semibold uppercase tracking-wider">
+                          New
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Card body */}
+                    <div className="p-3.5">
+                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate mb-0.5">
+                        {listing.address}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mb-2.5">
+                        <MapPin size={11} />
+                        {listing.city}, {listing.state}
+                      </p>
+                      <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <Bed size={12} /> {listing.bedrooms}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Bath size={12} /> {listing.bathrooms}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Maximize size={12} /> {listing.sqft.toLocaleString()}
+                        </span>
+                        <span className="ml-auto text-[10px] text-gray-400 font-data flex items-center gap-0.5">
+                          <Clock size={10} /> {listing.daysOnMarket}d
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
+
+              {/* Load More */}
+              {visibleCount < filtered.length && (
+                <div className="flex justify-center mt-6">
+                  <button
+                    onClick={() => setVisibleCount((c) => c + 9)}
+                    className="px-5 py-2.5 rounded-xl text-sm font-medium text-gold dark:text-gold-light bg-amber-50/80 dark:bg-amber-900/15 border border-gold-light/30 dark:border-gold-muted/20 hover:bg-amber-100/80 dark:hover:bg-amber-900/25 hover:border-gold/40 transition-all duration-300 hover:shadow-md hover:shadow-gold/10"
+                  >
+                    Show More
+                    <span className="ml-2 text-xs text-gray-400 font-data">
+                      ({Math.min(9, filtered.length - visibleCount)} more)
+                    </span>
+                  </button>
+                </div>
+              )}
+
+              {visibleCount >= filtered.length && filtered.length > 9 && (
+                <p className="text-center text-xs text-gray-400 mt-6">
+                  All {filtered.length} listings shown
+                </p>
+              )}
             </div>
-          </div>
-        ))}
+          </>
+        )}
       </div>
 
-      {filtered.length === 0 && (
-        <div className="text-center py-12">
-          <Building2 size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
-          <p className="text-sm text-gray-400">No {filter} properties</p>
-        </div>
-      )}
-    </div>
+      {/* Slide animations */}
+      <style jsx global>{`
+        @keyframes slideInRight {
+          from { opacity: 0; transform: translateX(30px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInLeft {
+          from { opacity: 0; transform: translateX(-30px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+      `}</style>
     </>
   );
 }
