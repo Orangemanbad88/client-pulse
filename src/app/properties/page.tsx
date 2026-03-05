@@ -52,6 +52,7 @@ export default function PropertiesPage() {
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [visibleCount, setVisibleCount] = useState(9);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
   const dark = useDark();
 
   // Advanced filters
@@ -403,7 +404,7 @@ export default function PropertiesPage() {
           <>
             {/* Featured Listing - Hero Carousel */}
             {featured && (
-              <div className="relative group">
+              <div ref={heroRef} className="relative group">
                 <div
                   className="relative overflow-hidden rounded-2xl border border-amber-200/30 dark:border-gray-700/60 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-lg shadow-gold/5 dark:shadow-black/20 transition-all duration-500"
                 >
@@ -553,7 +554,7 @@ export default function PropertiesPage() {
                     key={listing.id}
                     onClick={() => {
                       goTo(i, i > activeIndex ? 'next' : 'prev');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      heroRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }}
                     className={`group/card cursor-pointer rounded-xl border overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.01] ${
                       i === activeIndex
