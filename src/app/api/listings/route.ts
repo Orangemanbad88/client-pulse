@@ -16,7 +16,23 @@ export async function GET() {
     }
 
     const listings = await res.json();
-    return NextResponse.json(listings);
+
+    // Deduplicate: keep the most recent listing per address
+    // For condos, also distinguish by price to preserve separate units
+    const seen = new Map<string, typeof listings[0]>();
+    for (const listing of listings) {
+      const isCondo = /condo/i.test(listing.propertyType || '');
+      const key = isCondo
+        ? `${listing.address}|${listing.salePrice}`
+        : listing.address;
+
+      const existing = seen.get(key);
+      if (!existing || new Date(listing.saleDate) > new Date(existing.saleDate)) {
+        seen.set(key, listing);
+      }
+    }
+
+    return NextResponse.json(Array.from(seen.values()));
   } catch (error) {
     console.error('Failed to fetch MLS listings:', error);
     return NextResponse.json([], { status: 502 });
