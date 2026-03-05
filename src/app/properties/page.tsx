@@ -21,9 +21,8 @@ import {
 } from 'lucide-react';
 import { useDark } from '@/hooks/useDark';
 
-interface RentalListing {
+interface Listing {
   id: string;
-  referenceId: string;
   address: string;
   city: string;
   state: string;
@@ -34,9 +33,10 @@ interface RentalListing {
   sqft: number;
   yearBuilt: number;
   propertyType: string;
-  salePrice: number; // weekly rate
+  salePrice: number;
   daysOnMarket: number;
   availableSlots: number;
+  listingType: 'rental' | 'for_sale';
   description: string;
   lat: number;
   lng: number;
@@ -47,18 +47,30 @@ interface RentalListing {
 
 const CYCLE_INTERVAL = 6000;
 
-function formatRate(rate: number): string {
-  if (rate === 0) return 'Call for rates';
-  return `$${rate.toLocaleString()}`;
+function formatPrice(price: number, type: 'rental' | 'for_sale'): string {
+  if (price === 0) return type === 'rental' ? 'Call for rates' : 'Call for price';
+  if (type === 'for_sale') {
+    if (price >= 1_000_000) return `$${(price / 1_000_000).toFixed(2)}M`;
+    if (price >= 1_000) return `$${(price / 1_000).toFixed(0)}K`;
+  }
+  return `$${price.toLocaleString()}`;
+}
+
+const PHOTO_URL = 'https://comp-search.vercel.app/api/photos';
+
+function getPhotoUrl(listing: Listing): string {
+  if (listing.listingType === 'rental') return listing.photos[0] || '';
+  return `${PHOTO_URL}/${listing.id}?idx=0`;
 }
 
 export default function PropertiesPage() {
-  const [listings, setListings] = useState<RentalListing[]>([]);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [filter, setFilter] = useState<'all' | 'Single Family' | 'Condo' | 'Townhouse' | 'Duplex'>('all');
+  const [listingTypeFilter, setListingTypeFilter] = useState<'all' | 'rental' | 'for_sale'>('all');
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [visibleCount, setVisibleCount] = useState(9);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -78,7 +90,7 @@ export default function PropertiesPage() {
         if (!res.ok) throw new Error(`API returned ${res.status}`);
         return res.json();
       })
-      .then((data: RentalListing[]) => {
+      .then((data: Listing[]) => {
         if (data.length === 0) {
           setError('No listings available');
         }
@@ -111,6 +123,11 @@ export default function PropertiesPage() {
   const filtered = useMemo(() => {
     let result = listings;
 
+    // Listing type filter (rental vs for sale)
+    if (listingTypeFilter !== 'all') {
+      result = result.filter((l) => l.listingType === listingTypeFilter);
+    }
+
     // Property type filter
     if (filter !== 'all') {
       result = result.filter((l) => l.propertyType === filter);
@@ -142,9 +159,9 @@ export default function PropertiesPage() {
     }
 
     return result;
-  }, [listings, filter, search, bedFilter, bathFilter, townFilter]);
+  }, [listings, listingTypeFilter, filter, search, bedFilter, bathFilter, townFilter]);
 
-  const activeFiltersCount = [bedFilter, bathFilter, townFilter, search.trim() || null].filter(Boolean).length;
+  const activeFiltersCount = [bedFilter, bathFilter, townFilter, search.trim() || null, listingTypeFilter !== 'all' ? listingTypeFilter : null].filter(Boolean).length;
 
   const clearAllFilters = () => {
     setSearch('');
@@ -152,6 +169,7 @@ export default function PropertiesPage() {
     setBathFilter(null);
     setTownFilter(null);
     setFilter('all');
+    setListingTypeFilter('all');
   };
 
   const goTo = useCallback(
@@ -181,17 +199,22 @@ export default function PropertiesPage() {
   useEffect(() => {
     setActiveIndex(0);
     setVisibleCount(9);
-  }, [filter, search, bedFilter, bathFilter, townFilter]);
+  }, [listingTypeFilter, filter, search, bedFilter, bathFilter, townFilter]);
 
   const featured = filtered[activeIndex];
 
+  // Counts based on current listing type filter
+  const typeBase = listingTypeFilter === 'all' ? listings : listings.filter((l) => l.listingType === listingTypeFilter);
   const typeCounts = {
-    all: listings.length,
-    'Single Family': listings.filter((l) => l.propertyType === 'Single Family').length,
-    Condo: listings.filter((l) => l.propertyType === 'Condo').length,
-    Townhouse: listings.filter((l) => l.propertyType === 'Townhouse').length,
-    Duplex: listings.filter((l) => l.propertyType === 'Duplex').length,
+    all: typeBase.length,
+    'Single Family': typeBase.filter((l) => l.propertyType === 'Single Family').length,
+    Condo: typeBase.filter((l) => l.propertyType === 'Condo').length,
+    Townhouse: typeBase.filter((l) => l.propertyType === 'Townhouse').length,
+    Duplex: typeBase.filter((l) => l.propertyType === 'Duplex').length,
   };
+
+  const rentalCount = listings.filter((l) => l.listingType === 'rental').length;
+  const forSaleCount = listings.filter((l) => l.listingType === 'for_sale').length;
 
   if (loading) {
     return (
@@ -253,6 +276,28 @@ export default function PropertiesPage() {
               <X size={14} className="text-gray-400" />
             </button>
           )}
+        </div>
+
+        {/* Listing type toggle */}
+        <div className="flex items-center gap-1">
+          {([
+            { key: 'all' as const, label: 'All', count: listings.length },
+            { key: 'for_sale' as const, label: 'For Sale', count: forSaleCount },
+            { key: 'rental' as const, label: 'Rentals', count: rentalCount },
+          ]).map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setListingTypeFilter(t.key)}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 ${
+                listingTypeFilter === t.key
+                  ? 'bg-gold text-white shadow-sm shadow-gold/20'
+                  : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+              }`}
+            >
+              {t.label}
+              <span className="ml-1.5 text-[10px] font-data opacity-70">{t.count}</span>
+            </button>
+          ))}
         </div>
 
         {/* Type tabs + filter toggle */}
@@ -424,7 +469,7 @@ export default function PropertiesPage() {
                     <div className="relative lg:w-[420px] h-[240px] lg:h-[320px] flex-shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-800">
                       <img
                         key={featured.id}
-                        src={featured.photos[0] || ''}
+                        src={getPhotoUrl(featured)}
                         alt={featured.address}
                         className="w-full h-full object-cover transition-opacity duration-700 ease-out"
                         style={{ animation: `${direction === 'next' ? 'slideInRight' : 'slideInLeft'} 0.5s ease` }}
@@ -440,13 +485,14 @@ export default function PropertiesPage() {
                         {activeIndex + 1} / {filtered.length}
                       </div>
 
-                      {/* Availability badge */}
-                      {featured.availableSlots > 0 && (
-                        <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-emerald-500/80 backdrop-blur-sm text-white text-xs font-medium flex items-center gap-1">
-                          <Calendar size={11} />
-                          {featured.availableSlots} week{featured.availableSlots !== 1 ? 's' : ''} available
-                        </div>
-                      )}
+                      {/* Status badge */}
+                      <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white text-xs font-medium flex items-center gap-1">
+                        {featured.listingType === 'rental' ? (
+                          <><Calendar size={11} /> {featured.availableSlots > 0 ? `${featured.availableSlots} wk${featured.availableSlots !== 1 ? 's' : ''} available` : 'Rental'}</>
+                        ) : (
+                          <><TrendingUp size={11} /> {featured.daysOnMarket <= 7 ? 'New Listing' : `${featured.daysOnMarket}d on market`}</>
+                        )}
+                      </div>
                     </div>
 
                     {/* Details */}
@@ -455,11 +501,11 @@ export default function PropertiesPage() {
                         {/* Price */}
                         <div className="flex items-baseline gap-3 mb-1">
                           <span className="text-2xl lg:text-3xl font-bold font-data text-gold dark:text-gold-light">
-                            {formatRate(featured.salePrice)}
+                            {formatPrice(featured.salePrice, featured.listingType)}
                           </span>
                           {featured.salePrice > 0 && (
                             <span className="text-xs text-gray-400 font-data">
-                              /week
+                              {featured.listingType === 'rental' ? '/week' : featured.pricePerSqft > 0 ? `$${Math.round(featured.pricePerSqft)}/sqft` : ''}
                             </span>
                           )}
                         </div>
@@ -485,11 +531,18 @@ export default function PropertiesPage() {
                             <span className="font-data font-semibold">{featured.bathrooms}</span>
                             <span className="text-xs text-gray-400">baths</span>
                           </div>
-                          {featured.sleeps > 0 && (
+                          {featured.listingType === 'rental' && featured.sleeps > 0 && (
                             <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
                               <Users size={16} className="text-gray-400" />
                               <span className="font-data font-semibold">{featured.sleeps}</span>
                               <span className="text-xs text-gray-400">sleeps</span>
+                            </div>
+                          )}
+                          {featured.listingType === 'for_sale' && featured.sqft > 0 && (
+                            <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                              <Building2 size={16} className="text-gray-400" />
+                              <span className="font-data font-semibold">{featured.sqft.toLocaleString()}</span>
+                              <span className="text-xs text-gray-400">sqft</span>
                             </div>
                           )}
                         </div>
@@ -499,11 +552,13 @@ export default function PropertiesPage() {
                           <span className="text-xs px-2.5 py-1 rounded-lg bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20 font-medium">
                             {featured.propertyType}
                           </span>
-                          {featured.availableSlots > 0 && (
-                            <span className="text-xs px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200/40 dark:border-emerald-800/30 font-medium flex items-center gap-1">
-                              <TrendingUp size={11} /> Available
-                            </span>
-                          )}
+                          <span className={`text-xs px-2.5 py-1 rounded-lg font-medium ${
+                            featured.listingType === 'rental'
+                              ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200/40 dark:border-blue-800/30'
+                              : 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200/40 dark:border-emerald-800/30'
+                          }`}>
+                            {featured.listingType === 'rental' ? 'Rental' : 'For Sale'}
+                          </span>
                           {featured.photos.length > 1 && (
                             <span className="text-xs px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200/40 dark:border-gray-700/40">
                               {featured.photos.length} photos
@@ -575,7 +630,7 @@ export default function PropertiesPage() {
                     {/* Thumbnail */}
                     <div className="relative h-36 overflow-hidden bg-gray-100 dark:bg-gray-800">
                       <img
-                        src={listing.photos[0] || ''}
+                        src={getPhotoUrl(listing)}
                         alt={listing.address}
                         className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
                         loading="lazy"
@@ -585,13 +640,15 @@ export default function PropertiesPage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                       <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-sm text-white text-xs font-data font-bold">
-                        {listing.salePrice > 0 ? `${formatRate(listing.salePrice)}/wk` : 'Call'}
+                        {listing.listingType === 'rental'
+                          ? (listing.salePrice > 0 ? `${formatPrice(listing.salePrice, 'rental')}/wk` : 'Call')
+                          : formatPrice(listing.salePrice, 'for_sale')}
                       </div>
-                      {listing.availableSlots > 0 && (
-                        <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-emerald-500/90 text-white text-[10px] font-semibold uppercase tracking-wider">
-                          Available
-                        </div>
-                      )}
+                      <div className={`absolute top-2 right-2 px-2 py-0.5 rounded-md text-white text-[10px] font-semibold uppercase tracking-wider ${
+                        listing.listingType === 'rental' ? 'bg-blue-500/90' : 'bg-emerald-500/90'
+                      }`}>
+                        {listing.listingType === 'rental' ? 'Rental' : 'For Sale'}
+                      </div>
                     </div>
 
                     {/* Card body */}
@@ -610,16 +667,25 @@ export default function PropertiesPage() {
                         <span className="flex items-center gap-1">
                           <Bath size={12} /> {listing.bathrooms}
                         </span>
-                        {listing.sleeps > 0 && (
+                        {listing.listingType === 'rental' && listing.sleeps > 0 && (
                           <span className="flex items-center gap-1">
                             <Users size={12} /> {listing.sleeps}
                           </span>
                         )}
-                        {listing.availableSlots > 0 && (
-                          <span className="ml-auto text-[10px] text-emerald-500 font-medium flex items-center gap-0.5">
-                            <Calendar size={10} /> {listing.availableSlots} wk{listing.availableSlots !== 1 ? 's' : ''}
+                        {listing.listingType === 'for_sale' && listing.sqft > 0 && (
+                          <span className="flex items-center gap-1">
+                            <Building2 size={12} /> {listing.sqft.toLocaleString()}
                           </span>
                         )}
+                        <span className={`ml-auto text-[10px] font-medium flex items-center gap-0.5 ${
+                          listing.listingType === 'rental' ? 'text-blue-500' : 'text-emerald-500'
+                        }`}>
+                          {listing.listingType === 'rental' ? (
+                            <><Calendar size={10} /> {listing.availableSlots > 0 ? `${listing.availableSlots} wk${listing.availableSlots !== 1 ? 's' : ''}` : 'Rental'}</>
+                          ) : (
+                            <><TrendingUp size={10} /> {listing.daysOnMarket}d</>
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>

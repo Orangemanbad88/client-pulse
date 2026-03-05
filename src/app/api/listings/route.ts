@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 const MCCANN_CATALOG_URL = 'https://mccannrealtors.vercel.app/api/search-catalog';
+const COMP_SEARCH_URL = process.env.COMP_SEARCH_URL || 'https://comp-search.vercel.app';
 
 interface McCannProperty {
   ReferenceID: string;
@@ -41,47 +42,57 @@ interface McCannProperty {
   }[];
 }
 
+interface MLSListing {
+  id: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  bedrooms: number;
+  bathrooms: number;
+  sqft: number;
+  yearBuilt: number;
+  propertyType: string;
+  saleDate: string;
+  salePrice: number;
+  daysOnMarket: number;
+  lat: number;
+  lng: number;
+  photos: string[];
+  pricePerSqft: number;
+  similarityScore: number;
+}
+
 function normalizePropertyType(raw: string): string {
   const lower = raw.toLowerCase();
   if (lower.includes('condo')) return 'Condo';
-  if (lower.includes('townhouse') || lower.includes('town house')) return 'Townhouse';
+  if (lower.includes('townhouse') || lower.includes('townhome') || lower.includes('town house')) return 'Townhouse';
   if (lower.includes('duplex')) return 'Duplex';
   if (lower.includes('apartment')) return 'Apartment';
+  if (lower.includes('house') || lower.includes('cottage')) return 'Single Family';
   return 'Single Family';
 }
 
-export async function GET() {
+async function fetchRentals() {
   try {
-    const res = await fetch(MCCANN_CATALOG_URL, {
-      next: { revalidate: 300 },
-    });
-
-    if (!res.ok) {
-      console.error('McCann catalog API error:', res.status, res.statusText);
-      return NextResponse.json([], { status: 502 });
-    }
-
+    const res = await fetch(MCCANN_CATALOG_URL, { next: { revalidate: 300 } });
+    if (!res.ok) return [];
     const properties: McCannProperty[] = await res.json();
 
-    const listings = properties.map((p) => {
+    return properties.map((p) => {
       const d = p.PropertyDetails;
-
-      // Get the best available rate
       const weeklyRate = p.RateInfo?.[0]
         ? parseFloat(p.RateInfo[0].Rate)
         : p.Availability?.[0]
           ? parseFloat(p.Availability[0].AverageRate)
           : 0;
-
       const availableSlots = (p.Availability || []).filter(
         (a) => a.Status === 'Available',
       ).length;
-
       const address = d.Unit ? `${d.Street} ${d.Unit}` : d.Street;
 
       return {
-        id: p.PropertyID,
-        referenceId: p.ReferenceID,
+        id: `rental-${p.PropertyID}`,
         address,
         city: d.City || 'Sea Isle City',
         state: d.State || 'NJ',
@@ -95,6 +106,7 @@ export async function GET() {
         salePrice: weeklyRate,
         daysOnMarket: 0,
         availableSlots,
+        listingType: 'rental' as const,
         description: d.Description || d.Headline || '',
         lat: parseFloat(d.Coordinates?.Latitude) || 0,
         lng: parseFloat(d.Coordinates?.Longitude) || 0,
@@ -103,18 +115,47 @@ export async function GET() {
         similarityScore: 0,
       };
     });
+  } catch {
+    return [];
+  }
+}
 
-    // Deduplicate by address
-    const seen = new Map<string, (typeof listings)[0]>();
-    for (const listing of listings) {
-      if (!seen.has(listing.address)) {
-        seen.set(listing.address, listing);
+async function fetchForSale() {
+  try {
+    const res = await fetch(`${COMP_SEARCH_URL}/api/listings`, { next: { revalidate: 300 } });
+    if (!res.ok) return [];
+    const listings: MLSListing[] = await res.json();
+
+    return listings.map((l) => ({
+      ...l,
+      sleeps: 0,
+      availableSlots: 0,
+      listingType: 'for_sale' as const,
+      description: '',
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function GET() {
+  try {
+    const [rentals, forSale] = await Promise.all([fetchRentals(), fetchForSale()]);
+
+    const all = [...rentals, ...forSale];
+
+    // Deduplicate by address within each type
+    const seen = new Map<string, (typeof all)[0]>();
+    for (const listing of all) {
+      const key = `${listing.listingType}:${listing.address}`;
+      if (!seen.has(key)) {
+        seen.set(key, listing);
       }
     }
 
     return NextResponse.json(Array.from(seen.values()));
   } catch (error) {
-    console.error('Failed to fetch McCann listings:', error);
+    console.error('Failed to fetch listings:', error);
     return NextResponse.json([], { status: 502 });
   }
 }
