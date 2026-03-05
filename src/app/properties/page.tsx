@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import {
   Building2,
   MapPin,
@@ -16,6 +16,9 @@ import {
   Clock,
   Home,
   Loader2,
+  Search,
+  X,
+  ChevronDown,
 } from 'lucide-react';
 import type { MLSListing } from '@/types/client';
 import { useDark } from '@/hooks/useDark';
@@ -51,6 +54,13 @@ export default function PropertiesPage() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dark = useDark();
 
+  // Advanced filters
+  const [search, setSearch] = useState('');
+  const [bedFilter, setBedFilter] = useState<number | null>(null);
+  const [bathFilter, setBathFilter] = useState<number | null>(null);
+  const [townFilter, setTownFilter] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
+
   useEffect(() => {
     fetch('/api/listings')
       .then((res) => {
@@ -71,7 +81,67 @@ export default function PropertiesPage() {
       });
   }, []);
 
-  const filtered = filter === 'all' ? listings : listings.filter((l) => l.propertyType === filter);
+  // Unique values for filter dropdowns
+  const towns = useMemo(() => {
+    const set = new Set(listings.map((l) => l.city));
+    return Array.from(set).sort();
+  }, [listings]);
+
+  const bedOptions = useMemo(() => {
+    const set = new Set(listings.map((l) => l.bedrooms));
+    return Array.from(set).sort((a, b) => a - b);
+  }, [listings]);
+
+  const bathOptions = useMemo(() => {
+    const set = new Set(listings.map((l) => l.bathrooms));
+    return Array.from(set).sort((a, b) => a - b);
+  }, [listings]);
+
+  const filtered = useMemo(() => {
+    let result = listings;
+
+    // Property type filter
+    if (filter !== 'all') {
+      result = result.filter((l) => l.propertyType === filter);
+    }
+
+    // Search
+    if (search.trim()) {
+      const q = search.toLowerCase().trim();
+      result = result.filter((l) =>
+        l.address.toLowerCase().includes(q) ||
+        l.city.toLowerCase().includes(q) ||
+        l.zip.includes(q),
+      );
+    }
+
+    // Bedrooms
+    if (bedFilter !== null) {
+      result = result.filter((l) => l.bedrooms >= bedFilter);
+    }
+
+    // Bathrooms
+    if (bathFilter !== null) {
+      result = result.filter((l) => l.bathrooms >= bathFilter);
+    }
+
+    // Town
+    if (townFilter) {
+      result = result.filter((l) => l.city === townFilter);
+    }
+
+    return result;
+  }, [listings, filter, search, bedFilter, bathFilter, townFilter]);
+
+  const activeFiltersCount = [bedFilter, bathFilter, townFilter, search.trim() || null].filter(Boolean).length;
+
+  const clearAllFilters = () => {
+    setSearch('');
+    setBedFilter(null);
+    setBathFilter(null);
+    setTownFilter(null);
+    setFilter('all');
+  };
 
   const goTo = useCallback(
     (idx: number, dir: 'next' | 'prev') => {
@@ -96,11 +166,11 @@ export default function PropertiesPage() {
     };
   }, [playing, next, filtered.length]);
 
-  // Reset index and visible count when filter changes
+  // Reset index and visible count when any filter changes
   useEffect(() => {
     setActiveIndex(0);
     setVisibleCount(9);
-  }, [filter]);
+  }, [filter, search, bedFilter, bathFilter, townFilter]);
 
   const featured = filtered[activeIndex];
 
@@ -132,7 +202,7 @@ export default function PropertiesPage() {
             Properties
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            {listings.length} active MLS listings
+            {filtered.length} of {listings.length} listings
             {listings.length > 0 && (
               <span className="ml-2 inline-flex items-center gap-1 text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -152,24 +222,163 @@ export default function PropertiesPage() {
         </div>
       </header>
 
-      <div className="px-4 lg:px-8 py-4 lg:py-6 space-y-6">
-        {/* Filter tabs */}
-        <div className="flex items-center gap-1">
-          {(['all', 'Single Family', 'Condo', 'Townhouse'] as const).map((f) => (
+      <div className="px-4 lg:px-8 py-4 lg:py-6 space-y-4">
+        {/* Search bar */}
+        <div className="relative">
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by address, city, or zip..."
+            className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-amber-200/25 dark:border-gray-800/60 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all"
+          />
+          {search && (
             <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
-                filter === f
-                  ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
-                  : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
-              }`}
+              onClick={() => setSearch('')}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
             >
-              {f === 'all' ? 'All' : f}
-              <span className="ml-1.5 text-[10px] font-data opacity-60">{typeCounts[f]}</span>
+              <X size={14} className="text-gray-400" />
             </button>
-          ))}
+          )}
         </div>
+
+        {/* Type tabs + filter toggle */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-1">
+            {(['all', 'Single Family', 'Condo', 'Townhouse'] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
+                  filter === f
+                    ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                }`}
+              >
+                {f === 'all' ? 'All' : f}
+                <span className="ml-1.5 text-[10px] font-data opacity-60">{typeCounts[f]}</span>
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
+              showFilters || activeFiltersCount > 0
+                ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
+                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+            }`}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+            Filters
+            {activeFiltersCount > 0 && (
+              <span className="ml-1 w-4 h-4 rounded-full bg-gold text-white text-[10px] font-bold flex items-center justify-center">{activeFiltersCount}</span>
+            )}
+            <ChevronDown size={12} className={`transition-transform duration-200 ${showFilters ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+
+        {/* Filter panel */}
+        {showFilters && (
+          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm">
+            <div className="flex flex-wrap items-end gap-4">
+              {/* Bedrooms */}
+              <div className="flex-1 min-w-[140px]">
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5 block">
+                  <Bed size={11} className="inline mr-1" />Bedrooms
+                </label>
+                <select
+                  value={bedFilter ?? ''}
+                  onChange={(e) => setBedFilter(e.target.value ? Number(e.target.value) : null)}
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
+                >
+                  <option value="">Any</option>
+                  {bedOptions.map((b) => (
+                    <option key={b} value={b}>{b}+ beds</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Bathrooms */}
+              <div className="flex-1 min-w-[140px]">
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5 block">
+                  <Bath size={11} className="inline mr-1" />Bathrooms
+                </label>
+                <select
+                  value={bathFilter ?? ''}
+                  onChange={(e) => setBathFilter(e.target.value ? Number(e.target.value) : null)}
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
+                >
+                  <option value="">Any</option>
+                  {bathOptions.map((b) => (
+                    <option key={b} value={b}>{b}+ baths</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Town */}
+              <div className="flex-1 min-w-[180px]">
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5 block">
+                  <MapPin size={11} className="inline mr-1" />Town
+                </label>
+                <select
+                  value={townFilter ?? ''}
+                  onChange={(e) => setTownFilter(e.target.value || null)}
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
+                >
+                  <option value="">All Towns</option>
+                  {towns.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Clear */}
+              {activeFiltersCount > 0 && (
+                <button
+                  onClick={clearAllFilters}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+                >
+                  <X size={12} /> Clear all
+                </button>
+              )}
+            </div>
+
+            {/* Active filter pills */}
+            {activeFiltersCount > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+                {search.trim() && (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                    &ldquo;{search}&rdquo;
+                    <button onClick={() => setSearch('')} className="hover:text-red-500 transition-colors"><X size={11} /></button>
+                  </span>
+                )}
+                {bedFilter !== null && (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                    {bedFilter}+ beds
+                    <button onClick={() => setBedFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
+                  </span>
+                )}
+                {bathFilter !== null && (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                    {bathFilter}+ baths
+                    <button onClick={() => setBathFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
+                  </span>
+                )}
+                {townFilter && (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                    {townFilter}
+                    <button onClick={() => setTownFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
+                  </span>
+                )}
+                <span className="text-xs text-gray-400 dark:text-gray-500 self-center font-data">
+                  {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
         {error && filtered.length === 0 ? (
           <div className="text-center py-16">
@@ -182,7 +391,13 @@ export default function PropertiesPage() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Home size={40} className="text-gray-300 dark:text-gray-700 mx-auto mb-4" />
-            <p className="text-sm text-gray-400">No {filter} listings found</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">No listings match your filters</p>
+            <button
+              onClick={clearAllFilters}
+              className="text-xs text-gold dark:text-gold-light hover:underline mt-2"
+            >
+              Clear all filters
+            </button>
           </div>
         ) : (
           <>
