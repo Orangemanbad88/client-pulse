@@ -6,49 +6,59 @@ import {
   MapPin,
   Bed,
   Bath,
-  Maximize,
   Calendar,
   ChevronLeft,
   ChevronRight,
   Pause,
   Play,
   TrendingUp,
-  Clock,
   Home,
   Loader2,
   Search,
   X,
   ChevronDown,
+  Users,
 } from 'lucide-react';
-import type { MLSListing } from '@/types/client';
 import { useDark } from '@/hooks/useDark';
 
-const COMP_SEARCH_PHOTO_URL = 'https://comp-search.vercel.app/api/photos';
+interface RentalListing {
+  id: string;
+  referenceId: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  bedrooms: number;
+  bathrooms: number;
+  sleeps: number;
+  sqft: number;
+  yearBuilt: number;
+  propertyType: string;
+  salePrice: number; // weekly rate
+  daysOnMarket: number;
+  availableSlots: number;
+  description: string;
+  lat: number;
+  lng: number;
+  photos: string[];
+  pricePerSqft: number;
+  similarityScore: number;
+}
+
 const CYCLE_INTERVAL = 6000;
 
-function getPhotoUrl(listingId: string, idx = 0): string {
-  return `${COMP_SEARCH_PHOTO_URL}/${listingId}?idx=${idx}`;
-}
-
-function formatPrice(price: number): string {
-  if (price >= 1_000_000) return `$${(price / 1_000_000).toFixed(2)}M`;
-  if (price >= 1_000) return `$${(price / 1_000).toFixed(0)}K`;
-  return `$${price.toLocaleString()}`;
-}
-
-function daysAgoLabel(days: number): string {
-  if (days === 0) return 'Listed today';
-  if (days === 1) return '1 day ago';
-  return `${days} days ago`;
+function formatRate(rate: number): string {
+  if (rate === 0) return 'Call for rates';
+  return `$${rate.toLocaleString()}`;
 }
 
 export default function PropertiesPage() {
-  const [listings, setListings] = useState<MLSListing[]>([]);
+  const [listings, setListings] = useState<RentalListing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const [filter, setFilter] = useState<'all' | 'Single Family' | 'Condo' | 'Townhouse'>('all');
+  const [filter, setFilter] = useState<'all' | 'Single Family' | 'Condo' | 'Townhouse' | 'Duplex'>('all');
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [visibleCount, setVisibleCount] = useState(9);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -68,16 +78,16 @@ export default function PropertiesPage() {
         if (!res.ok) throw new Error(`API returned ${res.status}`);
         return res.json();
       })
-      .then((data: MLSListing[]) => {
+      .then((data: RentalListing[]) => {
         if (data.length === 0) {
-          setError('No MLS listings available');
+          setError('No listings available');
         }
         setListings(data);
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Failed to load MLS listings:', err);
-        setError('Could not connect to MLS feed');
+        console.error('Failed to load listings:', err);
+        setError('Could not connect to listing feed');
         setLoading(false);
       });
   }, []);
@@ -180,13 +190,14 @@ export default function PropertiesPage() {
     'Single Family': listings.filter((l) => l.propertyType === 'Single Family').length,
     Condo: listings.filter((l) => l.propertyType === 'Condo').length,
     Townhouse: listings.filter((l) => l.propertyType === 'Townhouse').length,
+    Duplex: listings.filter((l) => l.propertyType === 'Duplex').length,
   };
 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[500px] gap-3">
         <Loader2 size={28} className="text-gold animate-spin" />
-        <p className="text-sm text-gray-400">Fetching MLS listings...</p>
+        <p className="text-sm text-gray-400">Fetching listings...</p>
       </div>
     );
   }
@@ -247,7 +258,7 @@ export default function PropertiesPage() {
         {/* Type tabs + filter toggle */}
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-1">
-            {(['all', 'Single Family', 'Condo', 'Townhouse'] as const).map((f) => (
+            {(['all', 'Single Family', 'Condo', 'Townhouse', 'Duplex'] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
@@ -386,7 +397,7 @@ export default function PropertiesPage() {
             <Building2 size={40} className="text-gray-300 dark:text-gray-700 mx-auto mb-4" />
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{error}</p>
             <p className="text-xs text-gray-400 dark:text-gray-500">
-              Make sure the CompSearch MLS feed is running
+              Could not connect to McCann Realtors listing feed
             </p>
           </div>
         ) : filtered.length === 0 ? (
@@ -413,7 +424,7 @@ export default function PropertiesPage() {
                     <div className="relative lg:w-[420px] h-[240px] lg:h-[320px] flex-shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-800">
                       <img
                         key={featured.id}
-                        src={getPhotoUrl(featured.id)}
+                        src={featured.photos[0] || ''}
                         alt={featured.address}
                         className="w-full h-full object-cover transition-opacity duration-700 ease-out"
                         style={{ animation: `${direction === 'next' ? 'slideInRight' : 'slideInLeft'} 0.5s ease` }}
@@ -429,11 +440,13 @@ export default function PropertiesPage() {
                         {activeIndex + 1} / {filtered.length}
                       </div>
 
-                      {/* Days on market badge */}
-                      <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white text-xs font-medium flex items-center gap-1">
-                        <Clock size={11} />
-                        {daysAgoLabel(featured.daysOnMarket)}
-                      </div>
+                      {/* Availability badge */}
+                      {featured.availableSlots > 0 && (
+                        <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-emerald-500/80 backdrop-blur-sm text-white text-xs font-medium flex items-center gap-1">
+                          <Calendar size={11} />
+                          {featured.availableSlots} week{featured.availableSlots !== 1 ? 's' : ''} available
+                        </div>
+                      )}
                     </div>
 
                     {/* Details */}
@@ -442,11 +455,11 @@ export default function PropertiesPage() {
                         {/* Price */}
                         <div className="flex items-baseline gap-3 mb-1">
                           <span className="text-2xl lg:text-3xl font-bold font-data text-gold dark:text-gold-light">
-                            {formatPrice(featured.salePrice)}
+                            {formatRate(featured.salePrice)}
                           </span>
-                          {featured.pricePerSqft > 0 && (
+                          {featured.salePrice > 0 && (
                             <span className="text-xs text-gray-400 font-data">
-                              ${Math.round(featured.pricePerSqft)}/sqft
+                              /week
                             </span>
                           )}
                         </div>
@@ -472,15 +485,11 @@ export default function PropertiesPage() {
                             <span className="font-data font-semibold">{featured.bathrooms}</span>
                             <span className="text-xs text-gray-400">baths</span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
-                            <Maximize size={16} className="text-gray-400" />
-                            <span className="font-data font-semibold">{featured.sqft.toLocaleString()}</span>
-                            <span className="text-xs text-gray-400">sqft</span>
-                          </div>
-                          {featured.yearBuilt > 0 && (
+                          {featured.sleeps > 0 && (
                             <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
-                              <Calendar size={16} className="text-gray-400" />
-                              <span className="font-data font-semibold">{featured.yearBuilt}</span>
+                              <Users size={16} className="text-gray-400" />
+                              <span className="font-data font-semibold">{featured.sleeps}</span>
+                              <span className="text-xs text-gray-400">sleeps</span>
                             </div>
                           )}
                         </div>
@@ -490,9 +499,9 @@ export default function PropertiesPage() {
                           <span className="text-xs px-2.5 py-1 rounded-lg bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20 font-medium">
                             {featured.propertyType}
                           </span>
-                          {featured.daysOnMarket <= 7 && (
+                          {featured.availableSlots > 0 && (
                             <span className="text-xs px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200/40 dark:border-emerald-800/30 font-medium flex items-center gap-1">
-                              <TrendingUp size={11} /> New Listing
+                              <TrendingUp size={11} /> Available
                             </span>
                           )}
                           {featured.photos.length > 1 && (
@@ -566,7 +575,7 @@ export default function PropertiesPage() {
                     {/* Thumbnail */}
                     <div className="relative h-36 overflow-hidden bg-gray-100 dark:bg-gray-800">
                       <img
-                        src={getPhotoUrl(listing.id)}
+                        src={listing.photos[0] || ''}
                         alt={listing.address}
                         className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
                         loading="lazy"
@@ -576,11 +585,11 @@ export default function PropertiesPage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                       <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-sm text-white text-xs font-data font-bold">
-                        {formatPrice(listing.salePrice)}
+                        {listing.salePrice > 0 ? `${formatRate(listing.salePrice)}/wk` : 'Call'}
                       </div>
-                      {listing.daysOnMarket <= 3 && (
+                      {listing.availableSlots > 0 && (
                         <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-emerald-500/90 text-white text-[10px] font-semibold uppercase tracking-wider">
-                          New
+                          Available
                         </div>
                       )}
                     </div>
@@ -601,12 +610,16 @@ export default function PropertiesPage() {
                         <span className="flex items-center gap-1">
                           <Bath size={12} /> {listing.bathrooms}
                         </span>
-                        <span className="flex items-center gap-1">
-                          <Maximize size={12} /> {listing.sqft.toLocaleString()}
-                        </span>
-                        <span className="ml-auto text-[10px] text-gray-400 font-data flex items-center gap-0.5">
-                          <Clock size={10} /> {listing.daysOnMarket}d
-                        </span>
+                        {listing.sleeps > 0 && (
+                          <span className="flex items-center gap-1">
+                            <Users size={12} /> {listing.sleeps}
+                          </span>
+                        )}
+                        {listing.availableSlots > 0 && (
+                          <span className="ml-auto text-[10px] text-emerald-500 font-medium flex items-center gap-0.5">
+                            <Calendar size={10} /> {listing.availableSlots} wk{listing.availableSlots !== 1 ? 's' : ''}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -55,17 +55,29 @@ export default function AnalyticsPage() {
     '#94a3b8',
   ], [dark]);
 
+  const [error, setError] = useState(false);
+
   useEffect(() => {
     import('@/services').then((svc) =>
       Promise.all([svc.getDashboardStats(), svc.getClients()])
     )
       .then(([s, c]) => { setStats(s); setClients(c); setLoading(false); })
-      .catch((err) => { console.error('Failed to load analytics data:', err); setLoading(false); });
+      .catch((err) => { console.error('Failed to load analytics data:', err); setError(true); setLoading(false); });
   }, []);
 
-  if (loading || !stats) return (
+  if (loading) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <p className="text-sm text-gray-400">Loading...</p>
+    </div>
+  );
+
+  if (error || !stats) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-center">
+        <BarChart3 size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <p className="text-sm text-gray-400 mb-1">Unable to load analytics</p>
+        <p className="text-xs text-gray-400/60">Make sure the database schema has been set up</p>
+      </div>
     </div>
   );
 

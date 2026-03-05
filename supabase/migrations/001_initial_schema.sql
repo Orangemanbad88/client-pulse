@@ -7,7 +7,7 @@ CREATE TABLE clients (
   id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   first_name      text NOT NULL,
   last_name       text NOT NULL,
-  email           text NOT NULL,
+  email           text,
   phone           text,
   preferred_contact text DEFAULT 'email',
   client_type     text NOT NULL,

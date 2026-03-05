@@ -15,18 +15,28 @@ function ClientsContent() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [createError, setCreateError] = useState('');
 
   useEffect(() => { import('@/services').then((svc) => svc.getClients()).then((d) => { setClients(d); setLoading(false); }).catch((err) => { console.error('Failed to load clients:', err); setLoading(false); }); }, []);
   useEffect(() => { if (params.get('new') === 'true') setShowForm(true); }, [params]);
 
   const onCreate = async (d: ClientIntakeData) => {
+    setCreateError('');
     try {
-      const svc = await import('@/services');
-      const c = await svc.createClient(d);
-      setClients((p) => [c, ...p]);
+      const res = await fetch('/api/clients/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(d),
+      });
+      const result = await res.json();
+      if (!result.success) {
+        setCreateError(result.error || 'Failed to create client');
+        return;
+      }
+      setClients((p) => [result.data, ...p]);
       setShowForm(false);
     } catch {
-      // TODO: show error toast when real backend is connected
+      setCreateError('Network error — please try again');
     }
   };
 
@@ -52,7 +62,12 @@ function ClientsContent() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
             <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              <IntakeForm onSubmit={onCreate} onCancel={() => setShowForm(false)} />
+              {createError && (
+                <div className="mb-3 px-4 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-400">
+                  {createError}
+                </div>
+              )}
+              <IntakeForm onSubmit={onCreate} onCancel={() => { setShowForm(false); setCreateError(''); }} />
             </div>
           </div>
         )}

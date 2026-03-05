@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Mail, Send, Star, Archive, Inbox, Clock, Paperclip, Reply, Forward, Trash2, X, FileText, Users } from 'lucide-react';
-import type { Client } from '@/types/client';
+import { Mail, Send, Star, Archive, Inbox, Clock, Paperclip, Reply, Forward, Trash2, X, FileText, Users, CheckCircle } from 'lucide-react';
+import type { Client, Activity } from '@/types/client';
 import { getInitialsFromName } from '@/lib/utils';
 
 interface EmailThread {
@@ -18,16 +18,6 @@ interface EmailThread {
   hasAttachment: boolean;
   folder: 'inbox' | 'sent' | 'drafts';
 }
-
-const mockEmails: EmailThread[] = [
-  { id: 'e1', clientId: 'cl_001', clientName: 'Sarah Chen', subject: 'Re: New listings in Dunedin area', preview: 'Hi Tom, thanks for sending those over! I really liked the one on Virginia Ln. Could we schedule a showing this week?', date: '2024-02-14T10:30:00Z', read: false, starred: true, hasAttachment: false, folder: 'inbox' },
-  { id: 'e2', clientId: 'cl_003', clientName: 'Marcus Johnson', subject: 'Tour confirmation - 880 Mandalay Ave', preview: 'Confirming our tour tomorrow at 2pm. I\'ll meet you in the lobby. Looking forward to seeing the unit!', date: '2024-02-14T09:15:00Z', read: false, starred: false, hasAttachment: false, folder: 'inbox' },
-  { id: 'e3', clientId: 'cl_005', clientName: 'Robert Thompson', subject: 'Investment property analysis - 1580 Alt 19 N', preview: 'Tom, I\'ve been running the numbers on the triplex. The 8.3% cap rate looks solid. Can you pull comps for similar multi-family in the area?', date: '2024-02-13T16:45:00Z', read: true, starred: true, hasAttachment: true, folder: 'inbox' },
-  { id: 'e4', clientId: 'cl_002', clientName: 'Ashley Williams', subject: 'Welcome to ClientPulse - Next Steps', preview: 'Hi Ashley, welcome! I\'ve set up your profile and started matching properties based on your preferences. Here are a few to get started...', date: '2024-02-13T14:20:00Z', read: true, starred: false, hasAttachment: true, folder: 'sent' },
-  { id: 'e5', clientId: 'cl_004', clientName: 'Jennifer Martinez', subject: 'Lease renewal options', preview: 'Hi Jennifer, your lease at 550 Palm Harbor is coming up for renewal. I wanted to discuss your options — we have some great new listings...', date: '2024-02-12T11:00:00Z', read: true, starred: false, hasAttachment: false, folder: 'sent' },
-  { id: 'e6', clientId: 'cl_001', clientName: 'Sarah Chen', subject: 'Pet policy confirmation', preview: 'Just confirmed with the landlord — 725 Virginia Ln does allow dogs up to 50lbs with a $300 pet deposit. Should be perfect for your golden!', date: '2024-02-12T09:30:00Z', read: true, starred: false, hasAttachment: false, folder: 'sent' },
-  { id: 'e7', clientId: 'cl_006', clientName: 'David Kim', subject: 'Market update - Clearwater Beach condos', preview: 'Hey David, wanted to share the latest market data for Clearwater Beach condos. Prices have softened slightly...', date: '2024-02-11T15:00:00Z', read: true, starred: false, hasAttachment: true, folder: 'sent' },
-];
 
 interface EmailTemplate {
   name: string;
@@ -63,22 +53,57 @@ const EMAIL_TEMPLATES: EmailTemplate[] = [
   },
 ];
 
+const activityToEmailThread = (
+  activity: Activity,
+  clientMap: Map<string, Client>,
+): EmailThread => {
+  const client = clientMap.get(activity.clientId);
+  const clientName = client
+    ? `${client.firstName} ${client.lastName}`
+    : 'Unknown';
+  return {
+    id: activity.id,
+    clientId: activity.clientId,
+    clientName,
+    subject: activity.title.replace(/^Email sent: /, ''),
+    preview: activity.description,
+    date: activity.timestamp,
+    read: true,
+    starred: false,
+    hasAttachment: false,
+    folder: 'sent',
+  };
+};
+
 export default function EmailPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
-  const [folder, setFolder] = useState<'inbox' | 'sent' | 'drafts' | 'all'>('inbox');
+  const [folder, setFolder] = useState<'inbox' | 'sent' | 'drafts' | 'all'>('sent');
   const [selectedEmail, setSelectedEmail] = useState<EmailThread | null>(null);
-  const [emails, setEmails] = useState(mockEmails);
+  const [emails, setEmails] = useState<EmailThread[]>([]);
   const [showCompose, setShowCompose] = useState(false);
   const [composeTo, setComposeTo] = useState('');
   const [composeToClientId, setComposeToClientId] = useState('');
   const [composeSubject, setComposeSubject] = useState('');
   const [composeBody, setComposeBody] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
+  const [sendSuccess, setSendSuccess] = useState(false);
 
   useEffect(() => {
-    import('@/services').then((svc) => svc.getClients())
-      .then((c) => { setClients(c); setLoading(false); })
+    import('@/services').then((svc) =>
+      Promise.all([svc.getClients(), svc.getRecentActivities(100)])
+    )
+      .then(([c, activities]) => {
+        setClients(c);
+        const clientMap = new Map(c.map((cl) => [cl.id, cl]));
+        const emailActivities = activities
+          .filter((a) => a.type === 'email')
+          .map((a) => activityToEmailThread(a, clientMap));
+        setEmails(emailActivities);
+        setLoading(false);
+      })
       .catch((err) => { console.error('Failed to load email data:', err); setLoading(false); });
   }, []);
 
@@ -92,9 +117,8 @@ export default function EmailPage() {
   };
 
   const folders = [
-    { id: 'inbox' as const, label: 'Inbox', icon: Inbox, count: unreadCount },
-    { id: 'sent' as const, label: 'Sent', icon: Send, count: 0 },
-    { id: 'all' as const, label: 'All Mail', icon: Mail, count: 0 },
+    { id: 'sent' as const, label: 'Sent', icon: Send, count: emails.filter((e) => e.folder === 'sent').length },
+    { id: 'all' as const, label: 'All Mail', icon: Mail, count: emails.length },
   ];
 
   const openCompose = (clientName?: string, clientId?: string) => {
@@ -103,6 +127,8 @@ export default function EmailPage() {
     setComposeSubject('');
     setComposeBody('');
     setSelectedTemplate(null);
+    setSendError('');
+    setSendSuccess(false);
     setShowCompose(true);
   };
 
@@ -119,38 +145,43 @@ export default function EmailPage() {
     setSelectedTemplate(template.name);
   };
 
-  const [sending, setSending] = useState(false);
-  const [sendError, setSendError] = useState('');
-
   const handleSendEmail = async () => {
     if (!composeTo || !composeSubject) return;
     const client = clients.find((c) => `${c.firstName} ${c.lastName}` === composeTo);
     const recipientEmail = client?.email;
 
+    if (!recipientEmail) {
+      setSendError('No email address found for this client');
+      return;
+    }
+
     setSending(true);
     setSendError('');
 
-    // Send via API if we have a real email address
-    if (recipientEmail) {
-      try {
-        const res = await fetch('/api/email/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: recipientEmail, subject: composeSubject, body: composeBody }),
-        });
-        const result = await res.json();
-        if (!result.success) {
-          setSendError(result.error || 'Failed to send email');
-          setSending(false);
-          return;
-        }
-      } catch (err) {
-        setSendError('Network error — email not sent');
+    try {
+      const res = await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: recipientEmail,
+          subject: composeSubject,
+          body: composeBody,
+          clientId: client?.id || composeToClientId || undefined,
+        }),
+      });
+      const result = await res.json();
+      if (!result.success) {
+        setSendError(result.error || 'Failed to send email');
         setSending(false);
         return;
       }
+    } catch {
+      setSendError('Network error — email not sent');
+      setSending(false);
+      return;
     }
 
+    // Add to local sent list
     const newEmail: EmailThread = {
       id: `e_${Date.now()}`,
       clientId: client?.id || composeToClientId || 'unknown',
@@ -165,12 +196,18 @@ export default function EmailPage() {
     };
     setEmails((prev) => [newEmail, ...prev]);
     setSending(false);
-    setShowCompose(false);
-    setComposeTo('');
-    setComposeToClientId('');
-    setComposeSubject('');
-    setComposeBody('');
-    setSelectedTemplate(null);
+    setSendSuccess(true);
+
+    // Auto-close after showing success
+    setTimeout(() => {
+      setShowCompose(false);
+      setComposeTo('');
+      setComposeToClientId('');
+      setComposeSubject('');
+      setComposeBody('');
+      setSelectedTemplate(null);
+      setSendSuccess(false);
+    }, 1500);
   };
 
   if (loading) return (
@@ -187,7 +224,7 @@ export default function EmailPage() {
       >
         <div>
           <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>Email</h1>
-          <p className="text-xs text-slate-400 mt-0.5">{unreadCount} unread</p>
+          <p className="text-xs text-slate-400 mt-0.5">{unreadCount > 0 ? `${unreadCount} unread` : `${emails.length} sent`}</p>
         </div>
         <button
           onClick={() => openCompose()}
@@ -309,8 +346,8 @@ export default function EmailPage() {
                     </span>
                   )}
                 </div>
-                <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  <p>{selectedEmail.preview}</p>
+                <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                  {selectedEmail.preview}
                 </div>
               </div>
               <div className="px-5 py-3 border-t border-amber-100/30 dark:border-gray-800/60">
@@ -370,7 +407,13 @@ export default function EmailPage() {
                 {filtered.length === 0 && (
                   <div className="px-5 py-12 text-center">
                     <Mail size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
-                    <p className="text-sm text-gray-400">No emails in {folder}</p>
+                    <p className="text-sm text-gray-400 mb-3">No emails yet</p>
+                    <button
+                      onClick={() => openCompose()}
+                      className="text-xs font-medium text-gold hover:text-gold-muted transition-colors"
+                    >
+                      Send your first email →
+                    </button>
                   </div>
                 )}
               </div>
@@ -383,102 +426,116 @@ export default function EmailPage() {
     {/* Compose Modal */}
     {showCompose && (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowCompose(false)} />
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => !sending && setShowCompose(false)} />
         <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl overflow-hidden">
-          <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-5 rounded-full bg-gold" />
-              <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">New Email</h2>
+          {sendSuccess ? (
+            <div className="px-5 py-12 text-center">
+              <CheckCircle size={40} className="text-green-500 mx-auto mb-3" />
+              <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">Email sent successfully!</p>
             </div>
-            <button onClick={() => setShowCompose(false)} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-              <X size={16} className="text-gray-400" />
-            </button>
-          </div>
-
-          {/* Templates */}
-          <div className="px-5 py-3 border-b border-amber-100/30 dark:border-gray-800/60">
-            <div className="flex items-center gap-2 mb-2">
-              <FileText size={12} className="text-gray-400" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Templates</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {EMAIL_TEMPLATES.map((tpl) => (
-                <button
-                  key={tpl.name}
-                  onClick={() => applyTemplate(tpl)}
-                  className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
-                    selectedTemplate === tpl.name
-                      ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light dark:border-gold-muted/30'
-                      : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  {tpl.name}
+          ) : (
+            <>
+              <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-1.5 h-5 rounded-full bg-gold" />
+                  <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">New Email</h2>
+                </div>
+                <button onClick={() => setShowCompose(false)} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <X size={16} className="text-gray-400" />
                 </button>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          <div className="p-5 space-y-3">
-            <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">To</label>
-              <input
-                type="text"
-                value={composeTo}
-                onChange={(e) => setComposeTo(e.target.value)}
-                list="client-list"
-                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
-                placeholder="Client name"
-              />
-              <datalist id="client-list">
-                {clients.map((c) => (
-                  <option key={c.id} value={`${c.firstName} ${c.lastName}`} />
-                ))}
-              </datalist>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Subject</label>
-              <input
-                type="text"
-                value={composeSubject}
-                onChange={(e) => setComposeSubject(e.target.value)}
-                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
-                placeholder="Email subject"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Message</label>
-              <textarea
-                value={composeBody}
-                onChange={(e) => setComposeBody(e.target.value)}
-                rows={10}
-                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
-                placeholder="Write your message..."
-              />
-            </div>
-          </div>
+              {/* Templates */}
+              <div className="px-5 py-3 border-b border-amber-100/30 dark:border-gray-800/60">
+                <div className="flex items-center gap-2 mb-2">
+                  <FileText size={12} className="text-gray-400" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Templates</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {EMAIL_TEMPLATES.map((tpl) => (
+                    <button
+                      key={tpl.name}
+                      onClick={() => applyTemplate(tpl)}
+                      className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
+                        selectedTemplate === tpl.name
+                          ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light dark:border-gold-muted/30'
+                          : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      }`}
+                    >
+                      {tpl.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
-            {sendError ? (
-              <p className="text-xs text-red-500 dark:text-red-400">{sendError}</p>
-            ) : (
-              <div />
-            )}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowCompose(false)}
-                className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
-              >
-                Discard
-              </button>
-              <button
-                onClick={handleSendEmail}
-                disabled={!composeTo || !composeSubject || sending}
-                className="flex items-center gap-1.5 text-xs font-medium text-white bg-gold hover:bg-gold-muted disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-gold/20 active:scale-[0.97]"
-              >
-                <Send size={13} /> {sending ? 'Sending...' : 'Send Email'}
-              </button>
-            </div>
-          </div>
+              <div className="p-5 space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">To</label>
+                  <input
+                    type="text"
+                    value={composeTo}
+                    onChange={(e) => {
+                      setComposeTo(e.target.value);
+                      const match = clients.find((c) => `${c.firstName} ${c.lastName}` === e.target.value);
+                      if (match) setComposeToClientId(match.id);
+                    }}
+                    list="client-list"
+                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                    placeholder="Client name"
+                  />
+                  <datalist id="client-list">
+                    {clients.map((c) => (
+                      <option key={c.id} value={`${c.firstName} ${c.lastName}`} />
+                    ))}
+                  </datalist>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Subject</label>
+                  <input
+                    type="text"
+                    value={composeSubject}
+                    onChange={(e) => setComposeSubject(e.target.value)}
+                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                    placeholder="Email subject"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Message</label>
+                  <textarea
+                    value={composeBody}
+                    onChange={(e) => setComposeBody(e.target.value)}
+                    rows={10}
+                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
+                    placeholder="Write your message..."
+                  />
+                </div>
+              </div>
+
+              <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
+                {sendError ? (
+                  <p className="text-xs text-red-500 dark:text-red-400">{sendError}</p>
+                ) : (
+                  <div />
+                )}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowCompose(false)}
+                    disabled={sending}
+                    className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 px-4 py-2 rounded-lg transition-colors"
+                  >
+                    Discard
+                  </button>
+                  <button
+                    onClick={handleSendEmail}
+                    disabled={!composeTo || !composeSubject || sending}
+                    className="flex items-center gap-1.5 text-xs font-medium text-white bg-gold hover:bg-gold-muted disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors shadow-sm shadow-gold/20 active:scale-[0.97]"
+                  >
+                    <Send size={13} /> {sending ? 'Sending...' : 'Send Email'}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     )}

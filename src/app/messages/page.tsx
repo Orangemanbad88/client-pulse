@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MessageSquare, Clock } from 'lucide-react';
+import { Mail, Phone, MessageSquare, Clock, Send } from 'lucide-react';
 import type { Activity, Client } from '@/types/client';
 import { formatRelativeDate } from '@/lib/utils';
 
@@ -68,6 +68,12 @@ export default function MessagesPage() {
           <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>Messages</h1>
           <p className="text-xs text-slate-400 mt-0.5">{messages.length} communications</p>
         </div>
+        <Link
+          href="/email"
+          className="flex items-center gap-2 bg-gold hover:bg-gold-muted text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm shadow-gold/20 active:scale-[0.97]"
+        >
+          <Send size={14} /> Compose
+        </Link>
       </header>
       <div className="px-4 lg:px-8 py-4 lg:py-6">
 

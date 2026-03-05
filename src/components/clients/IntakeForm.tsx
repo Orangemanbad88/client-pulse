@@ -157,17 +157,17 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
         <button onClick={onCancel} className="btn btn-ghost">Cancel</button>
         <div className="flex gap-2">
           {step > 1 && <button onClick={() => setStep(step - 1)} className="btn btn-secondary">Back</button>}
-          {step < 4 ? <button onClick={() => setStep(step + 1)} className="btn btn-primary">Next</button>
-            : <button onClick={() => {
-              const errs: Record<string, string> = {};
-              if (!f.firstName.trim()) errs.firstName = 'First name is required';
-              if (!f.lastName.trim()) errs.lastName = 'Last name is required';
-              if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) errs.email = 'Invalid email format';
-              if (f.phone && !/[\d().\-+\s]{7,}/.test(f.phone)) errs.phone = 'Invalid phone format';
-              if (Object.keys(errs).length) { setErrors(errs); setStep(1); return; }
-              setErrors({});
-              onSubmit(f);
-            }} className="btn btn-primary">Create Client</button>}
+          {step < 4 && <button onClick={() => setStep(step + 1)} className="btn btn-secondary">Next</button>}
+          <button onClick={() => {
+            const errs: Record<string, string> = {};
+            if (!f.firstName.trim()) errs.firstName = 'First name is required';
+            if (!f.lastName.trim()) errs.lastName = 'Last name is required';
+            if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) errs.email = 'Invalid email format';
+            if (f.phone && !/[\d().\-+\s]{7,}/.test(f.phone)) errs.phone = 'Invalid phone format';
+            if (Object.keys(errs).length) { setErrors(errs); setStep(1); return; }
+            setErrors({});
+            onSubmit(f);
+          }} className="btn btn-primary">Create Client</button>
         </div>
       </div>
     </div>
