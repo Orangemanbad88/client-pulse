@@ -355,6 +355,40 @@ export const bulkInsertMatches = async (clientId: string, matches: Omit<import('
   return snakeToCamelArray<import('@/types/client').PropertyMatch>(data);
 };
 
+export const updateClientPreferences = async (
+  clientId: string,
+  rental?: Record<string, unknown> | null,
+  buyer?: Record<string, unknown> | null,
+): Promise<void> => {
+  const { error } = await db()
+    .from('client_preferences')
+    .upsert(
+      {
+        client_id: clientId,
+        rental: rental || null,
+        buyer: buyer || null,
+      },
+      { onConflict: 'client_id' },
+    );
+  if (error) throw new Error(`updateClientPreferences: ${error.message}`);
+};
+
+export const getNewMatchCountsByClient = async (): Promise<Record<string, number>> => {
+  const { data, error } = await db()
+    .from('property_matches')
+    .select('client_id')
+    .eq('status', 'new');
+
+  if (error) throw new Error(`getNewMatchCountsByClient: ${error.message}`);
+
+  const counts: Record<string, number> = {};
+  for (const row of data ?? []) {
+    const id = row.client_id as string;
+    counts[id] = (counts[id] || 0) + 1;
+  }
+  return counts;
+};
+
 export const upsertAIProfile = async (
   clientId: string,
   summary: string,

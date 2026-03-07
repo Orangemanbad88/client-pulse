@@ -205,6 +205,36 @@ export const bulkInsertMatches = async (clientId: string, matches: Omit<Property
   return created;
 };
 
+export const updateClientPreferences = async (
+  clientId: string,
+  rental?: Record<string, unknown> | null,
+  buyer?: Record<string, unknown> | null,
+): Promise<void> => {
+  const prefs = mockData.preferences as ClientPreferences[];
+  const existing = prefs.find((p) => p.clientId === clientId);
+  if (existing) {
+    existing.rental = (rental as ClientPreferences['rental']) ?? undefined;
+    existing.buyer = (buyer as ClientPreferences['buyer']) ?? undefined;
+  } else {
+    prefs.push({
+      clientId,
+      rental: (rental as ClientPreferences['rental']) ?? undefined,
+      buyer: (buyer as ClientPreferences['buyer']) ?? undefined,
+    });
+  }
+};
+
+export const getNewMatchCountsByClient = async (): Promise<Record<string, number>> => {
+  const matches = mockData.matches as PropertyMatch[];
+  const counts: Record<string, number> = {};
+  for (const m of matches) {
+    if (m.status === 'new') {
+      counts[m.clientId] = (counts[m.clientId] || 0) + 1;
+    }
+  }
+  return counts;
+};
+
 export const upsertAIProfile = async (
   clientId: string,
   summary: string,

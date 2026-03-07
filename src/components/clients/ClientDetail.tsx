@@ -29,6 +29,7 @@ export const ClientDetail = ({ client: initialClient, preferences, activities, t
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [findingMatches, setFindingMatches] = useState(false);
+  const [matchingInProgress, setMatchingInProgress] = useState(false);
 
   const handleSendMatch = async (matchId: string) => {
     setMatchLoading(matchId);
@@ -208,6 +209,20 @@ export const ClientDetail = ({ client: initialClient, preferences, activities, t
 
         {/* Right: Matches + Triggers + Activity */}
         <div className="lg:col-span-2 space-y-4">
+          {matchingInProgress && (
+            <div className="surface overflow-hidden p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
+                <p className="text-[12px] font-medium" style={{ color: 'var(--accent-text)' }}>
+                  Finding property matches based on updated preferences...
+                </p>
+              </div>
+              <div className="mt-2 h-1 rounded-full overflow-hidden" style={{ background: 'var(--bg-1)' }}>
+                <div className="h-full rounded-full animate-pulse" style={{ width: '60%', background: 'var(--accent)' }} />
+              </div>
+            </div>
+          )}
+
           {matchList.length > 0 && (
             <div className="surface overflow-hidden">
               <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
@@ -317,7 +332,23 @@ export const ClientDetail = ({ client: initialClient, preferences, activities, t
         <EditClientModal
           client={client}
           preferences={preferences}
-          onSave={(updated) => { setClient(updated); setShowEdit(false); }}
+          onSave={async (updated, prefsUpdated) => {
+            setClient(updated);
+            setShowEdit(false);
+            if (prefsUpdated) {
+              setMatchingInProgress(true);
+              await new Promise((r) => setTimeout(r, 3000));
+              try {
+                const svc = await import('@/services');
+                const freshMatches = await svc.getClientMatches(client.id);
+                setMatchList(freshMatches);
+              } catch {
+                // non-critical — matches will appear on next page load
+              } finally {
+                setMatchingInProgress(false);
+              }
+            }
+          }}
           onClose={() => setShowEdit(false)}
         />
       )}

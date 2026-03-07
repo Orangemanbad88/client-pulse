@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { updateClient, deleteClient } from '@/services';
+import { updateClient, deleteClient, updateClientPreferences } from '@/services';
 
 export async function PUT(
   request: NextRequest,
@@ -8,8 +8,26 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const updated = await updateClient(id, body);
-    return NextResponse.json({ success: true, data: updated });
+    const { preferences, ...clientFields } = body;
+    const updated = await updateClient(id, clientFields);
+
+    let prefsUpdated = false;
+    if (preferences) {
+      await updateClientPreferences(id, preferences.rental, preferences.buyer);
+      prefsUpdated = true;
+
+      // Fire-and-forget: trigger matching in background
+      const origin = request.nextUrl.origin;
+      fetch(`${origin}/api/matches/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId: id }),
+      }).catch(() => {
+        // matching failure is non-critical
+      });
+    }
+
+    return NextResponse.json({ success: true, data: updated, prefsUpdated });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to update client';
     return NextResponse.json({ success: false, error: message }, { status: 500 });

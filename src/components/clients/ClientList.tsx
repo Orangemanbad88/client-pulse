@@ -7,7 +7,7 @@ import { getInitials, getClientName, formatRelativeDate, cn, stageBadge } from '
 import { Pencil } from 'lucide-react';
 import Link from 'next/link';
 
-export const ClientList = ({ clients }: { clients: Client[] }) => {
+export const ClientList = ({ clients, matchCounts }: { clients: Client[]; matchCounts?: Record<string, number> }) => {
   const [search, setSearch] = useState('');
   const [typeF, setTypeF] = useState<ClientType | 'all'>('all');
   const [stageF, setStageF] = useState<LifecycleStage | 'all'>('all');
@@ -40,8 +40,8 @@ export const ClientList = ({ clients }: { clients: Client[] }) => {
         <table className="w-full">
           <thead>
             <tr className="border-b" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
-              {['Client', 'Type', 'Stage', 'Phone', 'Source', 'Last Contact'].map((h, i) => (
-                <th key={h} className={cn('text-[11px] font-bold uppercase tracking-wider p-3', i === 0 ? 'text-left pl-4' : i === 5 ? 'text-right pr-4' : 'text-left')}
+              {['Client', 'Type', 'Stage', 'Phone', 'Source', 'Matches', 'Last Contact'].map((h, i) => (
+                <th key={h} className={cn('text-[11px] font-bold uppercase tracking-wider p-3', i === 0 ? 'text-left pl-4' : i === 6 ? 'text-right pr-4' : i === 5 ? 'text-center' : 'text-left')}
                   style={{ color: 'var(--text-tertiary)' }}>{h}</th>
               ))}
             </tr>
@@ -69,11 +69,20 @@ export const ClientList = ({ clients }: { clients: Client[] }) => {
                 <td className="p-3"><span className={cn('badge text-[10px]', stageBadge[c.lifecycleStage])}>{LIFECYCLE_LABELS[c.lifecycleStage]}</span></td>
                 <td className="p-3"><span className="text-[12px] font-mono" style={{ color: 'var(--text-secondary)' }}>{c.phone}</span></td>
                 <td className="p-3"><span className="text-[12px]" style={{ color: 'var(--text-tertiary)' }}>{c.source}</span></td>
+                <td className="p-3 text-center">
+                  {matchCounts && matchCounts[c.id] ? (
+                    <span className="inline-flex items-center justify-center min-w-[22px] px-1.5 py-0.5 rounded-full text-[11px] font-bold" style={{ background: 'var(--accent-muted)', color: 'var(--accent-text)' }}>
+                      {matchCounts[c.id]}
+                    </span>
+                  ) : (
+                    <span className="text-[11px] font-mono" style={{ color: 'var(--text-quaternary)' }}>--</span>
+                  )}
+                </td>
                 <td className="p-3 pr-4 text-right"><span className="text-[11px] font-mono" style={{ color: 'var(--text-quaternary)' }}>{formatRelativeDate(c.lastContact)}</span></td>
               </tr>
             ))}
             {filtered.length === 0 && (
-              <tr><td colSpan={6} className="p-8 text-center text-sm" style={{ color: 'var(--text-tertiary)' }}>No clients match your filters.</td></tr>
+              <tr><td colSpan={7} className="p-8 text-center text-sm" style={{ color: 'var(--text-tertiary)' }}>No clients match your filters.</td></tr>
             )}
           </tbody>
         </table>

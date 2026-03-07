@@ -119,6 +119,16 @@ export const bulkInsertMatches = async (...args: Parameters<Awaited<ReturnType<t
   return s.bulkInsertMatches(...args);
 };
 
+export const updateClientPreferences = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['updateClientPreferences']>) => {
+  const s = await svc();
+  return s.updateClientPreferences(...args);
+};
+
+export const getNewMatchCountsByClient = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['getNewMatchCountsByClient']>) => {
+  const s = await svc();
+  return s.getNewMatchCountsByClient(...args);
+};
+
 export const upsertAIProfile = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['upsertAIProfile']>) => {
   const s = await svc();
   return s.upsertAIProfile(...args);

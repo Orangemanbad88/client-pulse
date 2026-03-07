@@ -14,12 +14,23 @@ export default function ClientsPage() {
 function ClientsContent() {
   const params = useSearchParams();
   const [clients, setClients] = useState<Client[]>([]);
+  const [matchCounts, setMatchCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [createError, setCreateError] = useState('');
 
-  useEffect(() => { import('@/services').then((svc) => svc.getClients()).then((d) => { setClients(d); setLoading(false); }).catch(() => { setError(true); setLoading(false); }); }, []);
+  useEffect(() => {
+    import('@/services').then(async (svc) => {
+      const [clientData, counts] = await Promise.all([
+        svc.getClients(),
+        svc.getNewMatchCountsByClient(),
+      ]);
+      setClients(clientData);
+      setMatchCounts(counts);
+      setLoading(false);
+    }).catch(() => { setError(true); setLoading(false); });
+  }, []);
   useEffect(() => { if (params.get('new') === 'true') setShowForm(true); }, [params]);
 
   const onCreate = async (d: ClientIntakeData) => {
@@ -88,7 +99,7 @@ function ClientsContent() {
             </div>
           </div>
         )}
-        <ClientList clients={clients} />
+        <ClientList clients={clients} matchCounts={matchCounts} />
       </div>
     </>
   );

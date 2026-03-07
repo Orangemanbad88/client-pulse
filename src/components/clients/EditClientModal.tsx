@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils';
 interface Props {
   client: Client;
   preferences: ClientPreferences | null;
-  onSave: (updated: Client) => void;
+  onSave: (updated: Client, prefsUpdated?: boolean) => void;
   onClose: () => void;
 }
 
@@ -91,10 +91,29 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
     setSaving(true);
     setError('');
     try {
+      const rentalPrefs = isR ? {
+        budgetMin: rBudgetMin, budgetMax: rBudgetMax, bedrooms: rBedrooms, bathrooms: rBathrooms,
+        sqftMin: rSqftMin, preferredAreas: rAreas.split(',').map((a) => a.trim()).filter(Boolean),
+        propertyTypes: rPropertyTypes, mustHaveAmenities: rAmenities, pets: rPets,
+        moveInTimeline: rMoveIn, currentLeaseExpiration: rLeaseExp,
+      } : null;
+
+      const buyerPrefs = isB ? {
+        budgetMin: bBudgetMin, budgetMax: bBudgetMax, bedrooms: bBedrooms, bathrooms: bBathrooms,
+        sqftMin: bSqftMin, preferredAreas: bAreas.split(',').map((a) => a.trim()).filter(Boolean),
+        propertyTypes: bPropertyTypes, mustHaveFeatures: bAmenities, preApproved: bPreApproved,
+        preApprovalAmount: bPreApprovalAmt, downPayment: bDownPayment, timeline: bTimeline,
+      } : null;
+
+      const hasPrefs = rentalPrefs || buyerPrefs;
+
       const res = await fetch(`/api/clients/${client.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, phone, preferredContact, source, clientType, status, lifecycleStage, notes }),
+        body: JSON.stringify({
+          firstName, lastName, email, phone, preferredContact, source, clientType, status, lifecycleStage, notes,
+          ...(hasPrefs ? { preferences: { rental: rentalPrefs, buyer: buyerPrefs } } : {}),
+        }),
       });
       const result = await res.json();
       if (!result.success) {
@@ -102,7 +121,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
         setSaving(false);
         return;
       }
-      onSave(result.data);
+      onSave(result.data, result.prefsUpdated);
     } catch {
       setError('Network error — please try again');
       setSaving(false);
