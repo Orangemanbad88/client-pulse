@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Pencil } from 'lucide-react';
 import type {
   Client,
   ClientType,
@@ -8,11 +9,8 @@ import type {
   ContactMethod,
   LifecycleStage,
   ClientPreferences,
-  RentalPreferences,
-  BuyerPreferences,
   PropertyType,
   Amenity,
-  UrgencyLevel,
 } from '@/types/client';
 import { LIFECYCLE_LABELS, PROPERTY_TYPE_LABELS, AMENITY_LABELS } from '@/types/client';
 import { cn } from '@/lib/utils';
@@ -31,20 +29,17 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  // Contact fields
   const [firstName, setFirstName] = useState(client.firstName);
   const [lastName, setLastName] = useState(client.lastName);
   const [email, setEmail] = useState(client.email);
   const [phone, setPhone] = useState(client.phone);
   const [preferredContact, setPreferredContact] = useState<ContactMethod>(client.preferredContact);
   const [source, setSource] = useState(client.source);
-
-  // Type fields
   const [clientType, setClientType] = useState<ClientType>(client.clientType);
   const [status, setStatus] = useState<ClientStatus>(client.status);
   const [lifecycleStage, setLifecycleStage] = useState<LifecycleStage>(client.lifecycleStage);
+  const [notes, setNotes] = useState(client.notes);
 
-  // Rental prefs
   const rp = preferences?.rental;
   const [rBudgetMin, setRBudgetMin] = useState(rp?.budgetMin ?? 0);
   const [rBudgetMax, setRBudgetMax] = useState(rp?.budgetMax ?? 0);
@@ -58,7 +53,6 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const [rMoveIn, setRMoveIn] = useState(rp?.moveInTimeline ?? '');
   const [rLeaseExp, setRLeaseExp] = useState(rp?.currentLeaseExpiration ?? '');
 
-  // Buyer prefs
   const bp = preferences?.buyer;
   const [bBudgetMin, setBBudgetMin] = useState(bp?.budgetMin ?? 0);
   const [bBudgetMax, setBBudgetMax] = useState(bp?.budgetMax ?? 0);
@@ -73,12 +67,8 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const [bDownPayment, setBDownPayment] = useState(bp?.downPayment ?? '');
   const [bTimeline, setBTimeline] = useState(bp?.timeline ?? '');
 
-  // Details
-  const [notes, setNotes] = useState(client.notes);
-
   const isR = clientType === 'rental';
   const isB = clientType === 'buyer' || clientType === 'investor';
-
   const currentPTypes = isR ? rPropertyTypes : bPropertyTypes;
   const currentAmenities = isR ? rAmenities : bAmenities;
 
@@ -103,18 +93,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
       const res = await fetch(`/api/clients/${client.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          phone,
-          preferredContact,
-          source,
-          clientType,
-          status,
-          lifecycleStage,
-          notes,
-        }),
+        body: JSON.stringify({ firstName, lastName, email, phone, preferredContact, source, clientType, status, lifecycleStage, notes }),
       });
       const result = await res.json();
       if (!result.success) {
@@ -132,38 +111,41 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-      <div
-        className="relative w-full max-w-2xl max-h-[85vh] flex flex-col surface-elevated overflow-hidden animate-scale-in"
-        style={{ borderRadius: 'var(--radius-xl)' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="px-5 py-4 border-b shrink-0" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
-          <h2 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Edit Client</h2>
-          <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Update contact info, preferences & details</p>
-        </div>
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="surface-elevated overflow-hidden" style={{ borderRadius: 'var(--radius-xl)' }}>
+          {/* Header with pencil icon + client name */}
+          <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-[var(--accent-muted)] flex items-center justify-center">
+                <Pencil size={14} style={{ color: 'var(--accent-text)' }} />
+              </div>
+              <div>
+                <h2 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Edit {client.firstName} {client.lastName}</h2>
+                <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Update contact info, preferences & details</p>
+              </div>
+            </div>
+          </div>
 
-        {/* Step tabs */}
-        <div className="flex border-b shrink-0" style={{ borderColor: 'var(--border)' }}>
-          {steps.map((s, i) => (
-            <button key={s} onClick={() => setStep(i + 1)}
-              className={cn('flex-1 py-2.5 text-[11px] font-semibold text-center border-b-2 transition-all',
-                step === i + 1 ? 'border-[var(--accent)]' : 'border-transparent')}
-              style={{ color: step === i + 1 ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
-              {s}
-            </button>
-          ))}
-        </div>
+          {/* Step tabs */}
+          <div className="flex border-b" style={{ borderColor: 'var(--border)' }}>
+            {steps.map((s, i) => (
+              <button key={s} onClick={() => setStep(i + 1)}
+                className={cn('flex-1 py-2.5 text-[11px] font-semibold text-center border-b-2 transition-all',
+                  step === i + 1 ? 'border-[var(--accent)]' : 'border-transparent')}
+                style={{ color: step === i + 1 ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
+                {s}
+              </button>
+            ))}
+          </div>
 
-        {/* Step content — scrollable */}
-        <div className="p-5 space-y-3.5 min-h-[280px] overflow-y-auto flex-1">
+          {/* Step content */}
+          <div className="p-5 space-y-3.5 min-h-[320px]">
             {error && (
               <div className="p-2.5 rounded-lg text-[11px] font-medium" style={{ background: 'rgba(239,68,68,0.08)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.2)' }}>
                 {error}
               </div>
             )}
 
-            {/* Step 1: Contact */}
             {step === 1 && <div className="space-y-3.5 animate-in">
               <div className="grid grid-cols-2 gap-3">
                 <div><Lbl>First Name *</Lbl><input className="input" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Sarah" /></div>
@@ -179,7 +161,6 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
               </div>
             </div>}
 
-            {/* Step 2: Type & Status */}
             {step === 2 && <div className="space-y-3.5 animate-in">
               <div><Lbl>Client Type</Lbl>
                 <div className="grid grid-cols-4 gap-2 mt-1.5">
@@ -224,7 +205,6 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
               </div>
             </div>}
 
-            {/* Step 3: Preferences */}
             {step === 3 && <div className="space-y-3.5 animate-in">
               {isR && <>
                 <div className="grid grid-cols-2 gap-3">
@@ -294,27 +274,26 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
               )}
             </div>}
 
-            {/* Step 4: Details */}
             {step === 4 && <div className="space-y-3.5 animate-in">
               <div><Lbl>Notes</Lbl><textarea className="input" rows={5} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Additional details, special requests..." /></div>
               <div className="p-3 rounded-lg text-[11px] space-y-1.5" style={{ background: 'var(--bg-1)', border: '1px solid var(--border)' }}>
                 <p style={{ color: 'var(--text-tertiary)' }}><strong style={{ color: 'var(--text-secondary)' }}>Assigned Agent:</strong> {client.assignedAgent}</p>
                 <p style={{ color: 'var(--text-tertiary)' }}><strong style={{ color: 'var(--text-secondary)' }}>Created:</strong> {new Date(client.createdAt).toLocaleDateString()}</p>
                 <p style={{ color: 'var(--text-tertiary)' }}><strong style={{ color: 'var(--text-secondary)' }}>Last Contact:</strong> {new Date(client.lastContact).toLocaleDateString()}</p>
-                <p style={{ color: 'var(--text-tertiary)' }}><strong style={{ color: 'var(--text-secondary)' }}>ID:</strong> <span className="font-mono text-[10px]">{client.id}</span></p>
               </div>
             </div>}
           </div>
 
-        {/* Footer */}
-        <div className="px-5 py-3 border-t flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
-          <button onClick={onClose} className="btn btn-ghost" disabled={saving}>Cancel</button>
-          <div className="flex gap-2">
-            {step > 1 && <button onClick={() => setStep(step - 1)} className="btn btn-secondary">Back</button>}
-            {step < 4 && <button onClick={() => setStep(step + 1)} className="btn btn-secondary">Next</button>}
-            <button onClick={handleSave} disabled={saving} className="btn btn-primary">
-              {saving ? 'Saving...' : 'Save Changes'}
-            </button>
+          {/* Footer */}
+          <div className="px-5 py-3 border-t flex items-center justify-between" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
+            <button onClick={onClose} className="btn btn-ghost" disabled={saving}>Cancel</button>
+            <div className="flex gap-2">
+              {step > 1 && <button onClick={() => setStep(step - 1)} className="btn btn-secondary">Back</button>}
+              {step < 4 && <button onClick={() => setStep(step + 1)} className="btn btn-secondary">Next</button>}
+              <button onClick={handleSave} disabled={saving} className="btn btn-primary">
+                {saving ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
