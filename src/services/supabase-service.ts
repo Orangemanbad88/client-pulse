@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '@/lib/supabase';
+import { createServerSupabaseClient, createBrowserSupabaseClient } from '@/lib/supabase';
 import { snakeToCamel, snakeToCamelArray } from '@/lib/case-utils';
 import type {
   Client,
@@ -15,7 +15,10 @@ import type {
   NextAction,
 } from '@/types/client';
 
-const db = () => createServerSupabaseClient();
+const db = () =>
+  typeof window !== 'undefined'
+    ? createBrowserSupabaseClient()
+    : createServerSupabaseClient();
 
 // ---- Clients ----
 

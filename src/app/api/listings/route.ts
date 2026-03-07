@@ -138,6 +138,7 @@ async function fetchForSale() {
   }
 }
 
+// Public endpoint — no auth required. Serves the properties page which is publicly accessible.
 export async function GET() {
   try {
     const [rentals, forSale] = await Promise.all([fetchRentals(), fetchForSale()]);

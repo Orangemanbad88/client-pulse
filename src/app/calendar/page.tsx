@@ -44,6 +44,7 @@ function CalendarContent() {
   const [triggers, setTriggers] = useState<Trigger[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(() => new Date());
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -59,7 +60,7 @@ function CalendarContent() {
       Promise.all([svc.getAllTriggers(), svc.getRecentActivities(50)])
     )
       .then(([t, a]) => { setTriggers(t); setActivities(a); setLoading(false); })
-      .catch((err) => { console.error('Failed to load calendar data:', err); setLoading(false); });
+      .catch(() => { setError(true); setLoading(false); });
   }, []);
 
   useEffect(() => {
@@ -215,6 +216,16 @@ function CalendarContent() {
   if (loading) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <p className="text-sm text-gray-400">Loading...</p>
+    </div>
+  );
+
+  if (error) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-center">
+        <CalendarDays size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <p className="text-sm text-gray-400 mb-1">Unable to load calendar</p>
+        <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
+      </div>
     </div>
   );
 

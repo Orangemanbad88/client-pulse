@@ -10,6 +10,7 @@ export default function MessagesPage() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [filter, setFilter] = useState<'all' | 'email' | 'call' | 'text'>('all');
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export default function MessagesPage() {
       Promise.all([svc.getRecentActivities(50), svc.getClients()])
     )
       .then(([a, c]) => { setActivities(a); setClients(c); setLoading(false); })
-      .catch((err) => { console.error('Failed to load messages:', err); setLoading(false); });
+      .catch(() => { setError(true); setLoading(false); });
   }, []);
 
   const messageTypes = ['email', 'call', 'text'] as const;
@@ -55,6 +56,16 @@ export default function MessagesPage() {
   if (loading) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <p className="text-sm text-gray-400">Loading...</p>
+    </div>
+  );
+
+  if (error) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-center">
+        <MessageSquare size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <p className="text-sm text-gray-400 mb-1">Unable to load messages</p>
+        <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
+      </div>
     </div>
   );
 

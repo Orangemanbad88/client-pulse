@@ -1,17 +1,18 @@
-import { createBrowserClient, createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').trim();
+const supabaseAnonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '').replace(/\s/g, '');
+const supabaseServiceKey = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? '').replace(/\s/g, '') || undefined;
 
 /**
- * Browser client — for client components (reads via anon key).
+ * Browser client — uses supabase-js directly (no SSR cookie handling needed).
  */
 export const createBrowserSupabaseClient = () =>
-  createBrowserClient(supabaseUrl, supabaseAnonKey);
+  createClient(supabaseUrl, supabaseAnonKey);
 
 /**
- * Server client — for server components, API routes, server actions.
+ * Server client — for API routes and server actions.
  * Uses service role key when available for full CRUD access.
  */
 export const createServerSupabaseClient = () => {

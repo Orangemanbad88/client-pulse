@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import Image from 'next/image';
 import {
   Building2,
   MapPin,
@@ -97,8 +98,7 @@ export default function PropertiesPage() {
         setListings(data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error('Failed to load listings:', err);
+      .catch(() => {
         setError('Could not connect to listing feed');
         setLoading(false);
       });
@@ -467,17 +467,24 @@ export default function PropertiesPage() {
                   <div className="flex flex-col lg:flex-row">
                     {/* Photo */}
                     <div className="relative lg:w-[420px] h-[240px] lg:h-[320px] flex-shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-800">
-                      <img
-                        key={featured.id}
-                        src={getPhotoUrl(featured)}
-                        alt={featured.address}
-                        className="w-full h-full object-cover transition-opacity duration-700 ease-out"
-                        style={{ animation: `${direction === 'next' ? 'slideInRight' : 'slideInLeft'} 0.5s ease` }}
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '';
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
+                      {getPhotoUrl(featured) ? (
+                        <Image
+                          key={featured.id}
+                          src={getPhotoUrl(featured)}
+                          alt={featured.address}
+                          fill
+                          className="object-cover transition-opacity duration-700 ease-out"
+                          style={{ animation: `${direction === 'next' ? 'slideInRight' : 'slideInLeft'} 0.5s ease` }}
+                          sizes="(max-width: 1024px) 100vw, 420px"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Building2 size={40} className="text-gray-300 dark:text-gray-700" />
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
                       {/* Listing counter */}
@@ -629,15 +636,22 @@ export default function PropertiesPage() {
                   >
                     {/* Thumbnail */}
                     <div className="relative h-36 overflow-hidden bg-gray-100 dark:bg-gray-800">
-                      <img
-                        src={getPhotoUrl(listing)}
-                        alt={listing.address}
-                        className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
+                      {getPhotoUrl(listing) ? (
+                        <Image
+                          src={getPhotoUrl(listing)}
+                          alt={listing.address}
+                          fill
+                          className="object-cover group-hover/card:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Building2 size={24} className="text-gray-300 dark:text-gray-700" />
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                       <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-sm text-white text-xs font-data font-bold">
                         {listing.listingType === 'rental'

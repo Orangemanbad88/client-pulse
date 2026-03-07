@@ -62,7 +62,7 @@ export default function AnalyticsPage() {
       Promise.all([svc.getDashboardStats(), svc.getClients()])
     )
       .then(([s, c]) => { setStats(s); setClients(c); setLoading(false); })
-      .catch((err) => { console.error('Failed to load analytics data:', err); setError(true); setLoading(false); });
+      .catch(() => { setError(true); setLoading(false); });
   }, []);
 
   if (loading) return (

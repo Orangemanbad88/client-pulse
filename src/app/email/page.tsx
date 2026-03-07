@@ -78,6 +78,7 @@ const activityToEmailThread = (
 export default function EmailPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [folder, setFolder] = useState<'inbox' | 'sent' | 'drafts' | 'all'>('sent');
   const [selectedEmail, setSelectedEmail] = useState<EmailThread | null>(null);
   const [emails, setEmails] = useState<EmailThread[]>([]);
@@ -104,7 +105,7 @@ export default function EmailPage() {
         setEmails(emailActivities);
         setLoading(false);
       })
-      .catch((err) => { console.error('Failed to load email data:', err); setLoading(false); });
+      .catch(() => { setLoadError(true); setLoading(false); });
   }, []);
 
   const filtered = folder === 'all' ? emails : emails.filter((e) => e.folder === folder);
@@ -213,6 +214,16 @@ export default function EmailPage() {
   if (loading) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <p className="text-sm text-gray-400">Loading...</p>
+    </div>
+  );
+
+  if (loadError) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-center">
+        <Mail size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <p className="text-sm text-gray-400 mb-1">Unable to load email</p>
+        <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
+      </div>
     </div>
   );
 

@@ -23,7 +23,29 @@
 - [ ] Add env vars to Vercel dashboard
 - [ ] Deploy to Vercel and verify
 
-### Files Changed
+## Production Hardening (Completed)
+
+- [x] Replace raw `<img>` with `next/image` in properties page + configure remotePatterns
+- [x] Add env var validation for Google OAuth (fails fast with clear error)
+- [x] Remove all `console.error` from client-side code (kept in API routes)
+- [x] Add error UI to all pages (calendar, messages, clients, email, dashboard)
+- [x] Document `/api/listings` as intentionally public
+- [x] Build passes clean — zero errors, zero warnings
+
+### Files Changed (Production Hardening)
+- `next.config.mjs` — added `images.remotePatterns` for realtimerental.com + comp-search.vercel.app
+- `src/app/properties/page.tsx` — `next/image`, error fallback placeholders, removed console.error
+- `src/lib/google-calendar.ts` — lazy env validation with clear error message
+- `src/components/layout/ClientShell.tsx` — removed console.error
+- `src/app/clients/page.tsx` — added error state UI, removed console.error
+- `src/app/page.tsx` — added error state UI, removed console.error
+- `src/app/messages/page.tsx` — added error state UI, removed console.error
+- `src/app/calendar/page.tsx` — added error state UI, removed console.error
+- `src/app/analytics/page.tsx` — removed console.error
+- `src/app/email/page.tsx` — added error state UI, removed console.error
+- `src/app/api/listings/route.ts` — documented as intentionally public
+
+### Files Changed (Supabase Foundation)
 - `package.json` — added supabase deps
 - `src/lib/supabase.ts` — NEW
 - `src/lib/case-utils.ts` — NEW

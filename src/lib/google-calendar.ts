@@ -1,13 +1,25 @@
 import { google } from 'googleapis';
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI!;
-
 const SCOPES = ['https://www.googleapis.com/auth/calendar.events'];
 
-const createOAuth2Client = () =>
-  new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+const getGoogleCredentials = () => {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const redirectUri = process.env.GOOGLE_REDIRECT_URI;
+
+  if (!clientId || !clientSecret || !redirectUri) {
+    throw new Error(
+      'Missing Google OAuth credentials. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REDIRECT_URI in .env.local',
+    );
+  }
+
+  return { clientId, clientSecret, redirectUri };
+};
+
+const createOAuth2Client = () => {
+  const { clientId, clientSecret, redirectUri } = getGoogleCredentials();
+  return new google.auth.OAuth2(clientId, clientSecret, redirectUri);
+};
 
 export const getAuthUrl = (): string => {
   const client = createOAuth2Client();

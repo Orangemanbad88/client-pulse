@@ -38,6 +38,7 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [triggers, setTriggers] = useState<Trigger[]>([]);
   const [matches, setMatches] = useState<PropertyMatch[]>([]);
+  const [error, setError] = useState(false);
   const dark = useDark();
 
   useEffect(() => {
@@ -55,8 +56,8 @@ export default function DashboardPage() {
         setStats(s);
         setTriggers(tr);
         setMatches(ma);
-      } catch (err) {
-        console.error('Dashboard load failed:', err);
+      } catch {
+        setError(true);
       }
     };
     loadData();
@@ -92,6 +93,16 @@ export default function DashboardPage() {
     { label: "Searching", value: stats?.matchesPending || 0, color: "#C9A227" },
     { label: "Pending", value: stats?.pendingFollowUps || 0, color: dark ? "#8B6914" : "#FDE8B8" },
   ], [dark, stats]);
+
+  if (error && !stats) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-center">
+        <TrendingUp size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <p className="text-sm text-gray-400 mb-1">Unable to load dashboard</p>
+        <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
+      </div>
+    </div>
+  );
 
   return (
     <>

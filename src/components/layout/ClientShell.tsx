@@ -21,8 +21,8 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
     setMounted(true);
     const saved = localStorage.getItem('clientpulse-dark');
     if (saved === 'true') setDark(true);
-    service.getClients().then(setClients).catch((err) => console.error('Failed to load clients for shell:', err));
-    service.getAllMatches().then((m) => setMatchCount(m.length)).catch((err) => console.error('Failed to load matches count:', err));
+    service.getClients().then(setClients).catch(() => {});
+    service.getAllMatches().then((m) => setMatchCount(m.length)).catch(() => {});
   }, []);
 
   useEffect(() => {

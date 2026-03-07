@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Users } from 'lucide-react';
 import { ClientList } from '@/components/clients/ClientList';
 import { IntakeForm } from '@/components/clients/IntakeForm';
 import type { Client, ClientIntakeData } from '@/types/client';
@@ -14,10 +15,11 @@ function ClientsContent() {
   const params = useSearchParams();
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [createError, setCreateError] = useState('');
 
-  useEffect(() => { import('@/services').then((svc) => svc.getClients()).then((d) => { setClients(d); setLoading(false); }).catch((err) => { console.error('Failed to load clients:', err); setLoading(false); }); }, []);
+  useEffect(() => { import('@/services').then((svc) => svc.getClients()).then((d) => { setClients(d); setLoading(false); }).catch(() => { setError(true); setLoading(false); }); }, []);
   useEffect(() => { if (params.get('new') === 'true') setShowForm(true); }, [params]);
 
   const onCreate = async (d: ClientIntakeData) => {
@@ -41,6 +43,16 @@ function ClientsContent() {
   };
 
   if (loading) return <div className="flex items-center justify-center min-h-[400px]"><p className="text-[13px]" style={{ color: 'var(--text-tertiary)' }}>Loading...</p></div>;
+
+  if (error) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-center">
+        <Users size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <p className="text-sm text-gray-400 mb-1">Unable to load clients</p>
+        <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
+      </div>
+    </div>
+  );
 
   return (
     <>
