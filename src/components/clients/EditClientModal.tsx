@@ -16,14 +16,65 @@ import type {
 import { LIFECYCLE_LABELS, PROPERTY_TYPE_LABELS, AMENITY_LABELS } from '@/types/client';
 import { cn } from '@/lib/utils';
 
+interface SavedPrefs {
+  rental?: Record<string, unknown> | null;
+  buyer?: Record<string, unknown> | null;
+}
+
 interface Props {
   client: Client;
   preferences: ClientPreferences | null;
-  onSave: (updated: Client, prefsUpdated?: boolean) => void;
+  onSave: (updated: Client, prefsUpdated?: boolean, savedPrefs?: SavedPrefs) => void;
   onClose: () => void;
 }
 
 const steps = ['Contact', 'Type', 'Preferences', 'Details'];
+
+const CITIES = [
+  'Avalon',
+  'Avalon Manor',
+  'Atlantic City',
+  'Belleplain',
+  'Cape May',
+  'Cape May Beach',
+  'Cape May Court House',
+  'Cape May Point',
+  'Cold Spring',
+  'Corbin City',
+  'Del Haven',
+  'Dennisville',
+  'Erma',
+  'Fortescue',
+  'Leesburg',
+  'Little Egg Harbor',
+  'Lower Township',
+  'Marmora',
+  'Mauricetown',
+  'North Cape May',
+  'North Wildwood',
+  'Ocean City',
+  'Ocean View',
+  'Palermo',
+  'Petersburg',
+  'Rio Grande',
+  'Sea Isle City',
+  'Seaville',
+  'Somers Point',
+  'South Dennis',
+  'Stone Harbor',
+  'Swainton',
+  'Toms River',
+  'Townbank',
+  'Tuckahoe',
+  'Ventnor',
+  'Villas',
+  'West Cape May',
+  'West Wildwood',
+  'Whitesboro',
+  'Wildwood',
+  'Wildwood Crest',
+  'Woodbine',
+];
 
 export const EditClientModal = ({ client, preferences, onSave, onClose }: Props) => {
   const [step, setStep] = useState(1);
@@ -47,7 +98,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const [rBedrooms, setRBedrooms] = useState(rp?.bedrooms ?? 0);
   const [rBathrooms, setRBathrooms] = useState(rp?.bathrooms ?? 0);
   const [rSqftMin, setRSqftMin] = useState(rp?.sqftMin ?? 0);
-  const [rAreas, setRAreas] = useState(rp?.preferredAreas?.join(', ') ?? '');
+  const [rAreas, setRAreas] = useState<string[]>(rp?.preferredAreas ?? []);
   const [rPropertyTypes, setRPropertyTypes] = useState<PropertyType[]>(rp?.propertyTypes ?? []);
   const [rAmenities, setRAmenities] = useState<Amenity[]>(rp?.mustHaveAmenities ?? []);
   const [rPets, setRPets] = useState(rp?.pets ?? '');
@@ -60,7 +111,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const [bBedrooms, setBBedrooms] = useState(bp?.bedrooms ?? 0);
   const [bBathrooms, setBBathrooms] = useState(bp?.bathrooms ?? 0);
   const [bSqftMin, setBSqftMin] = useState(bp?.sqftMin ?? 0);
-  const [bAreas, setBAreas] = useState(bp?.preferredAreas?.join(', ') ?? '');
+  const [bAreas, setBAreas] = useState<string[]>(bp?.preferredAreas ?? []);
   const [bPropertyTypes, setBPropertyTypes] = useState<PropertyType[]>(bp?.propertyTypes ?? []);
   const [bAmenities, setBAmenities] = useState<Amenity[]>(bp?.mustHaveFeatures ?? []);
   const [bPreApproved, setBPreApproved] = useState(bp?.preApproved ?? false);
@@ -72,6 +123,8 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const isB = clientType === 'buyer' || clientType === 'investor';
   const currentPTypes = isR ? rPropertyTypes : bPropertyTypes;
   const currentAmenities = isR ? rAmenities : bAmenities;
+  const currentAreas = isR ? rAreas : bAreas;
+  const setCurrentAreas = isR ? setRAreas : setBAreas;
 
   const togglePType = (p: PropertyType) => {
     if (isR) setRPropertyTypes((prev) => prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]);
@@ -80,6 +133,9 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const toggleAmenity = (a: Amenity) => {
     if (isR) setRAmenities((prev) => prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]);
     else setBAmenities((prev) => prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]);
+  };
+  const toggleCity = (city: string) => {
+    setCurrentAreas((prev) => prev.includes(city) ? prev.filter((c) => c !== city) : [...prev, city]);
   };
 
   const handleSave = async () => {
@@ -93,26 +149,27 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
     try {
       const rentalPrefs = isR ? {
         budgetMin: rBudgetMin, budgetMax: rBudgetMax, bedrooms: rBedrooms, bathrooms: rBathrooms,
-        sqftMin: rSqftMin, preferredAreas: rAreas.split(',').map((a) => a.trim()).filter(Boolean),
+        sqftMin: rSqftMin, preferredAreas: rAreas,
         propertyTypes: rPropertyTypes, mustHaveAmenities: rAmenities, pets: rPets,
         moveInTimeline: rMoveIn, currentLeaseExpiration: rLeaseExp,
       } : null;
 
       const buyerPrefs = isB ? {
         budgetMin: bBudgetMin, budgetMax: bBudgetMax, bedrooms: bBedrooms, bathrooms: bBathrooms,
-        sqftMin: bSqftMin, preferredAreas: bAreas.split(',').map((a) => a.trim()).filter(Boolean),
+        sqftMin: bSqftMin, preferredAreas: bAreas,
         propertyTypes: bPropertyTypes, mustHaveFeatures: bAmenities, preApproved: bPreApproved,
         preApprovalAmount: bPreApprovalAmt, downPayment: bDownPayment, timeline: bTimeline,
       } : null;
 
-      const hasPrefs = rentalPrefs || buyerPrefs;
+      // Always send preferences for rental/buyer clients, even if partially filled
+      const prefsPayload = (isR || isB) ? { preferences: { rental: rentalPrefs, buyer: buyerPrefs } } : {};
 
       const res = await fetch(`/api/clients/${client.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           firstName, lastName, email, phone, preferredContact, source, clientType, status, lifecycleStage, notes,
-          ...(hasPrefs ? { preferences: { rental: rentalPrefs, buyer: buyerPrefs } } : {}),
+          ...prefsPayload,
         }),
       });
       const result = await res.json();
@@ -121,7 +178,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
         setSaving(false);
         return;
       }
-      onSave(result.data, result.prefsUpdated);
+      onSave(result.data, result.prefsUpdated, { rental: rentalPrefs, buyer: buyerPrefs });
     } catch {
       setError('Network error — please try again');
       setSaving(false);
@@ -236,7 +293,19 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
                   <div><Lbl>Baths</Lbl><input className="input" type="number" value={rBathrooms || ''} onChange={(e) => setRBathrooms(+e.target.value)} placeholder="2" /></div>
                   <div><Lbl>Min SqFt</Lbl><input className="input" type="number" value={rSqftMin || ''} onChange={(e) => setRSqftMin(+e.target.value)} placeholder="1400" /></div>
                 </div>
-                <div><Lbl>Areas (comma-sep)</Lbl><input className="input" value={rAreas} onChange={(e) => setRAreas(e.target.value)} placeholder="Dunedin, Palm Harbor, Clearwater" /></div>
+                <div>
+                  <Lbl>Cities</Lbl>
+                  <div className="flex flex-wrap gap-1.5 mt-1.5 max-h-[140px] overflow-y-auto p-1">
+                    {CITIES.map((city) => (
+                      <button key={city} onClick={() => toggleCity(city)}
+                        className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
+                          currentAreas.includes(city) ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
+                        style={{ borderColor: currentAreas.includes(city) ? 'var(--accent)' : 'var(--border)', color: currentAreas.includes(city) ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
+                        {city}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div><Lbl>Must-Have Amenities</Lbl>
                   <div className="flex flex-wrap gap-1.5 mt-1.5">
                     {(Object.entries(AMENITY_LABELS) as [Amenity, string][]).map(([k, v]) => (
@@ -265,7 +334,19 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
                   <div><Lbl>Baths</Lbl><input className="input" type="number" value={bBathrooms || ''} onChange={(e) => setBBathrooms(+e.target.value)} placeholder="2" /></div>
                   <div><Lbl>Min SqFt</Lbl><input className="input" type="number" value={bSqftMin || ''} onChange={(e) => setBSqftMin(+e.target.value)} placeholder="1400" /></div>
                 </div>
-                <div><Lbl>Areas (comma-sep)</Lbl><input className="input" value={bAreas} onChange={(e) => setBAreas(e.target.value)} placeholder="Dunedin, Palm Harbor, Clearwater" /></div>
+                <div>
+                  <Lbl>Cities</Lbl>
+                  <div className="flex flex-wrap gap-1.5 mt-1.5 max-h-[140px] overflow-y-auto p-1">
+                    {CITIES.map((city) => (
+                      <button key={city} onClick={() => toggleCity(city)}
+                        className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
+                          currentAreas.includes(city) ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
+                        style={{ borderColor: currentAreas.includes(city) ? 'var(--accent)' : 'var(--border)', color: currentAreas.includes(city) ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
+                        {city}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div><Lbl>Must-Have Features</Lbl>
                   <div className="flex flex-wrap gap-1.5 mt-1.5">
                     {(Object.entries(AMENITY_LABELS) as [Amenity, string][]).map(([k, v]) => (

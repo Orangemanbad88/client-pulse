@@ -333,18 +333,16 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
         <EditClientModal
           client={client}
           preferences={prefs}
-          onSave={async (updated, prefsUpdated) => {
+          onSave={async (updated, prefsUpdated, savedPrefs) => {
             setClient(updated);
             setShowEdit(false);
-            if (prefsUpdated) {
-              // Refresh preferences immediately so UI reflects changes
-              try {
-                const svc = await import('@/services');
-                const freshPrefs = await svc.getClientPreferences(client.id);
-                setPrefs(freshPrefs);
-              } catch {
-                // non-critical
-              }
+            if (prefsUpdated && savedPrefs) {
+              // Update preferences directly from what was just saved
+              setPrefs({
+                clientId: client.id,
+                rental: savedPrefs.rental as ClientPreferences['rental'],
+                buyer: savedPrefs.buyer as ClientPreferences['buyer'],
+              });
 
               // Wait for background matching to complete, then refresh matches
               setMatchingInProgress(true);
