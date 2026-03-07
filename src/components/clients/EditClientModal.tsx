@@ -130,33 +130,33 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-[5vh] overflow-y-auto" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="relative w-full max-w-2xl my-4"
+        className="relative w-full max-w-2xl max-h-[85vh] flex flex-col surface-elevated overflow-hidden animate-scale-in"
+        style={{ borderRadius: 'var(--radius-xl)' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="surface-elevated overflow-hidden animate-scale-in" style={{ borderRadius: 'var(--radius-xl)' }}>
-          {/* Header */}
-          <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
-            <h2 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Edit Client</h2>
-            <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Update contact info, preferences & details</p>
-          </div>
+        {/* Header */}
+        <div className="px-5 py-4 border-b shrink-0" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
+          <h2 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Edit Client</h2>
+          <p className="text-[12px] mt-0.5" style={{ color: 'var(--text-tertiary)' }}>Update contact info, preferences & details</p>
+        </div>
 
-          {/* Step tabs */}
-          <div className="flex border-b" style={{ borderColor: 'var(--border)' }}>
-            {steps.map((s, i) => (
-              <button key={s} onClick={() => setStep(i + 1)}
-                className={cn('flex-1 py-2.5 text-[11px] font-semibold text-center border-b-2 transition-all',
-                  step === i + 1 ? 'border-[var(--accent)]' : 'border-transparent')}
-                style={{ color: step === i + 1 ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
-                {s}
-              </button>
-            ))}
-          </div>
+        {/* Step tabs */}
+        <div className="flex border-b shrink-0" style={{ borderColor: 'var(--border)' }}>
+          {steps.map((s, i) => (
+            <button key={s} onClick={() => setStep(i + 1)}
+              className={cn('flex-1 py-2.5 text-[11px] font-semibold text-center border-b-2 transition-all',
+                step === i + 1 ? 'border-[var(--accent)]' : 'border-transparent')}
+              style={{ color: step === i + 1 ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
+              {s}
+            </button>
+          ))}
+        </div>
 
-          {/* Step content */}
-          <div className="p-5 space-y-3.5 min-h-[320px]">
+        {/* Step content — scrollable */}
+        <div className="p-5 space-y-3.5 min-h-[280px] overflow-y-auto flex-1">
             {error && (
               <div className="p-2.5 rounded-lg text-[11px] font-medium" style={{ background: 'rgba(239,68,68,0.08)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.2)' }}>
                 {error}
@@ -306,16 +306,15 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
             </div>}
           </div>
 
-          {/* Footer */}
-          <div className="px-5 py-3 border-t flex items-center justify-between" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
-            <button onClick={onClose} className="btn btn-ghost" disabled={saving}>Cancel</button>
-            <div className="flex gap-2">
-              {step > 1 && <button onClick={() => setStep(step - 1)} className="btn btn-secondary">Back</button>}
-              {step < 4 && <button onClick={() => setStep(step + 1)} className="btn btn-secondary">Next</button>}
-              <button onClick={handleSave} disabled={saving} className="btn btn-primary">
-                {saving ? 'Saving...' : 'Save Changes'}
-              </button>
-            </div>
+        {/* Footer */}
+        <div className="px-5 py-3 border-t flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
+          <button onClick={onClose} className="btn btn-ghost" disabled={saving}>Cancel</button>
+          <div className="flex gap-2">
+            {step > 1 && <button onClick={() => setStep(step - 1)} className="btn btn-secondary">Back</button>}
+            {step < 4 && <button onClick={() => setStep(step + 1)} className="btn btn-secondary">Next</button>}
+            <button onClick={handleSave} disabled={saving} className="btn btn-primary">
+              {saving ? 'Saving...' : 'Save Changes'}
+            </button>
           </div>
         </div>
       </div>
