@@ -45,6 +45,33 @@
 - `src/app/email/page.tsx` — added error state UI, removed console.error
 - `src/app/api/listings/route.ts` — documented as intentionally public
 
+## Client Matchmaking, Edit/Delete, Premium Headers (Completed)
+
+- [x] Matching algorithm (`src/lib/matching.ts`) — scores listings against client prefs (budget 40pts, beds 20pts, location 20pts, type 10pts, baths 10pts)
+- [x] Match generation API (`/api/matches/generate`) — POST with clientId, fetches listings, runs algorithm, inserts top 10 matches
+- [x] Client edit/delete API (`/api/clients/[id]`) — PUT + DELETE handlers
+- [x] Service layer — added `deleteClient` + `bulkInsertMatches` to supabase-service, mock-service, index.ts
+- [x] EditClientModal component — form modal with all client fields, teal/amber design
+- [x] ClientDetail wiring — Edit button opens modal, Delete with confirmation, Find Matches button (visible when prefs exist)
+- [x] Premium page headers — all 6 pages upgraded with icon containers, sticky positioning, gradient styling
+- [x] Build passes clean — zero errors
+
+### Files Changed (Matchmaking + Edit/Delete + Headers)
+- `src/lib/matching.ts` — NEW
+- `src/app/api/matches/generate/route.ts` — NEW
+- `src/app/api/clients/[id]/route.ts` — NEW
+- `src/components/clients/EditClientModal.tsx` — NEW
+- `src/components/clients/ClientDetail.tsx` — Edit/Delete/FindMatches buttons, modals, useRouter
+- `src/services/supabase-service.ts` — added deleteClient, bulkInsertMatches
+- `src/services/mock-service.ts` — added deleteClient, bulkInsertMatches
+- `src/services/index.ts` — added deleteClient, bulkInsertMatches exports
+- `src/app/clients/page.tsx` — premium header
+- `src/app/calendar/page.tsx` — premium header
+- `src/app/messages/page.tsx` — premium header
+- `src/app/email/page.tsx` — premium header
+- `src/app/analytics/page.tsx` — premium header
+- `src/app/properties/page.tsx` — premium header
+
 ### Files Changed (Supabase Foundation)
 - `package.json` — added supabase deps
 - `src/lib/supabase.ts` — NEW

@@ -109,6 +109,16 @@ export const createTrigger = async (...args: Parameters<Awaited<ReturnType<typeo
   return s.createTrigger(...args);
 };
 
+export const deleteClient = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['deleteClient']>) => {
+  const s = await svc();
+  return s.deleteClient(...args);
+};
+
+export const bulkInsertMatches = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['bulkInsertMatches']>) => {
+  const s = await svc();
+  return s.bulkInsertMatches(...args);
+};
+
 export const upsertAIProfile = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['upsertAIProfile']>) => {
   const s = await svc();
   return s.upsertAIProfile(...args);

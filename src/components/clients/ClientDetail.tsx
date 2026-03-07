@@ -1,15 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Sparkles, Trash2 } from 'lucide-react';
 import type { Client, ClientPreferences, Activity, Transaction, PropertyMatch, AIProfile, Trigger } from '@/types/client';
 import { LIFECYCLE_LABELS, PROPERTY_TYPE_LABELS, AMENITY_LABELS, ACTIVITY_ICONS } from '@/types/client';
 import { getInitials, getClientName, formatCurrency, formatDate, formatRelativeDate, daysUntil, urgencyBadge, scoreColor, scoreBg, cn, stageBadge } from '@/lib/utils';
 import { AIProfileCard } from './AIProfileCard';
+import { EditClientModal } from './EditClientModal';
 import Link from 'next/link';
 
 interface Props { client: Client; preferences: ClientPreferences | null; activities: Activity[]; transactions: Transaction[]; matches: PropertyMatch[]; aiProfile: AIProfile | null; triggers: Trigger[]; }
 
-export const ClientDetail = ({ client, preferences, activities, transactions, matches: initialMatches, aiProfile, triggers: initialTriggers }: Props) => {
+export const ClientDetail = ({ client: initialClient, preferences, activities, transactions, matches: initialMatches, aiProfile, triggers: initialTriggers }: Props) => {
+  const router = useRouter();
+  const [client, setClient] = useState(initialClient);
   const rp = preferences?.rental;
   const bp = preferences?.buyer;
   const leaseExp = rp?.currentLeaseExpiration ? daysUntil(rp.currentLeaseExpiration) : null;
@@ -18,6 +23,12 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
   const [triggerList, setTriggerList] = useState(initialTriggers);
   const [matchLoading, setMatchLoading] = useState<string | null>(null);
   const [triggerLoading, setTriggerLoading] = useState<string | null>(null);
+
+  // Edit / Delete / Find Matches state
+  const [showEdit, setShowEdit] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [findingMatches, setFindingMatches] = useState(false);
 
   const handleSendMatch = async (matchId: string) => {
     setMatchLoading(matchId);
@@ -51,6 +62,41 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
     }
   };
 
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/clients/${client.id}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (result.success) {
+        router.push('/clients');
+      }
+    } catch {
+      setDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const handleFindMatches = async () => {
+    setFindingMatches(true);
+    try {
+      const res = await fetch('/api/matches/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId: client.id }),
+      });
+      const result = await res.json();
+      if (result.success && result.data) {
+        setMatchList(result.data);
+      }
+    } catch {
+      // silently fail
+    } finally {
+      setFindingMatches(false);
+    }
+  };
+
+  const hasPreferences = !!(preferences?.rental || preferences?.buyer);
+
   return (
     <div className="space-y-4 animate-in">
       {/* Header */}
@@ -72,7 +118,20 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
             </p>
           </div>
           <div className="flex gap-2">
-            <button className="text-sm font-medium px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors">Edit</button>
+            {hasPreferences && (
+              <button
+                onClick={handleFindMatches}
+                disabled={findingMatches}
+                className={cn('text-sm font-medium px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors flex items-center gap-1.5', findingMatches && 'opacity-50 cursor-wait')}
+              >
+                <Sparkles size={13} />
+                {findingMatches ? 'Finding...' : 'Find Matches'}
+              </button>
+            )}
+            <button onClick={() => setShowEdit(true)} className="text-sm font-medium px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors">Edit</button>
+            <button onClick={() => setShowDeleteConfirm(true)} className="text-sm font-medium px-3 py-1.5 rounded-lg bg-white/10 hover:bg-red-500/20 text-white border border-white/10 hover:border-red-500/30 transition-colors">
+              <Trash2 size={14} />
+            </button>
             <button onClick={handleMessage} className="text-sm font-medium px-3 py-1.5 rounded-lg bg-gold hover:bg-gold-muted text-white transition-colors shadow-sm shadow-gold/20">Message</button>
           </div>
         </div>
@@ -252,6 +311,45 @@ export const ClientDetail = ({ client, preferences, activities, transactions, ma
           )}
         </div>
       </div>
+
+      {/* Edit Modal */}
+      {showEdit && (
+        <EditClientModal
+          client={client}
+          onSave={(updated) => { setClient(updated); setShowEdit(false); }}
+          onClose={() => setShowEdit(false)}
+        />
+      )}
+
+      {/* Delete Confirmation */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => !deleting && setShowDeleteConfirm(false)}>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-sm p-6 text-center" onClick={(e) => e.stopPropagation()}>
+            <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center mx-auto mb-4">
+              <Trash2 size={20} className="text-red-500" />
+            </div>
+            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-100 mb-2">Delete {getClientName(client)}?</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-5">This will permanently remove the client and all associated data. This cannot be undone.</p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={deleting}
+                className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 px-4 py-2 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="text-xs font-medium text-white bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-colors"
+              >
+                {deleting ? 'Deleting...' : 'Delete Client'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -229,22 +229,27 @@ export default function PropertiesPage() {
     <>
       {/* Header */}
       <header
-        className="px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
+        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
         style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}
       >
-        <div>
-          <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>
-            Properties
-          </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            {filtered.length} of {listings.length} listings
-            {listings.length > 0 && (
-              <span className="ml-2 inline-flex items-center gap-1 text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Live feed
-              </span>
-            )}
-          </p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">
+            <Building2 size={18} className="text-white" />
+          </div>
+          <div>
+            <h1 className="text-lg text-white" style={{ fontWeight: 600, letterSpacing: '-0.025em' }}>
+              Properties
+            </h1>
+            <p className="text-xs text-slate-400 mt-0.5">
+              {filtered.length} of {listings.length} listings
+              {listings.length > 0 && (
+                <span className="ml-2 inline-flex items-center gap-1 text-emerald-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live feed
+                </span>
+              )}
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <button

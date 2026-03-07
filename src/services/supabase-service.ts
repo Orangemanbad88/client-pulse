@@ -312,6 +312,49 @@ export const createTrigger = async (input: CreateTriggerInput): Promise<Trigger>
   return snakeToCamel<Trigger>(data);
 };
 
+export const deleteClient = async (id: string): Promise<void> => {
+  const { error } = await db()
+    .from('clients')
+    .delete()
+    .eq('id', id);
+  if (error) throw new Error(`deleteClient: ${error.message}`);
+};
+
+export const bulkInsertMatches = async (clientId: string, matches: Omit<import('@/types/client').PropertyMatch, 'id' | 'foundAt'>[]): Promise<import('@/types/client').PropertyMatch[]> => {
+  const supabase = db();
+
+  // Clear old matches for this client
+  await supabase.from('property_matches').delete().eq('client_id', clientId);
+
+  if (matches.length === 0) return [];
+
+  const rows = matches.map((m) => ({
+    client_id: m.clientId,
+    client_name: m.clientName,
+    listing_id: m.listingId,
+    address: m.address,
+    city: m.city,
+    price: m.price,
+    bedrooms: m.bedrooms,
+    bathrooms: m.bathrooms,
+    sqft: m.sqft,
+    property_type: m.propertyType,
+    match_score: m.matchScore,
+    match_reasons: m.matchReasons,
+    status: m.status,
+    photo_url: m.photoUrl || null,
+    mls_number: m.mlsNumber || null,
+  }));
+
+  const { data, error } = await supabase
+    .from('property_matches')
+    .insert(rows)
+    .select();
+
+  if (error) throw new Error(`bulkInsertMatches: ${error.message}`);
+  return snakeToCamelArray<import('@/types/client').PropertyMatch>(data);
+};
+
 export const upsertAIProfile = async (
   clientId: string,
   summary: string,

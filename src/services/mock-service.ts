@@ -183,6 +183,28 @@ export const createTrigger = async (input: CreateTriggerInput): Promise<Trigger>
   return trigger;
 };
 
+export const deleteClient = async (id: string): Promise<void> => {
+  const idx = (mockData.clients as Client[]).findIndex((c) => c.id === id);
+  if (idx !== -1) (mockData.clients as Client[]).splice(idx, 1);
+};
+
+export const bulkInsertMatches = async (clientId: string, matches: Omit<PropertyMatch, 'id' | 'foundAt'>[]): Promise<PropertyMatch[]> => {
+  // Remove old matches
+  const existing = mockData.matches as PropertyMatch[];
+  const filtered = existing.filter((m) => m.clientId !== clientId);
+  existing.length = 0;
+  existing.push(...filtered);
+
+  // Add new matches
+  const created = matches.map((m, i) => ({
+    ...m,
+    id: `match_${Date.now()}_${i}`,
+    foundAt: new Date().toISOString(),
+  } as PropertyMatch));
+  existing.push(...created);
+  return created;
+};
+
 export const upsertAIProfile = async (
   clientId: string,
   summary: string,
