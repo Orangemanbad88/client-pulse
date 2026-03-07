@@ -12,11 +12,12 @@ import Link from 'next/link';
 
 interface Props { client: Client; preferences: ClientPreferences | null; activities: Activity[]; transactions: Transaction[]; matches: PropertyMatch[]; aiProfile: AIProfile | null; triggers: Trigger[]; }
 
-export const ClientDetail = ({ client: initialClient, preferences, activities, transactions, matches: initialMatches, aiProfile, triggers: initialTriggers }: Props) => {
+export const ClientDetail = ({ client: initialClient, preferences: initialPrefs, activities, transactions, matches: initialMatches, aiProfile, triggers: initialTriggers }: Props) => {
   const router = useRouter();
   const [client, setClient] = useState(initialClient);
-  const rp = preferences?.rental;
-  const bp = preferences?.buyer;
+  const [prefs, setPrefs] = useState(initialPrefs);
+  const rp = prefs?.rental;
+  const bp = prefs?.buyer;
   const leaseExp = rp?.currentLeaseExpiration ? daysUntil(rp.currentLeaseExpiration) : null;
 
   const [matchList, setMatchList] = useState(initialMatches);
@@ -96,7 +97,7 @@ export const ClientDetail = ({ client: initialClient, preferences, activities, t
     }
   };
 
-  const hasPreferences = !!(preferences?.rental || preferences?.buyer);
+  const hasPreferences = !!(prefs?.rental || prefs?.buyer);
 
   return (
     <div className="space-y-4 animate-in">
@@ -331,11 +332,21 @@ export const ClientDetail = ({ client: initialClient, preferences, activities, t
       {showEdit && (
         <EditClientModal
           client={client}
-          preferences={preferences}
+          preferences={prefs}
           onSave={async (updated, prefsUpdated) => {
             setClient(updated);
             setShowEdit(false);
             if (prefsUpdated) {
+              // Refresh preferences immediately so UI reflects changes
+              try {
+                const svc = await import('@/services');
+                const freshPrefs = await svc.getClientPreferences(client.id);
+                setPrefs(freshPrefs);
+              } catch {
+                // non-critical
+              }
+
+              // Wait for background matching to complete, then refresh matches
               setMatchingInProgress(true);
               await new Promise((r) => setTimeout(r, 3000));
               try {
