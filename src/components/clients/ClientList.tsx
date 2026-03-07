@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import type { Client, ClientType, LifecycleStage } from '@/types/client';
 import { LIFECYCLE_LABELS } from '@/types/client';
 import { getInitials, getClientName, formatRelativeDate, cn, stageBadge } from '@/lib/utils';
+import { Pencil } from 'lucide-react';
 import Link from 'next/link';
 
 export const ClientList = ({ clients }: { clients: Client[] }) => {
@@ -56,8 +57,9 @@ export const ClientList = ({ clients }: { clients: Client[] }) => {
                       {getInitials(c.firstName, c.lastName)}
                     </div>
                     <div>
-                      <p className="text-[13px] font-semibold group-hover:text-[var(--accent-text)] transition-colors" style={{ color: 'var(--text-primary)' }}>
+                      <p className="text-[13px] font-semibold group-hover:text-[var(--accent-text)] transition-colors flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
                         {getClientName(c)}
+                        <Pencil size={11} className="opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: 'var(--accent-text)' }} />
                       </p>
                       <p className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>{c.email}</p>
                     </div>
