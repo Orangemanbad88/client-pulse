@@ -164,7 +164,7 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
             </div>
             <div className="p-4 space-y-2.5">
               {rp && <>
-                <Row l="Budget" v={`${formatCurrency(rp.budgetMin)} - ${formatCurrency(rp.budgetMax)}/mo`} />
+                <Row l="Budget" v={`${formatCurrency(rp.budgetMin)} - ${formatCurrency(rp.budgetMax)}/wk`} />
                 <Row l="Beds/Baths" v={`${rp.bedrooms}BR / ${rp.bathrooms}BA`} />
                 <Row l="Min SqFt" v={rp.sqftMin?.toLocaleString() || '—'} mono />
                 <div><Lbl>Areas</Lbl><div className="flex flex-wrap gap-1 mt-1">{rp.preferredAreas.map((a) => <span key={a} className="pill">{a}</span>)}</div></div>

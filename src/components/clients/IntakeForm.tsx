@@ -103,8 +103,8 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
 
         {step === 3 && <div className="space-y-3.5 animate-in">
           <div className="grid grid-cols-2 gap-3">
-            <div><Lbl>Budget Min {isR && '/mo'}</Lbl><input className="input" type="number" placeholder={isR ? '1800' : '250000'} onChange={(e) => isR ? ur('budgetMin', +e.target.value) : ub('budgetMin', +e.target.value)} /></div>
-            <div><Lbl>Budget Max {isR && '/mo'}</Lbl><input className="input" type="number" placeholder={isR ? '2500' : '450000'} onChange={(e) => isR ? ur('budgetMax', +e.target.value) : ub('budgetMax', +e.target.value)} /></div>
+            <div><Lbl>Budget Min {isR && '/wk'}</Lbl><input className="input" type="number" placeholder={isR ? '2000' : '250000'} onChange={(e) => isR ? ur('budgetMin', +e.target.value) : ub('budgetMin', +e.target.value)} /></div>
+            <div><Lbl>Budget Max {isR && '/wk'}</Lbl><input className="input" type="number" placeholder={isR ? '5000' : '450000'} onChange={(e) => isR ? ur('budgetMax', +e.target.value) : ub('budgetMax', +e.target.value)} /></div>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div><Lbl>Beds</Lbl><input className="input" type="number" placeholder="3" onChange={(e) => isR ? ur('bedrooms', +e.target.value) : ub('bedrooms', +e.target.value)} /></div>

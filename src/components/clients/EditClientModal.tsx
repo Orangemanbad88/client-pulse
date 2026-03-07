@@ -285,8 +285,8 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
             {step === 3 && <div className="space-y-3.5 animate-in">
               {isR && <>
                 <div className="grid grid-cols-2 gap-3">
-                  <div><Lbl>Budget Min /mo</Lbl><input className="input" type="number" value={rBudgetMin || ''} onChange={(e) => setRBudgetMin(+e.target.value)} placeholder="1800" /></div>
-                  <div><Lbl>Budget Max /mo</Lbl><input className="input" type="number" value={rBudgetMax || ''} onChange={(e) => setRBudgetMax(+e.target.value)} placeholder="2500" /></div>
+                  <div><Lbl>Budget Min /wk</Lbl><input className="input" type="number" value={rBudgetMin || ''} onChange={(e) => setRBudgetMin(+e.target.value)} placeholder="2000" /></div>
+                  <div><Lbl>Budget Max /wk</Lbl><input className="input" type="number" value={rBudgetMax || ''} onChange={(e) => setRBudgetMax(+e.target.value)} placeholder="5000" /></div>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   <div><Lbl>Beds</Lbl><input className="input" type="number" value={rBedrooms || ''} onChange={(e) => setRBedrooms(+e.target.value)} placeholder="3" /></div>
