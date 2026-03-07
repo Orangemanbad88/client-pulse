@@ -316,6 +316,7 @@ export const ClientDetail = ({ client: initialClient, preferences, activities, t
       {showEdit && (
         <EditClientModal
           client={client}
+          preferences={preferences}
           onSave={(updated) => { setClient(updated); setShowEdit(false); }}
           onClose={() => setShowEdit(false)}
         />
