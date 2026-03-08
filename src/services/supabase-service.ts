@@ -360,17 +360,27 @@ export const updateClientPreferences = async (
   rental?: Record<string, unknown> | null,
   buyer?: Record<string, unknown> | null,
 ): Promise<void> => {
-  const { error } = await db()
+  const supabase = db();
+
+  // Check if preferences row exists
+  const { data: existing } = await supabase
     .from('client_preferences')
-    .upsert(
-      {
-        client_id: clientId,
-        rental: rental || null,
-        buyer: buyer || null,
-      },
-      { onConflict: 'client_id' },
-    );
-  if (error) throw new Error(`updateClientPreferences: ${error.message}`);
+    .select('id')
+    .eq('client_id', clientId)
+    .maybeSingle();
+
+  if (existing) {
+    const { error } = await supabase
+      .from('client_preferences')
+      .update({ rental: rental || null, buyer: buyer || null })
+      .eq('client_id', clientId);
+    if (error) throw new Error(`updateClientPreferences: ${error.message}`);
+  } else {
+    const { error } = await supabase
+      .from('client_preferences')
+      .insert({ client_id: clientId, rental: rental || null, buyer: buyer || null });
+    if (error) throw new Error(`updateClientPreferences: ${error.message}`);
+  }
 };
 
 export const getNewMatchCountsByClient = async (): Promise<Record<string, number>> => {
