@@ -37,9 +37,9 @@ const EMAIL_TEMPLATES: EmailTemplate[] = [
     body: 'Hi {{firstName}},\n\nThis is to confirm your showing:\n\nProperty: {{address}}\nDate: {{date}}\nTime: {{time}}\n\nI\'ll meet you at the property. Please let me know if anything changes.\n\nBest,\nTom',
   },
   {
-    name: 'Lease Expiring',
-    subject: 'Your lease is expiring soon — let\'s plan ahead',
-    body: 'Hi {{firstName}},\n\nI wanted to reach out because your current lease is coming up for renewal. I\'d love to help you explore your options — whether that\'s renewing, finding a new place, or even looking at purchasing.\n\nWould you have time for a quick call this week to discuss?\n\nBest,\nTom',
+    name: 'Rental Season Reminder',
+    subject: 'Shore rental season is coming — let\'s lock in your spot',
+    body: 'Hi {{firstName}},\n\nRental season is right around the corner and the best properties go fast. I wanted to reach out early so we can start looking at options that match your preferences — whether you\'re renewing your current place or exploring something new.\n\nWould you have time for a quick call this week to go over what\'s available?\n\nBest,\nTom',
   },
   {
     name: 'General Follow-up',
@@ -50,6 +50,16 @@ const EMAIL_TEMPLATES: EmailTemplate[] = [
     name: 'Offer Submitted',
     subject: 'Offer submitted on {{address}}',
     body: 'Hi {{firstName}},\n\nGreat news — I\'ve submitted your offer on {{address}}. Here are the details:\n\nOffer Amount: {{amount}}\n\nThe seller typically responds within 24-48 hours. I\'ll keep you updated as soon as I hear back.\n\nBest,\nTom',
+  },
+  {
+    name: 'Weekly Match Digest',
+    subject: 'Your weekly property matches — {{date}}',
+    body: 'Hi {{firstName}},\n\nHere\'s your weekly roundup of new properties that match your criteria. I\'ve highlighted the ones I think are the strongest fit:\n\n{{matchList}}\n\nWant to schedule showings for any of these? Just reply to this email or give me a call.\n\nBest,\nTom',
+  },
+  {
+    name: 'Property Available This Week',
+    subject: 'Just listed — {{address}} is available now',
+    body: 'Hi {{firstName}},\n\nA property just came on the market that I think you\'ll want to see:\n\n{{address}}\n\nThis one checks a lot of your boxes and I expect it to move quickly. Would you like to set up a showing this week?\n\nBest,\nTom',
   },
 ];
 

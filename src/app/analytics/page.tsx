@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { BarChart3, Users, TrendingUp, Clock, ArrowUpRight, ArrowDownRight } from 'lucide-react';
-import type { DashboardStats, Client } from '@/types/client';
+import type { DashboardStats, Client, PropertyMatch, Trigger } from '@/types/client';
 import { LIFECYCLE_LABELS } from '@/types/client';
 import { useDark } from '@/hooks/useDark';
 
@@ -42,6 +42,8 @@ const BarSegment = ({ label, value, max, color }: { label: string; value: number
 export default function AnalyticsPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [clients, setClients] = useState<Client[]>([]);
+  const [matches, setMatches] = useState<PropertyMatch[]>([]);
+  const [triggers, setTriggers] = useState<Trigger[]>([]);
   const [loading, setLoading] = useState(true);
   const dark = useDark();
 
@@ -59,9 +61,9 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     import('@/services').then((svc) =>
-      Promise.all([svc.getDashboardStats(), svc.getClients()])
+      Promise.all([svc.getDashboardStats(), svc.getClients(), svc.getAllMatches(), svc.getAllTriggers()])
     )
-      .then(([s, c]) => { setStats(s); setClients(c); setLoading(false); })
+      .then(([s, c, m, t]) => { setStats(s); setClients(c); setMatches(m); setTriggers(t); setLoading(false); })
       .catch(() => { setError(true); setLoading(false); });
   }, []);
 
@@ -96,6 +98,25 @@ export default function AnalyticsPage() {
     typeCounts[label] = (typeCounts[label] || 0) + 1;
   });
   const maxType = Math.max(...Object.values(typeCounts), 1);
+
+  // Match status counts
+  const matchStatusCounts: Record<string, number> = {};
+  matches.forEach((m) => {
+    const label = m.status.charAt(0).toUpperCase() + m.status.slice(1);
+    matchStatusCounts[label] = (matchStatusCounts[label] || 0) + 1;
+  });
+  const maxMatch = Math.max(...Object.values(matchStatusCounts), 1);
+
+  // Trigger status counts
+  const triggerStatusCounts: Record<string, number> = {};
+  triggers.forEach((t) => {
+    const label = t.status.charAt(0).toUpperCase() + t.status.slice(1);
+    triggerStatusCounts[label] = (triggerStatusCounts[label] || 0) + 1;
+  });
+  const maxTrigger = Math.max(...Object.values(triggerStatusCounts), 1);
+
+  const matchColors = ['#22c55e', '#3b82f6', '#94a3b8', '#f59e0b'];
+  const triggerColors = ['#f59e0b', '#f97316', '#22c55e', '#94a3b8'];
 
   return (
     <>
@@ -148,6 +169,40 @@ export default function AnalyticsPage() {
               <BarSegment key={label} label={label} value={value} max={maxType} color={stageColors[i % stageColors.length]} />
             ))}
           </div>
+        </div>
+
+        {/* Match Status Distribution */}
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-1.5 h-5 rounded-full bg-gold" />
+            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Match Status Distribution</h2>
+          </div>
+          {Object.keys(matchStatusCounts).length > 0 ? (
+            <div className="space-y-3">
+              {Object.entries(matchStatusCounts).map(([label, value], i) => (
+                <BarSegment key={label} label={label} value={value} max={maxMatch} color={matchColors[i % matchColors.length]} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-gray-400 dark:text-gray-500">No matches generated yet</p>
+          )}
+        </div>
+
+        {/* Trigger Activity */}
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-1.5 h-5 rounded-full bg-gold-light" />
+            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Trigger Activity</h2>
+          </div>
+          {Object.keys(triggerStatusCounts).length > 0 ? (
+            <div className="space-y-3">
+              {Object.entries(triggerStatusCounts).map(([label, value], i) => (
+                <BarSegment key={label} label={label} value={value} max={maxTrigger} color={triggerColors[i % triggerColors.length]} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-gray-400 dark:text-gray-500">No triggers created yet</p>
+          )}
         </div>
       </div>
     </div>

@@ -151,9 +151,17 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
 
           {/* Bottom */}
           <div className="px-3 py-4 border-t border-white/10">
-            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-slate-200 mb-0.5">
-              <Settings size={18} strokeWidth={1.5} /> Settings
-            </button>
+            <Link
+              href="/settings"
+              onClick={() => setSidebarOpen(false)}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
+                isActive('/settings')
+                  ? 'bg-gold/15 text-gold-light'
+                  : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+              }`}
+            >
+              <Settings size={18} strokeWidth={isActive('/settings') ? 2 : 1.5} /> Settings
+            </Link>
             <button
               onClick={() => setDark(d => !d)}
               className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-slate-200"
