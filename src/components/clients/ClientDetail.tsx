@@ -338,23 +338,38 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
             setShowEdit(false);
             if (prefsUpdated && savedPrefs) {
               // Update preferences directly from what was just saved
-              setPrefs({
+              const newPrefs = {
                 clientId: client.id,
                 rental: savedPrefs.rental as ClientPreferences['rental'],
                 buyer: savedPrefs.buyer as ClientPreferences['buyer'],
-              });
+              };
+              setPrefs(newPrefs);
 
-              // Wait for background matching to complete, then refresh matches
-              setMatchingInProgress(true);
-              await new Promise((r) => setTimeout(r, 3000));
-              try {
-                const svc = await import('@/services');
-                const freshMatches = await svc.getClientMatches(client.id);
-                setMatchList(freshMatches);
-              } catch {
-                // non-critical — matches will appear on next page load
-              } finally {
-                setMatchingInProgress(false);
+              // Check if enough fields to run matching (city + beds + baths)
+              const rp = newPrefs.rental;
+              const bp = newPrefs.buyer;
+              const canMatch =
+                (rp && rp.preferredAreas?.length > 0 && rp.bedrooms > 0 && rp.bathrooms > 0) ||
+                (bp && bp.preferredAreas?.length > 0 && bp.bedrooms > 0 && bp.bathrooms > 0);
+
+              if (canMatch) {
+                // Run matching directly from client
+                setMatchingInProgress(true);
+                try {
+                  const res = await fetch('/api/matches/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ clientId: client.id }),
+                  });
+                  const result = await res.json();
+                  if (result.success && result.data) {
+                    setMatchList(result.data);
+                  }
+                } catch {
+                  // non-critical
+                } finally {
+                  setMatchingInProgress(false);
+                }
               }
             }
           }}
