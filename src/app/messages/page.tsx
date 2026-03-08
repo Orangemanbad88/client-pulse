@@ -101,7 +101,7 @@ export default function MessagesPage() {
             onClick={() => setFilter(f)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               filter === f
-                ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
+                ? 'bg-orange-50 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light'
                 : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
             }`}
           >
@@ -113,15 +113,15 @@ export default function MessagesPage() {
       </div>
 
       {/* Message list */}
-      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
-        <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
+      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="divide-y divide-orange-100/30 dark:divide-gray-800/60">
           {filtered.map((msg) => {
             const timeAgo = formatRelativeDate(msg.timestamp);
 
             return (
-              <div key={msg.id} className="px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors group">
+              <div key={msg.id} className="px-5 py-4 hover:bg-orange-50/30 dark:hover:bg-orange-900/10 transition-colors group">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0">
                     {getInitials(msg.clientId)}
                   </div>
                   <div className="flex-1 min-w-0">

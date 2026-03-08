@@ -90,9 +90,9 @@ export default function DashboardPage() {
   }, [stats]);
 
   const donutSegments = useMemo(() => [
-    { label: "Active", value: stats?.totalActiveClients || 0, color: dark ? "#D4A84B" : "#B8860B" },
-    { label: "Searching", value: stats?.matchesPending || 0, color: "#C9A227" },
-    { label: "Pending", value: stats?.pendingFollowUps || 0, color: dark ? "#8B6914" : "#FDE8B8" },
+    { label: "Active", value: stats?.totalActiveClients || 0, color: dark ? "#F28C38" : "#E8650A" },
+    { label: "Searching", value: stats?.matchesPending || 0, color: "#D4760F" },
+    { label: "Pending", value: stats?.pendingFollowUps || 0, color: dark ? "#9E4A08" : "#FDE0C8" },
   ], [dark, stats]);
 
   if (error && !stats) return (
@@ -139,10 +139,10 @@ export default function DashboardPage() {
         {/* Metric Cards */}
         <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-4 lg:mb-6 ${mounted ? 'stagger-children' : ''}`}>
           {metricCards.map((card) => (
-            <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:scale-[1.02] transition-all duration-200 cursor-default">
+            <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:scale-[1.02] transition-all duration-200 cursor-default">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{card.label}</span>
-                <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center">
                   <card.icon size={14} className="text-gold dark:text-gold-light" />
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function DashboardPage() {
                   </span>
                   <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{card.change}</p>
                 </div>
-                <SparkLine data={card.sparkData} color={dark ? "#D4A84B" : "#B8860B"} />
+                <SparkLine data={card.sparkData} color={dark ? "#F28C38" : "#E8650A"} />
               </div>
             </div>
           ))}
@@ -169,7 +169,7 @@ export default function DashboardPage() {
           {/* Right Column */}
           <div className={`lg:col-span-5 flex flex-col gap-4 lg:gap-6 ${mounted ? 'animate-fade-slide-up' : ''}`} style={{ animationDelay: '400ms', animationFillMode: 'backwards' }}>
             {/* Client Overview Donut */}
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
               <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
                 <div className="w-1.5 h-5 rounded-full bg-gold-light" />
                 <h2 className="text-sm font-bold text-white tracking-tight">Client Overview</h2>

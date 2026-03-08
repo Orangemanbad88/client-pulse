@@ -271,14 +271,14 @@ export default function EmailPage() {
                 onClick={() => { setFolder(f.id); setSelectedEmail(null); }}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   folder === f.id
-                    ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
+                    ? 'bg-orange-50 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light'
                     : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
                 }`}
               >
                 <f.icon size={16} strokeWidth={folder === f.id ? 2 : 1.5} />
                 {f.label}
                 {f.count > 0 && (
-                  <span className="ml-auto text-xs font-bold text-gold dark:text-gold-light bg-amber-50 dark:bg-amber-900/30 rounded-full px-1.5 py-0.5 font-data">{f.count}</span>
+                  <span className="ml-auto text-xs font-bold text-gold dark:text-gold-light bg-orange-50 dark:bg-orange-900/30 rounded-full px-1.5 py-0.5 font-data">{f.count}</span>
                 )}
               </button>
             ))}
@@ -295,9 +295,9 @@ export default function EmailPage() {
                 <button
                   key={client.id}
                   onClick={() => openCompose(`${client.firstName} ${client.lastName}`, client.id)}
-                  className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-amber-50/50 dark:hover:bg-amber-900/10 transition-colors"
+                  className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-orange-50/50 dark:hover:bg-orange-900/10 transition-colors"
                 >
-                  <div className="w-5 h-5 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-[9px] font-bold text-gold dark:text-gold-light shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-[9px] font-bold text-gold dark:text-gold-light shrink-0">
                     {getInitials(`${client.firstName} ${client.lastName}`)}
                   </div>
                   <span className="truncate">{client.firstName} {client.lastName}</span>
@@ -315,7 +315,7 @@ export default function EmailPage() {
               onClick={() => { setFolder(f.id); setSelectedEmail(null); }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 folder === f.id
-                  ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
+                  ? 'bg-orange-50 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light'
                   : 'text-gray-500 dark:text-gray-400'
               }`}
             >
@@ -329,8 +329,8 @@ export default function EmailPage() {
         <div className="flex-1 min-w-0">
           {selectedEmail ? (
             /* Email detail view */
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
-              <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+              <div className="px-5 py-4 border-b border-orange-100/30 dark:border-gray-800/60 flex items-center justify-between">
                 <button
                   onClick={() => setSelectedEmail(null)}
                   className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium"
@@ -355,7 +355,7 @@ export default function EmailPage() {
               <div className="p-5">
                 <h2 className="text-base font-bold text-gray-800 dark:text-gray-100 mb-3">{selectedEmail.subject}</h2>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light">
+                  <div className="w-9 h-9 rounded-full bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light">
                     {getInitials(selectedEmail.clientName)}
                   </div>
                   <div>
@@ -376,7 +376,7 @@ export default function EmailPage() {
                   {selectedEmail.preview}
                 </div>
               </div>
-              <div className="px-5 py-3 border-t border-amber-100/30 dark:border-gray-800/60">
+              <div className="px-5 py-3 border-t border-orange-100/30 dark:border-gray-800/60">
                 <button className="flex items-center gap-2 bg-gold hover:bg-gold-muted text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors">
                   <Reply size={13} /> Reply
                 </button>
@@ -384,8 +384,8 @@ export default function EmailPage() {
             </div>
           ) : (
             /* Email list */
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
-              <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+              <div className="divide-y divide-orange-100/30 dark:divide-gray-800/60">
                 {filtered.map((email) => {
                   const date = new Date(email.date);
                   const isToday = new Date().toDateString() === date.toDateString();
@@ -397,12 +397,12 @@ export default function EmailPage() {
                     <button
                       key={email.id}
                       onClick={() => setSelectedEmail(email)}
-                      className={`w-full text-left px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors ${
-                        !email.read ? 'bg-amber-50/20 dark:bg-amber-900/5' : ''
+                      className={`w-full text-left px-5 py-4 hover:bg-orange-50/30 dark:hover:bg-orange-900/10 transition-colors ${
+                        !email.read ? 'bg-orange-50/20 dark:bg-orange-900/5' : ''
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0 mt-0.5">
+                        <div className="w-9 h-9 rounded-full bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0 mt-0.5">
                           {getInitials(email.clientName)}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -453,7 +453,7 @@ export default function EmailPage() {
     {showCompose && (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => !sending && setShowCompose(false)} />
-        <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl overflow-hidden">
+        <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl overflow-hidden">
           {sendSuccess ? (
             <div className="px-5 py-12 text-center">
               <CheckCircle size={40} className="text-green-500 mx-auto mb-3" />
@@ -461,7 +461,7 @@ export default function EmailPage() {
             </div>
           ) : (
             <>
-              <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
+              <div className="px-5 py-4 border-b border-orange-100/30 dark:border-gray-800/60 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-1.5 h-5 rounded-full bg-gold" />
                   <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">New Email</h2>
@@ -472,7 +472,7 @@ export default function EmailPage() {
               </div>
 
               {/* Templates */}
-              <div className="px-5 py-3 border-b border-amber-100/30 dark:border-gray-800/60">
+              <div className="px-5 py-3 border-b border-orange-100/30 dark:border-gray-800/60">
                 <div className="flex items-center gap-2 mb-2">
                   <FileText size={12} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Templates</span>
@@ -484,7 +484,7 @@ export default function EmailPage() {
                       onClick={() => applyTemplate(tpl)}
                       className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
                         selectedTemplate === tpl.name
-                          ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light dark:border-gold-muted/30'
+                          ? 'bg-orange-50 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light border border-gold-light dark:border-gold-muted/30'
                           : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                     >
@@ -537,7 +537,7 @@ export default function EmailPage() {
                 </div>
               </div>
 
-              <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
+              <div className="px-5 py-4 border-t border-orange-100/30 dark:border-gray-800/60 flex items-center justify-between">
                 {sendError ? (
                   <p className="text-xs text-red-500 dark:text-red-400">{sendError}</p>
                 ) : (

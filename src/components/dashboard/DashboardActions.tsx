@@ -44,7 +44,7 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
   };
 
   return (
-    <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+    <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
       <div className="px-5 py-4 flex items-center justify-between rounded-t-xl" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-5 rounded-full bg-gold-light" />
@@ -56,7 +56,7 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
         </button>
       </div>
 
-      <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
+      <div className="divide-y divide-orange-100/30 dark:divide-gray-800/60">
         {firedTriggers.length === 0 && (
           <div className="px-5 py-8 text-center">
             <p className="text-sm text-gray-400 dark:text-gray-500">No pending actions</p>
@@ -66,7 +66,7 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
           const variant = urgencyToBadgeVariant(trigger.urgency);
           const days = daysLeft(trigger.fireDate);
           return (
-            <div key={trigger.id} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors group">
+            <div key={trigger.id} className="card-hover-slide px-5 py-4 hover:bg-orange-50/30 dark:hover:bg-orange-900/10 transition-colors group">
               <div className="flex items-start gap-3">
                 <Avatar name={trigger.clientName} size={38} />
                 <div className="flex-1 min-w-0">
@@ -74,9 +74,9 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
                     <Badge variant={variant}>{trigger.urgency}</Badge>
                     <span className="text-sm font-semibold text-gold-muted dark:text-gold-light">{trigger.clientName}</span>
                     <div className="ml-auto flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><Phone size={13} className="text-gray-400" /></button>
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><Mail size={13} className="text-gray-400" /></button>
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-orange-50 dark:hover:bg-gray-800 transition-colors"><Phone size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-orange-50 dark:hover:bg-gray-800 transition-colors"><Mail size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-orange-50 dark:hover:bg-gray-800 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
                     </div>
                   </div>
                   <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-1">{trigger.title}</p>
@@ -86,7 +86,7 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
                     <ProgressBar
                       current={Math.max(1, 7 - days)}
                       total={7}
-                      color={trigger.urgency === 'critical' ? '#ef4444' : trigger.urgency === 'high' ? '#f59e0b' : '#B8860B'}
+                      color={trigger.urgency === 'critical' ? '#ef4444' : trigger.urgency === 'high' ? '#f59e0b' : '#E8650A'}
                     />
                     <span className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap font-data">{days}d left</span>
                   </div>

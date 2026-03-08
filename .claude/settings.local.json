@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun run:*)",
+      "WebFetch(domain:www.mccannrealtors.com)",
+      "WebFetch(domain:mccannrealtors.vercel.app)",
+      "Bash(curl:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: client creation API, McCann rental listings, email/analytics fixes\n\n- Route client creation through POST /api/clients/create \\(server-side with service role key\\)\n- Show Create Client button on every form step, only name required\n- Display error feedback when client creation fails\n- Pull properties from mccannrealtors.vercel.app rental catalog instead of MLS\n- Update properties page for rental display \\(weekly rates, sleeps, availability\\)\n- Add zod validation and activity logging to email send API\n- Replace mock emails with real activity-based sent history\n- Fix analytics page: graceful handling of empty/missing tables, error state UI\n- Make getDashboardStats resilient to missing data\n- Allow nullable email in schema migration\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(npx vercel:*)",
+      "Bash(vercel:*)",
+      "Bash(python:*)",
+      "WebFetch(domain:mccannrealtors.idxbroker.com)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

@@ -31,7 +31,7 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
       id: c.id,
       label: getClientName(c),
       sublabel: `${c.clientType} · ${LIFECYCLE_LABELS[c.lifecycleStage]}`,
-      icon: <div className="w-5 h-5 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-[9px] font-bold text-gold dark:text-gold-light">{getInitials(c.firstName, c.lastName)}</div>,
+      icon: <div className="w-5 h-5 rounded-full bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-[9px] font-bold text-gold dark:text-gold-light">{getInitials(c.firstName, c.lastName)}</div>,
       action: () => { router.push(`/clients/${c.id}`); onClose(); },
     })),
   ];
@@ -56,10 +56,10 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[18vh]" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="relative w-[520px] max-h-[380px] bg-white dark:bg-gray-900 border border-amber-200/25 dark:border-gray-800 rounded-xl overflow-hidden shadow-2xl"
+        className="relative w-[520px] max-h-[380px] bg-white dark:bg-gray-900 border border-orange-200/25 dark:border-gray-800 rounded-xl overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-2 px-4 border-b border-amber-100/30 dark:border-gray-800">
+        <div className="flex items-center gap-2 px-4 border-b border-orange-100/30 dark:border-gray-800">
           <Search size={15} className="text-gray-400" />
           <input
             ref={inputRef}
@@ -83,7 +83,7 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
               onClick={item.action}
               className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                 idx === activeIdx
-                  ? 'bg-amber-50 dark:bg-amber-900/20'
+                  ? 'bg-orange-50 dark:bg-orange-900/20'
                   : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
               }`}
             >
