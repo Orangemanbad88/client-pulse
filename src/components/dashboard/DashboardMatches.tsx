@@ -58,7 +58,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
           </div>
         )}
         {topMatches.map((match) => {
-          const isMonthly = match.price < 10000;
+          const isWeekly = match.price < 10000;
           return (
             <div key={match.id} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors">
               <div className="flex items-start gap-3">
@@ -72,7 +72,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
                     {match.city} · {match.bedrooms}/{match.bathrooms} · {match.sqft.toLocaleString()}sf · {PROPERTY_TYPE_LABELS[match.propertyType]}
                   </p>
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="text-sm font-bold text-gold dark:text-gold-light font-data">{formatCurrency(match.price, isMonthly)}</span>
+                    <span className="text-sm font-bold text-gold dark:text-gold-light font-data">{formatCurrency(match.price, isWeekly ? '/wk' : undefined)}</span>
                     <span className="text-xs text-gray-400 dark:text-gray-500">{match.clientName}</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5 mb-2">

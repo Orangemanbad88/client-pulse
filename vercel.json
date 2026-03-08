@@ -3,6 +3,10 @@
     {
       "path": "/api/triggers/evaluate",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/matches/regenerate",
+      "schedule": "0 9 * * *"
     }
   ]
 }

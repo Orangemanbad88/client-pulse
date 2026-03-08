@@ -103,7 +103,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const [rAmenities, setRAmenities] = useState<Amenity[]>(rp?.mustHaveAmenities ?? []);
   const [rPets, setRPets] = useState(rp?.pets ?? '');
   const [rMoveIn, setRMoveIn] = useState(rp?.moveInTimeline ?? '');
-  const [rLeaseExp, setRLeaseExp] = useState(rp?.currentLeaseExpiration ?? '');
+  const [rRentalWeeks, setRRentalWeeks] = useState(rp?.leaseTermPref ?? '');
 
   const bp = preferences?.buyer;
   const [bBudgetMin, setBBudgetMin] = useState(bp?.budgetMin ?? 0);
@@ -151,7 +151,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
         budgetMin: rBudgetMin, budgetMax: rBudgetMax, bedrooms: rBedrooms, bathrooms: rBathrooms,
         sqftMin: rSqftMin, preferredAreas: rAreas,
         propertyTypes: rPropertyTypes, mustHaveAmenities: rAmenities, pets: rPets,
-        moveInTimeline: rMoveIn, currentLeaseExpiration: rLeaseExp,
+        moveInTimeline: rMoveIn, leaseTermPref: rRentalWeeks,
       } : null;
 
       const buyerPrefs = isB ? {
@@ -188,7 +188,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-visible" onClick={(e) => e.stopPropagation()}>
         <div className="surface-elevated overflow-hidden" style={{ borderRadius: 'var(--radius-xl)' }}>
           {/* Header with pencil icon + client name */}
           <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--border)', background: 'var(--bg-1)' }}>
@@ -322,7 +322,16 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
                   <div><Lbl>Pets</Lbl><input className="input" value={rPets} onChange={(e) => setRPets(e.target.value)} placeholder="2 labs, cat..." /></div>
                   <div><Lbl>Move-in Timeline</Lbl><input className="input" value={rMoveIn} onChange={(e) => setRMoveIn(e.target.value)} placeholder="ASAP, 30 days..." /></div>
                 </div>
-                <div><Lbl>Lease Expiration</Lbl><input className="input" type="date" value={rLeaseExp} onChange={(e) => setRLeaseExp(e.target.value)} /></div>
+                <div><Lbl>Rental Duration</Lbl>
+                  <select className="select" value={rRentalWeeks} onChange={(e) => setRRentalWeeks(e.target.value)}>
+                    <option value="">Select weeks...</option>
+                    <option value="1 week">1 Week</option>
+                    <option value="2 weeks">2 Weeks</option>
+                    <option value="3 weeks">3 Weeks</option>
+                    <option value="4 weeks">4 Weeks</option>
+                    <option value="full season">Full Season</option>
+                  </select>
+                </div>
               </>}
               {isB && <>
                 <div className="grid grid-cols-2 gap-3">

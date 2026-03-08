@@ -4,9 +4,9 @@ import type { Client, LifecycleStage, UrgencyLevel } from '@/types/client';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
-export const formatCurrency = (value: number, monthly = false): string => {
+export const formatCurrency = (value: number, suffix?: string): string => {
   const formatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
-  return monthly ? `${formatted}/mo` : formatted;
+  return suffix ? `${formatted}${suffix}` : formatted;
 };
 
 export const formatDate = (dateStr: string): string => {

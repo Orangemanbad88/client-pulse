@@ -135,7 +135,16 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
 
         {step === 4 && <div className="space-y-3.5 animate-in">
           <div><Lbl>Current Address</Lbl><input className="input" value={f.currentAddress} onChange={(e) => u('currentAddress', e.target.value)} placeholder="412 Main St, Dunedin, FL" /></div>
-          {isR && <div><Lbl>Lease Expiration</Lbl><input className="input" type="date" value={f.currentLeaseExpiration || ''} onChange={(e) => u('currentLeaseExpiration', e.target.value)} /></div>}
+          {isR && <div><Lbl>Rental Duration</Lbl>
+            <select className="select" value={f.rentalPrefs?.leaseTermPref || ''} onChange={(e) => ur('leaseTermPref', e.target.value)}>
+              <option value="">Select weeks...</option>
+              <option value="1 week">1 Week</option>
+              <option value="2 weeks">2 Weeks</option>
+              <option value="3 weeks">3 Weeks</option>
+              <option value="4 weeks">4 Weeks</option>
+              <option value="full season">Full Season</option>
+            </select>
+          </div>}
           <div><Lbl>Reason for Moving</Lbl><input className="input" value={f.reasonForMoving} onChange={(e) => u('reasonForMoving', e.target.value)} placeholder="Lease ending, relocating..." /></div>
           <div><Lbl>Urgency</Lbl>
             <div className="grid grid-cols-4 gap-2 mt-1.5">

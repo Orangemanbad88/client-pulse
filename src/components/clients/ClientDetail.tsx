@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Sparkles, Trash2 } from 'lucide-react';
 import type { Client, ClientPreferences, Activity, Transaction, PropertyMatch, AIProfile, Trigger } from '@/types/client';
 import { LIFECYCLE_LABELS, PROPERTY_TYPE_LABELS, AMENITY_LABELS, ACTIVITY_ICONS } from '@/types/client';
-import { getInitials, getClientName, formatCurrency, formatDate, formatRelativeDate, daysUntil, urgencyBadge, scoreColor, scoreBg, cn, stageBadge } from '@/lib/utils';
+import { getInitials, getClientName, formatCurrency, formatDate, formatRelativeDate, urgencyBadge, scoreColor, scoreBg, cn, stageBadge } from '@/lib/utils';
 import { AIProfileCard } from './AIProfileCard';
 import { EditClientModal } from './EditClientModal';
 import Link from 'next/link';
@@ -18,7 +18,7 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
   const [prefs, setPrefs] = useState(initialPrefs);
   const rp = prefs?.rental;
   const bp = prefs?.buyer;
-  const leaseExp = rp?.currentLeaseExpiration ? daysUntil(rp.currentLeaseExpiration) : null;
+  const rentalDuration = rp?.leaseTermPref || null;
 
   const [matchList, setMatchList] = useState(initialMatches);
   const [triggerList, setTriggerList] = useState(initialTriggers);
@@ -170,10 +170,8 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
                 <div><Lbl>Areas</Lbl><div className="flex flex-wrap gap-1 mt-1">{rp.preferredAreas.map((a) => <span key={a} className="pill">{a}</span>)}</div></div>
                 {rp.mustHaveAmenities?.length > 0 && <div><Lbl>Must-Have</Lbl><div className="flex flex-wrap gap-1 mt-1">{rp.mustHaveAmenities.map((a) => <span key={a} className="badge badge-accent text-[10px]">{AMENITY_LABELS[a]}</span>)}</div></div>}
                 {rp.pets && <Row l="Pets" v={rp.pets} />}
-                {leaseExp !== null && (
-                  <div className="mt-2 p-2.5 rounded-lg" style={{ background: 'var(--warning-muted)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                    <p className="text-[11px] font-semibold" style={{ color: 'var(--warning)' }}>⏰ Lease expires in {leaseExp} days</p>
-                  </div>
+                {rentalDuration && (
+                  <Row l="Duration" v={rentalDuration} />
                 )}
               </>}
               {bp && <>
@@ -197,7 +195,7 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
                   <div key={tx.id} className="px-4 py-3">
                     <div className="flex items-center justify-between mb-1">
                       <span className="badge badge-neutral text-[10px] capitalize">{tx.type}</span>
-                      <span className="text-[12px] font-bold font-mono" style={{ color: 'var(--accent-text)' }}>{formatCurrency(tx.amount, tx.type === 'lease')}</span>
+                      <span className="text-[12px] font-bold font-mono" style={{ color: 'var(--accent-text)' }}>{formatCurrency(tx.amount, tx.type === 'lease' ? '/wk' : undefined)}</span>
                     </div>
                     <p className="text-[12px] font-medium" style={{ color: 'var(--text-primary)' }}>{tx.propertyAddress}</p>
                     <p className="text-[11px] font-mono" style={{ color: 'var(--text-tertiary)' }}>{formatDate(tx.date)}{tx.leaseEndDate && ` → ${formatDate(tx.leaseEndDate)}`}</p>
@@ -237,7 +235,7 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
                       <div className="flex-1 min-w-0">
                         <p className="text-[13px] font-semibold" style={{ color: 'var(--text-primary)' }}>{m.address}, {m.city}</p>
                         <p className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>{m.bedrooms}/{m.bathrooms} · {m.sqft.toLocaleString()}sf · {PROPERTY_TYPE_LABELS[m.propertyType]}</p>
-                        <span className="text-[12px] font-bold font-mono" style={{ color: 'var(--accent-text)' }}>{formatCurrency(m.price, m.price < 10000)}</span>
+                        <span className="text-[12px] font-bold font-mono" style={{ color: 'var(--accent-text)' }}>{formatCurrency(m.price, m.price < 10000 ? '/wk' : undefined)}</span>
                         <div className="flex flex-wrap gap-1 mt-1">{m.matchReasons.map((r) => <span key={r} className="pill text-[10px]">{r}</span>)}</div>
                       </div>
                       <div className="flex items-center gap-1.5">

@@ -349,3 +349,9 @@ textarea.input { resize: vertical; min-height: 80px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* Visible scrollbar — for modals and scrollable panels */
+.scrollbar-visible::-webkit-scrollbar { width: 10px; }
+.scrollbar-visible::-webkit-scrollbar-track { background: var(--bg-1); border-radius: 5px; margin: 4px 0; }
+.scrollbar-visible::-webkit-scrollbar-thumb { background: var(--text-tertiary); border-radius: 5px; border: 2px solid var(--bg-1); }
+.scrollbar-visible::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
