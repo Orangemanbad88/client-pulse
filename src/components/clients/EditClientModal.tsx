@@ -325,22 +325,6 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
                     ))}
                   </div>
                 </div>
-                <div><Lbl>Must-Have Amenities</Lbl>
-                  <div className="flex flex-wrap gap-1.5 mt-1.5">
-                    {(Object.entries(AMENITY_LABELS) as [Amenity, string][]).map(([k, v]) => (
-                      <button key={k} onClick={() => toggleAmenity(k)}
-                        className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
-                          currentAmenities.includes(k) ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
-                        style={{ borderColor: currentAmenities.includes(k) ? 'var(--accent)' : 'var(--border)', color: currentAmenities.includes(k) ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
-                        {v}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div><Lbl>Pets</Lbl><input className="input" value={rPets} onChange={(e) => setRPets(e.target.value)} placeholder="2 labs, cat..." /></div>
-                  <div><Lbl>Move-in Timeline</Lbl><input className="input" value={rMoveIn} onChange={(e) => setRMoveIn(e.target.value)} placeholder="ASAP, 30 days..." /></div>
-                </div>
                 <div>
                   <Lbl>Rental Weeks</Lbl>
                   <div className="flex flex-wrap gap-1.5 mt-1.5 mb-2">
@@ -367,6 +351,22 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
                       </button>
                     ))}
                   </div>
+                </div>
+                <div><Lbl>Must-Have Amenities</Lbl>
+                  <div className="flex flex-wrap gap-1.5 mt-1.5">
+                    {(Object.entries(AMENITY_LABELS) as [Amenity, string][]).map(([k, v]) => (
+                      <button key={k} onClick={() => toggleAmenity(k)}
+                        className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
+                          currentAmenities.includes(k) ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
+                        style={{ borderColor: currentAmenities.includes(k) ? 'var(--accent)' : 'var(--border)', color: currentAmenities.includes(k) ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div><Lbl>Pets</Lbl><input className="input" value={rPets} onChange={(e) => setRPets(e.target.value)} placeholder="2 labs, cat..." /></div>
+                  <div><Lbl>Move-in Timeline</Lbl><input className="input" value={rMoveIn} onChange={(e) => setRMoveIn(e.target.value)} placeholder="ASAP, 30 days..." /></div>
                 </div>
               </>}
               {isB && <>

@@ -12,6 +12,7 @@ interface ListingForMatch {
   salePrice: number;
   listingType: 'rental' | 'for_sale';
   photos: string[];
+  availableCheckIns?: string[];
 }
 
 export interface MatchResult {
@@ -29,6 +30,27 @@ export interface MatchResult {
 }
 
 const normalizeCity = (s: string) => s.toLowerCase().trim();
+
+/** Parse selected week labels (e.g. "Jun 7 – Jun 13") into normalized YYYY-MM-DD start dates */
+function parseSelectedWeekDates(leaseTermPref: string): string[] {
+  if (!leaseTermPref) return [];
+  const now = new Date();
+  const year = now.getMonth() >= 9 ? now.getFullYear() + 1 : now.getFullYear();
+  return leaseTermPref.split(', ').filter(Boolean).map((w) => {
+    const startStr = w.split(' – ')[0];
+    if (!startStr) return '';
+    const d = new Date(`${startStr}, ${year}`);
+    if (isNaN(d.getTime())) return '';
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }).filter(Boolean);
+}
+
+/** Normalize a date string (various formats) to YYYY-MM-DD */
+function toDateKey(raw: string): string {
+  const d = new Date(raw);
+  if (isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
 const normalizePropertyType = (raw: string): string => {
   const lower = raw.toLowerCase();
@@ -116,6 +138,15 @@ export function matchListings(
     // Score against rental preferences for rental listings
     if (listing.listingType === 'rental' && preferences.rental) {
       const rp = preferences.rental;
+
+      // Filter by selected weeks — skip rentals not available during any chosen week
+      const selectedDates = parseSelectedWeekDates(rp.leaseTermPref);
+      if (selectedDates.length > 0 && listing.availableCheckIns) {
+        const checkInKeys = listing.availableCheckIns.map(toDateKey).filter(Boolean);
+        const hasAvailability = selectedDates.some((sd) => checkInKeys.includes(sd));
+        if (!hasAvailability) continue;
+      }
+
       best = scoreAgainstPrefs(listing, {
         budgetMin: rp.budgetMin,
         budgetMax: rp.budgetMax,

@@ -106,6 +106,9 @@ async function fetchRentals() {
         salePrice: weeklyRate,
         daysOnMarket: 0,
         availableSlots,
+        availableCheckIns: (p.Availability || [])
+          .filter((a) => a.Status === 'Available')
+          .map((a) => a.CheckInDate),
         listingType: 'rental' as const,
         description: d.Description || d.Headline || '',
         lat: parseFloat(d.Coordinates?.Latitude) || 0,

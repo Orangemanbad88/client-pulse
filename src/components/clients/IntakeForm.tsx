@@ -129,30 +129,7 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
             <div><Lbl>Baths</Lbl><input className="input" type="number" placeholder="2" onChange={(e) => isR ? ur('bathrooms', +e.target.value) : ub('bathrooms', +e.target.value)} /></div>
             <div><Lbl>Min SqFt</Lbl><input className="input" type="number" placeholder="1400" onChange={(e) => isR ? ur('sqftMin', +e.target.value) : ub('sqftMin', +e.target.value)} /></div>
           </div>
-          <div><Lbl>Areas (comma-sep)</Lbl><input className="input" placeholder="Dunedin, Palm Harbor, Clearwater" onChange={(e) => { const a = e.target.value.split(',').map((x) => x.trim()).filter(Boolean); isR ? ur('preferredAreas', a) : ub('preferredAreas', a); }} /></div>
-          <div><Lbl>Must-Have</Lbl>
-            <div className="flex flex-wrap gap-1.5 mt-1.5">
-              {(Object.entries(AMENITY_LABELS) as [Amenity, string][]).map(([k, v]) => (
-                <button key={k} onClick={() => toggleA(k)}
-                  className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
-                    amenities.includes(k) ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
-                  style={{ borderColor: amenities.includes(k) ? 'var(--accent)' : 'var(--border)', color: amenities.includes(k) ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
-                  {v}
-                </button>
-              ))}
-            </div>
-          </div>
-          {isR && <div><Lbl>Pets</Lbl><input className="input" placeholder="2 labs, cat, etc." onChange={(e) => ur('pets', e.target.value)} /></div>}
-          {isB && <>
-            <div className="grid grid-cols-2 gap-3">
-              <div><Lbl>Pre-Approved?</Lbl><select className="select" onChange={(e) => ub('preApproved', e.target.value === 'true')}><option value="false">No</option><option value="true">Yes</option></select></div>
-              <div><Lbl>Pre-Approval Amt</Lbl><input className="input" type="number" placeholder="500000" onChange={(e) => ub('preApprovalAmount', +e.target.value)} /></div>
-            </div>
-          </>}
-        </div>}
-
-        {step === 4 && <div className="space-y-3.5 animate-in">
-          <div><Lbl>Current Address</Lbl><input className="input" value={f.currentAddress} onChange={(e) => u('currentAddress', e.target.value)} placeholder="412 Main St, Dunedin, FL" /></div>
+          <div><Lbl>Areas (comma-sep)</Lbl><input className="input" placeholder="Sea Isle City, Avalon, Stone Harbor" onChange={(e) => { const a = e.target.value.split(',').map((x) => x.trim()).filter(Boolean); isR ? ur('preferredAreas', a) : ub('preferredAreas', a); }} /></div>
           {isR && <div>
             <Lbl>Rental Weeks</Lbl>
             <div className="flex flex-wrap gap-1.5 mt-1.5 mb-2">
@@ -180,6 +157,29 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
               ))}
             </div>
           </div>}
+          <div><Lbl>Must-Have</Lbl>
+            <div className="flex flex-wrap gap-1.5 mt-1.5">
+              {(Object.entries(AMENITY_LABELS) as [Amenity, string][]).map(([k, v]) => (
+                <button key={k} onClick={() => toggleA(k)}
+                  className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
+                    amenities.includes(k) ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
+                  style={{ borderColor: amenities.includes(k) ? 'var(--accent)' : 'var(--border)', color: amenities.includes(k) ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
+                  {v}
+                </button>
+              ))}
+            </div>
+          </div>
+          {isR && <div><Lbl>Pets</Lbl><input className="input" placeholder="2 labs, cat, etc." onChange={(e) => ur('pets', e.target.value)} /></div>}
+          {isB && <>
+            <div className="grid grid-cols-2 gap-3">
+              <div><Lbl>Pre-Approved?</Lbl><select className="select" onChange={(e) => ub('preApproved', e.target.value === 'true')}><option value="false">No</option><option value="true">Yes</option></select></div>
+              <div><Lbl>Pre-Approval Amt</Lbl><input className="input" type="number" placeholder="500000" onChange={(e) => ub('preApprovalAmount', +e.target.value)} /></div>
+            </div>
+          </>}
+        </div>}
+
+        {step === 4 && <div className="space-y-3.5 animate-in">
+          <div><Lbl>Current Address</Lbl><input className="input" value={f.currentAddress} onChange={(e) => u('currentAddress', e.target.value)} placeholder="412 Main St, Dunedin, FL" /></div>
           <div><Lbl>Reason for Moving</Lbl><input className="input" value={f.reasonForMoving} onChange={(e) => u('reasonForMoving', e.target.value)} placeholder="Lease ending, relocating..." /></div>
           <div><Lbl>Urgency</Lbl>
             <div className="grid grid-cols-4 gap-2 mt-1.5">
