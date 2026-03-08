@@ -82,7 +82,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                 <circle cx="8" cy="8" r="2" fill="white" />
               </svg>
             </div>
-            <span className="font-bold text-base tracking-tight text-white">ClientPulse</span>
+            <span className="font-bold text-base tracking-tight text-gold-light">ClientPulse</span>
             <button onClick={() => setSidebarOpen(false)} className="ml-auto p-1.5 rounded-lg hover:bg-white/10 lg:hidden transition-colors">
               <X size={18} className="text-slate-400" />
             </button>
@@ -180,7 +180,13 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
               <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-white/10 transition-colors">
                 <Menu size={20} className="text-slate-400" />
               </button>
-              <span className="font-bold text-sm text-white">ClientPulse</span>
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 2L2 6v4l6 4 6-4V6L8 2z" stroke="white" strokeWidth="1.5" fill="none" />
+                  <circle cx="8" cy="8" r="2" fill="white" />
+                </svg>
+              </div>
+              <span className="font-bold text-sm tracking-tight text-gold-light">ClientPulse</span>
             </div>
           </div>
           <div className={`${mounted ? '' : 'opacity-0'}`}>
