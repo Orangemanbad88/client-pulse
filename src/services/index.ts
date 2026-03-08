@@ -133,3 +133,45 @@ export const upsertAIProfile = async (...args: Parameters<Awaited<ReturnType<typ
   const s = await svc();
   return s.upsertAIProfile(...args);
 };
+
+// ---- Alerts ----
+
+export const insertPendingAlerts = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['insertPendingAlerts']>) => {
+  const s = await svc();
+  return s.insertPendingAlerts(...args);
+};
+
+export const getPendingAlertsByClient = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['getPendingAlertsByClient']>) => {
+  const s = await svc();
+  return s.getPendingAlertsByClient(...args);
+};
+
+export const markAlertsSent = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['markAlertsSent']>) => {
+  const s = await svc();
+  return s.markAlertsSent(...args);
+};
+
+export const markAlertsFailed = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['markAlertsFailed']>) => {
+  const s = await svc();
+  return s.markAlertsFailed(...args);
+};
+
+export const getAlertsSentToday = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['getAlertsSentToday']>) => {
+  const s = await svc();
+  return s.getAlertsSentToday(...args);
+};
+
+export const getAlertsPending = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['getAlertsPending']>) => {
+  const s = await svc();
+  return s.getAlertsPending(...args);
+};
+
+export const getAppSetting = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['getAppSetting']>) => {
+  const s = await svc();
+  return s.getAppSetting(...args);
+};
+
+export const setAppSetting = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['setAppSetting']>) => {
+  const s = await svc();
+  return s.setAppSetting(...args);
+};

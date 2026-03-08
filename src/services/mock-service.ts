@@ -12,7 +12,12 @@ import type {
   CreateActivityInput,
   CreateTriggerInput,
   NextAction,
+  ClientAlert,
 } from '@/types/client';
+
+// In-memory alert store
+const clientAlerts: ClientAlert[] = [];
+const appSettings: Record<string, string> = { autoAlertsEnabled: 'true' };
 
 // Simulated async to match future Supabase service interface
 
@@ -88,6 +93,12 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
     return created >= weekAgo;
   }).length;
 
+  const today = new Date().toISOString().slice(0, 10);
+  const alertsSentToday = clientAlerts.filter(
+    (a) => a.status === 'sent' && a.sentAt && a.sentAt.slice(0, 10) === today,
+  ).length;
+  const alertsPending = clientAlerts.filter((a) => a.status === 'pending').length;
+
   return {
     totalActiveClients: activeClients,
     pendingFollowUps,
@@ -97,6 +108,8 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
     leadsThisWeek: newLeads,
     conversionRate: 0.68,
     avgResponseTime: '2.4 hrs',
+    alertsSentToday,
+    alertsPending,
   };
 };
 
@@ -249,4 +262,79 @@ export const upsertAIProfile = async (
   } else {
     profiles.push({ clientId, summary, nextActions: actions, updatedAt: new Date().toISOString() });
   }
+};
+
+// ---- Client Alerts ----
+
+export const insertPendingAlerts = async (
+  alerts: { clientId: string; propertyId: string; propertyType: 'listing' | 'rental' }[],
+): Promise<number> => {
+  let inserted = 0;
+  for (const a of alerts) {
+    const exists = clientAlerts.some(
+      (e) => e.clientId === a.clientId && e.propertyId === a.propertyId,
+    );
+    if (!exists) {
+      clientAlerts.push({
+        id: `alert_${Date.now()}_${inserted}`,
+        clientId: a.clientId,
+        propertyId: a.propertyId,
+        propertyType: a.propertyType,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+      });
+      inserted++;
+    }
+  }
+  return inserted;
+};
+
+export const getPendingAlertsByClient = async (): Promise<Map<string, ClientAlert[]>> => {
+  const map = new Map<string, ClientAlert[]>();
+  for (const a of clientAlerts) {
+    if (a.status !== 'pending') continue;
+    const list = map.get(a.clientId) ?? [];
+    list.push(a);
+    map.set(a.clientId, list);
+  }
+  return map;
+};
+
+export const markAlertsSent = async (ids: string[]): Promise<void> => {
+  const now = new Date().toISOString();
+  for (const alert of clientAlerts) {
+    if (ids.includes(alert.id)) {
+      alert.status = 'sent';
+      alert.sentAt = now;
+    }
+  }
+};
+
+export const markAlertsFailed = async (ids: string[]): Promise<void> => {
+  for (const alert of clientAlerts) {
+    if (ids.includes(alert.id)) {
+      alert.status = 'failed';
+    }
+  }
+};
+
+export const getAlertsSentToday = async (): Promise<number> => {
+  const today = new Date().toISOString().slice(0, 10);
+  return clientAlerts.filter(
+    (a) => a.status === 'sent' && a.sentAt && a.sentAt.slice(0, 10) === today,
+  ).length;
+};
+
+export const getAlertsPending = async (): Promise<number> => {
+  return clientAlerts.filter((a) => a.status === 'pending').length;
+};
+
+// ---- App Settings ----
+
+export const getAppSetting = async (key: string): Promise<string | null> => {
+  return appSettings[key] ?? null;
+};
+
+export const setAppSetting = async (key: string, value: string): Promise<void> => {
+  appSettings[key] = value;
 };

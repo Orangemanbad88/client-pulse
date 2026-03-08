@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sparkles, Trash2 } from 'lucide-react';
+import { Sparkles, Trash2, Bell } from 'lucide-react';
 import type { Client, ClientPreferences, Activity, Transaction, PropertyMatch, AIProfile, Trigger } from '@/types/client';
 import { LIFECYCLE_LABELS, PROPERTY_TYPE_LABELS, AMENITY_LABELS, ACTIVITY_ICONS } from '@/types/client';
 import { getInitials, getClientName, formatCurrency, formatDate, formatRelativeDate, urgencyBadge, scoreColor, scoreBg, cn, stageBadge } from '@/lib/utils';
@@ -31,6 +31,8 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
   const [deleting, setDeleting] = useState(false);
   const [findingMatches, setFindingMatches] = useState(false);
   const [matchingInProgress, setMatchingInProgress] = useState(false);
+  const [alertsEnabled, setAlertsEnabled] = useState(initialClient.alertsEnabled !== false);
+  const [alertsToggling, setAlertsToggling] = useState(false);
 
   const handleSendMatch = async (matchId: string) => {
     setMatchLoading(matchId);
@@ -97,6 +99,27 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
     }
   };
 
+  const handleToggleAlerts = async () => {
+    setAlertsToggling(true);
+    const newVal = !alertsEnabled;
+    try {
+      const res = await fetch(`/api/clients/${client.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ alertsEnabled: newVal }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setAlertsEnabled(newVal);
+        setClient({ ...client, alertsEnabled: newVal });
+      }
+    } catch {
+      // keep original on failure
+    } finally {
+      setAlertsToggling(false);
+    }
+  };
+
   const hasPreferences = !!(prefs?.rental || prefs?.buyer);
 
   return (
@@ -159,8 +182,21 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
 
           {/* Preferences */}
           <div className="surface overflow-hidden">
-            <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
+            <div className="px-4 py-3 border-b flex items-center justify-between" style={{ borderColor: 'var(--border)' }}>
               <h3 className="text-[13px] font-bold" style={{ color: 'var(--text-primary)' }}>{rp ? 'Rental Prefs' : 'Buyer Prefs'}</h3>
+              <button
+                onClick={handleToggleAlerts}
+                disabled={alertsToggling}
+                className={cn(
+                  'flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-full transition-colors disabled:opacity-50',
+                  alertsEnabled
+                    ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500',
+                )}
+              >
+                <Bell size={10} />
+                {alertsToggling ? '...' : alertsEnabled ? 'Alerts On' : 'Alerts Off'}
+              </button>
             </div>
             <div className="p-4 space-y-2.5">
               {rp && <>

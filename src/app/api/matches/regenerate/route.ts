@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getClients, getClientPreferences, bulkInsertMatches } from '@/services';
+import { getClients, getClientPreferences, bulkInsertMatches, insertPendingAlerts } from '@/services';
 import { matchListings } from '@/lib/matching';
 import type { PropertyMatch, PropertyType } from '@/types/client';
 
@@ -37,9 +37,11 @@ export async function GET(request: NextRequest) {
 
     let clientsEvaluated = 0;
     let matchesGenerated = 0;
+    let alertsCreated = 0;
 
     // Process each client that has valid preferences
     const insertPromises: Promise<unknown>[] = [];
+    const alertInsertPromises: Promise<number>[] = [];
 
     for (let i = 0; i < clients.length; i++) {
       const client = clients[i];
@@ -77,17 +79,29 @@ export async function GET(request: NextRequest) {
       }));
 
       insertPromises.push(bulkInsertMatches(client.id, matchRecords));
+
+      // Queue pending alerts for this client's new matches
+      const alertRows = matchRecords.map((m) => ({
+        clientId: client.id,
+        propertyId: m.listingId,
+        propertyType: (client.clientType === 'buyer' || client.clientType === 'investor' ? 'listing' : 'rental') as 'listing' | 'rental',
+      }));
+      alertInsertPromises.push(insertPendingAlerts(alertRows));
+
       clientsEvaluated++;
       matchesGenerated += matchRecords.length;
     }
 
     // Wait for all inserts to complete
     await Promise.all(insertPromises);
+    const alertCounts = await Promise.all(alertInsertPromises);
+    alertsCreated = alertCounts.reduce((sum, c) => sum + c, 0);
 
     return NextResponse.json({
       success: true,
       clientsEvaluated,
       matchesGenerated,
+      alertsCreated,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Regeneration failed';

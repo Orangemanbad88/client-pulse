@@ -92,6 +92,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const [status, setStatus] = useState<ClientStatus>(client.status);
   const [lifecycleStage, setLifecycleStage] = useState<LifecycleStage>(client.lifecycleStage);
   const [notes, setNotes] = useState(client.notes);
+  const [alertsEnabled, setAlertsEnabled] = useState(client.alertsEnabled !== false);
 
   const rp = preferences?.rental;
   const [rBudgetMin, setRBudgetMin] = useState(rp?.budgetMin ?? 0);
@@ -187,7 +188,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          firstName, lastName, email, phone, preferredContact, source, clientType, status, lifecycleStage, notes,
+          firstName, lastName, email, phone, preferredContact, source, clientType, status, lifecycleStage, notes, alertsEnabled,
           ...prefsPayload,
         }),
       });
@@ -421,6 +422,15 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
             </div>}
 
             {step === 4 && <div className="space-y-3.5 animate-in">
+              <label className="flex items-center gap-2.5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={alertsEnabled}
+                  onChange={(e) => setAlertsEnabled(e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 accent-[var(--accent)]"
+                />
+                <span className="text-[12px] font-medium" style={{ color: 'var(--text-primary)' }}>Email alerts when new matches are found</span>
+              </label>
               <div><Lbl>Notes</Lbl><textarea className="input" rows={5} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Additional details, special requests..." /></div>
               <div className="p-3 rounded-lg text-[11px] space-y-1.5" style={{ background: 'var(--bg-1)', border: '1px solid var(--border)' }}>
                 <p style={{ color: 'var(--text-tertiary)' }}><strong style={{ color: 'var(--text-secondary)' }}>Assigned Agent:</strong> {client.assignedAgent}</p>

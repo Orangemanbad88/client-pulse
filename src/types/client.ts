@@ -94,6 +94,7 @@ export interface Client {
   createdAt: string;
   lastContact: string;
   avatarUrl?: string;
+  alertsEnabled?: boolean;
 }
 
 export interface RentalPreferences {
@@ -305,6 +306,18 @@ export interface MLSListing {
   similarityScore: number;
 }
 
+// ---- Client Alert ----
+
+export interface ClientAlert {
+  id: string;
+  clientId: string;
+  propertyId: string;
+  propertyType: 'listing' | 'rental';
+  status: 'pending' | 'sent' | 'failed';
+  sentAt?: string;
+  createdAt: string;
+}
+
 // ---- Dashboard Stats ----
 
 export interface DashboardStats {
@@ -316,6 +329,8 @@ export interface DashboardStats {
   leadsThisWeek: number;
   conversionRate: number;
   avgResponseTime: string;
+  alertsSentToday: number;
+  alertsPending: number;
 }
 
 // ---- Intake Form ----

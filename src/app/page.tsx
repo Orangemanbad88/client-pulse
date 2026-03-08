@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { Users, Clock, AlertTriangle, TrendingUp, ArrowUpRight, Bell, Plus, Filter } from "lucide-react";
+import { Users, Clock, AlertTriangle, TrendingUp, ArrowUpRight, Bell, Plus, Filter, Mail } from "lucide-react";
 import { useDark } from '@/hooks/useDark';
 import { SparkLine } from '@/components/ui/SparkLine';
 import { MiniDonut } from '@/components/ui/MiniDonut';
@@ -85,6 +85,7 @@ export default function DashboardPage() {
       { label: "Lease Expirations", value: stats.leaseExpirationsThisMonth, change: "this month", icon: AlertTriangle, sparkData: [3, 2, 2, 1, 2, 1, stats.leaseExpirationsThisMonth] },
       { label: "New Matches", value: stats.matchesPending, change: "pending review", icon: TrendingUp, sparkData: [1, 0, 2, 1, 3, 2, stats.matchesPending] },
       { label: "Leads This Week", value: stats.leadsThisWeek, change: `${stats.conversionRate ? Math.round(stats.conversionRate * 100) : 0}% conversion`, icon: ArrowUpRight, sparkData: [2, 1, 3, 2, 1, 0, stats.leadsThisWeek] },
+      { label: "Alerts Today", value: stats.alertsSentToday, change: `${stats.alertsPending} pending`, icon: Mail, sparkData: [0, 1, 0, 2, 1, 0, stats.alertsSentToday] },
     ];
   }, [stats]);
 
@@ -136,7 +137,7 @@ export default function DashboardPage() {
 
       <div className="px-4 lg:px-8 py-4 lg:py-6">
         {/* Metric Cards */}
-        <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4 mb-4 lg:mb-6 ${mounted ? 'stagger-children' : ''}`}>
+        <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-4 lg:mb-6 ${mounted ? 'stagger-children' : ''}`}>
           {metricCards.map((card) => (
             <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:scale-[1.02] transition-all duration-200 cursor-default">
               <div className="flex items-center justify-between mb-3">

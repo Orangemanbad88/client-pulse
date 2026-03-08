@@ -1,13 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Settings, Plug, User, Palette, Calendar, Database, Mail, Check, Save } from 'lucide-react';
+import { Settings, Plug, User, Palette, Calendar, Database, Mail, Check, Save, Bell } from 'lucide-react';
 
 export default function SettingsPage() {
   const [agentName, setAgentName] = useState('');
   const [saved, setSaved] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [autoAlerts, setAutoAlerts] = useState(true);
+  const [alertsToggling, setAlertsToggling] = useState(false);
 
   const dataSource = process.env.NEXT_PUBLIC_DATA_SOURCE || 'mock';
   const resendConfigured = !!process.env.NEXT_PUBLIC_RESEND_CONFIGURED;
@@ -18,7 +20,37 @@ export default function SettingsPage() {
     setAgentName(name);
     const tokens = localStorage.getItem('google_calendar_tokens');
     setCalendarConnected(!!tokens);
+
+    // Load auto-alerts setting
+    fetch('/api/settings?key=autoAlertsEnabled')
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success && d.value !== null) {
+          setAutoAlerts(d.value === 'true');
+        }
+      })
+      .catch(() => {});
   }, []);
+
+  const handleToggleAlerts = async () => {
+    setAlertsToggling(true);
+    const newVal = !autoAlerts;
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: 'autoAlertsEnabled', value: String(newVal) }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setAutoAlerts(newVal);
+      }
+    } catch {
+      // keep original on failure
+    } finally {
+      setAlertsToggling(false);
+    }
+  };
 
   const handleSaveName = () => {
     localStorage.setItem('clientpulse-agent-name', agentName);
@@ -108,6 +140,29 @@ export default function SettingsPage() {
               }`}>
                 {resendConfigured ? 'Configured' : 'Not configured'}
               </span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                  <Bell size={16} className="text-gold dark:text-gold-light" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Auto-Alerts</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">Email clients when new matches are found</p>
+                </div>
+              </div>
+              <button
+                onClick={handleToggleAlerts}
+                disabled={alertsToggling}
+                className={`text-xs font-medium px-2.5 py-1 rounded-full cursor-pointer transition-colors disabled:opacity-50 ${
+                  autoAlerts
+                    ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
+              >
+                {alertsToggling ? '...' : autoAlerts ? 'Enabled' : 'Disabled'}
+              </button>
             </div>
           </div>
         </div>

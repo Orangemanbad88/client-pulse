@@ -13,6 +13,7 @@ import type {
   CreateActivityInput,
   CreateTriggerInput,
   NextAction,
+  ClientAlert,
 } from '@/types/client';
 
 const db = () =>
@@ -166,10 +167,12 @@ export const getClientTriggers = async (clientId: string): Promise<Trigger[]> =>
 export const getDashboardStats = async (): Promise<DashboardStats> => {
   const supabase = db();
 
-  const [clientsRes, triggersRes, matchesRes] = await Promise.all([
+  const [clientsRes, triggersRes, matchesRes, alertsSentRes, alertsPendingRes] = await Promise.all([
     supabase.from('clients').select('id, status, lifecycle_stage, created_at'),
     supabase.from('triggers').select('id, status'),
     supabase.from('property_matches').select('id, status'),
+    supabase.from('client_alerts').select('id', { count: 'exact', head: true }).eq('status', 'sent').gte('sent_at', new Date().toISOString().slice(0, 10)),
+    supabase.from('client_alerts').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
   ]);
 
   const clients = clientsRes.data ?? [];
@@ -194,6 +197,8 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
     leadsThisWeek: newLeads,
     conversionRate: activeClients > 0 ? 0.68 : 0,
     avgResponseTime: activeClients > 0 ? '2.4 hrs' : '—',
+    alertsSentToday: alertsSentRes.count ?? 0,
+    alertsPending: alertsPendingRes.count ?? 0,
   };
 };
 
@@ -414,4 +419,108 @@ export const upsertAIProfile = async (
     }, { onConflict: 'client_id' });
 
   if (error) throw new Error(`upsertAIProfile: ${error.message}`);
+};
+
+// ---- Client Alerts ----
+
+export const insertPendingAlerts = async (
+  alerts: { clientId: string; propertyId: string; propertyType: 'listing' | 'rental' }[],
+): Promise<number> => {
+  if (alerts.length === 0) return 0;
+
+  const rows = alerts.map((a) => ({
+    client_id: a.clientId,
+    property_id: a.propertyId,
+    property_type: a.propertyType,
+    status: 'pending',
+  }));
+
+  const { count, error } = await db()
+    .from('client_alerts')
+    .upsert(rows, { onConflict: 'client_id,property_id', ignoreDuplicates: true, count: 'exact' });
+
+  if (error) throw new Error(`insertPendingAlerts: ${error.message}`);
+  return count ?? 0;
+};
+
+export const getPendingAlertsByClient = async (): Promise<Map<string, ClientAlert[]>> => {
+  const { data, error } = await db()
+    .from('client_alerts')
+    .select('*')
+    .eq('status', 'pending');
+
+  if (error) throw new Error(`getPendingAlertsByClient: ${error.message}`);
+
+  const map = new Map<string, ClientAlert[]>();
+  for (const row of data ?? []) {
+    const alert = snakeToCamel<ClientAlert>(row);
+    const list = map.get(alert.clientId) ?? [];
+    list.push(alert);
+    map.set(alert.clientId, list);
+  }
+  return map;
+};
+
+export const markAlertsSent = async (ids: string[]): Promise<void> => {
+  if (ids.length === 0) return;
+  const { error } = await db()
+    .from('client_alerts')
+    .update({ status: 'sent', sent_at: new Date().toISOString() })
+    .in('id', ids);
+  if (error) throw new Error(`markAlertsSent: ${error.message}`);
+};
+
+export const markAlertsFailed = async (ids: string[]): Promise<void> => {
+  if (ids.length === 0) return;
+  const { error } = await db()
+    .from('client_alerts')
+    .update({ status: 'failed' })
+    .in('id', ids);
+  if (error) throw new Error(`markAlertsFailed: ${error.message}`);
+};
+
+export const getAlertsSentToday = async (): Promise<number> => {
+  const today = new Date().toISOString().slice(0, 10);
+  const { count, error } = await db()
+    .from('client_alerts')
+    .select('id', { count: 'exact', head: true })
+    .eq('status', 'sent')
+    .gte('sent_at', today);
+
+  if (error) throw new Error(`getAlertsSentToday: ${error.message}`);
+  return count ?? 0;
+};
+
+export const getAlertsPending = async (): Promise<number> => {
+  const { count, error } = await db()
+    .from('client_alerts')
+    .select('id', { count: 'exact', head: true })
+    .eq('status', 'pending');
+
+  if (error) throw new Error(`getAlertsPending: ${error.message}`);
+  return count ?? 0;
+};
+
+// ---- App Settings ----
+
+export const getAppSetting = async (key: string): Promise<string | null> => {
+  const { data, error } = await db()
+    .from('app_settings')
+    .select('value')
+    .eq('key', key)
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') return null;
+    throw new Error(`getAppSetting: ${error.message}`);
+  }
+  return data?.value ?? null;
+};
+
+export const setAppSetting = async (key: string, value: string): Promise<void> => {
+  const { error } = await db()
+    .from('app_settings')
+    .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+
+  if (error) throw new Error(`setAppSetting: ${error.message}`);
 };
