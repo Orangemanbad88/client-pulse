@@ -260,11 +260,25 @@ export const updateMatchStatus = async (id: string, status: 'sent' | 'dismissed'
   if (error) throw new Error(`updateMatchStatus: ${error.message}`);
 };
 
+// Known client columns — add 'alerts_enabled' after running migration 003
+const CLIENTS_COLUMNS = new Set([
+  'first_name', 'last_name', 'email', 'phone', 'preferred_contact',
+  'client_type', 'status', 'lifecycle_stage', 'source', 'assigned_agent',
+  'notes', 'last_contact', 'avatar_url',
+]);
+
 export const updateClient = async (id: string, data: Partial<Client>): Promise<Client> => {
   const { camelToSnake } = await import('@/lib/case-utils');
   const snakeData = camelToSnake(data as Record<string, unknown>);
   delete snakeData.id;
   delete snakeData.created_at;
+
+  // Strip fields not in the schema to avoid Supabase cache errors
+  for (const key of Object.keys(snakeData)) {
+    if (!CLIENTS_COLUMNS.has(key)) {
+      delete snakeData[key];
+    }
+  }
 
   const { data: updated, error } = await db()
     .from('clients')
