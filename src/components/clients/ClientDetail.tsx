@@ -18,7 +18,7 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
   const [prefs, setPrefs] = useState(initialPrefs);
   const rp = prefs?.rental;
   const bp = prefs?.buyer;
-  const rentalDuration = rp?.leaseTermPref || null;
+  const rentalWeeks = rp?.leaseTermPref ? rp.leaseTermPref.split(', ').filter(Boolean) : [];
 
   const [matchList, setMatchList] = useState(initialMatches);
   const [triggerList, setTriggerList] = useState(initialTriggers);
@@ -170,8 +170,8 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
                 <div><Lbl>Areas</Lbl><div className="flex flex-wrap gap-1 mt-1">{rp.preferredAreas.map((a) => <span key={a} className="pill">{a}</span>)}</div></div>
                 {rp.mustHaveAmenities?.length > 0 && <div><Lbl>Must-Have</Lbl><div className="flex flex-wrap gap-1 mt-1">{rp.mustHaveAmenities.map((a) => <span key={a} className="badge badge-accent text-[10px]">{AMENITY_LABELS[a]}</span>)}</div></div>}
                 {rp.pets && <Row l="Pets" v={rp.pets} />}
-                {rentalDuration && (
-                  <Row l="Duration" v={rentalDuration} />
+                {rentalWeeks.length > 0 && (
+                  <div><Lbl>Rental Weeks</Lbl><div className="flex flex-wrap gap-1 mt-1">{rentalWeeks.map((w) => <span key={w} className="pill">{w}</span>)}</div></div>
                 )}
               </>}
               {bp && <>

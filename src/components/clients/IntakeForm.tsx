@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { ClientIntakeData, ClientType, ContactMethod, UrgencyLevel, PropertyType, Amenity } from '@/types/client';
 import { PROPERTY_TYPE_LABELS, AMENITY_LABELS } from '@/types/client';
 import { cn } from '@/lib/utils';
+import { getRentalSeasonWeeks, getSeasonMonths } from '@/lib/rental-weeks';
 
 interface Props { onSubmit: (d: ClientIntakeData) => void; onCancel: () => void; }
 
@@ -30,6 +31,23 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
   const toggleP = (p: PropertyType) => {
     if (isR) { const c = f.rentalPrefs?.propertyTypes || []; ur('propertyTypes', c.includes(p) ? c.filter((x) => x !== p) : [...c, p]); }
     else { const c = f.buyerPrefs?.propertyTypes || []; ub('propertyTypes', c.includes(p) ? c.filter((x) => x !== p) : [...c, p]); }
+  };
+
+  const seasonWeeks = getRentalSeasonWeeks();
+  const seasonMonths = getSeasonMonths(seasonWeeks);
+  const selectedWeeks = (f.rentalPrefs?.leaseTermPref || '').split(', ').filter(Boolean);
+
+  const toggleWeek = (val: string) => {
+    const updated = selectedWeeks.includes(val) ? selectedWeeks.filter((w) => w !== val) : [...selectedWeeks, val];
+    ur('leaseTermPref', updated.join(', '));
+  };
+  const toggleMonth = (month: string) => {
+    const monthWeeks = seasonWeeks.filter((w) => w.month === month).map((w) => w.value);
+    const allSelected = monthWeeks.every((w) => selectedWeeks.includes(w));
+    const updated = allSelected
+      ? selectedWeeks.filter((w) => !monthWeeks.includes(w))
+      : [...new Set([...selectedWeeks, ...monthWeeks])];
+    ur('leaseTermPref', updated.join(', '));
   };
 
   const steps = ['Contact', 'Type', 'Preferences', 'Situation'];
@@ -135,15 +153,32 @@ export const IntakeForm = ({ onSubmit, onCancel }: Props) => {
 
         {step === 4 && <div className="space-y-3.5 animate-in">
           <div><Lbl>Current Address</Lbl><input className="input" value={f.currentAddress} onChange={(e) => u('currentAddress', e.target.value)} placeholder="412 Main St, Dunedin, FL" /></div>
-          {isR && <div><Lbl>Rental Duration</Lbl>
-            <select className="select" value={f.rentalPrefs?.leaseTermPref || ''} onChange={(e) => ur('leaseTermPref', e.target.value)}>
-              <option value="">Select weeks...</option>
-              <option value="1 week">1 Week</option>
-              <option value="2 weeks">2 Weeks</option>
-              <option value="3 weeks">3 Weeks</option>
-              <option value="4 weeks">4 Weeks</option>
-              <option value="full season">Full Season</option>
-            </select>
+          {isR && <div>
+            <Lbl>Rental Weeks</Lbl>
+            <div className="flex flex-wrap gap-1.5 mt-1.5 mb-2">
+              {seasonMonths.map((month) => {
+                const monthWeeks = seasonWeeks.filter((w) => w.month === month).map((w) => w.value);
+                const allSelected = monthWeeks.every((w) => selectedWeeks.includes(w));
+                return (
+                  <button key={month} onClick={() => toggleMonth(month)}
+                    className={cn('px-3 py-1.5 rounded-lg border text-[11px] font-bold transition-all',
+                      allSelected ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
+                    style={{ borderColor: allSelected ? 'var(--accent)' : 'var(--border)', color: allSelected ? 'var(--accent-text)' : 'var(--text-secondary)' }}>
+                    All {month}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto p-1">
+              {seasonWeeks.map((week) => (
+                <button key={week.value} onClick={() => toggleWeek(week.value)}
+                  className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
+                    selectedWeeks.includes(week.value) ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
+                  style={{ borderColor: selectedWeeks.includes(week.value) ? 'var(--accent)' : 'var(--border)', color: selectedWeeks.includes(week.value) ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
+                  {week.label}
+                </button>
+              ))}
+            </div>
           </div>}
           <div><Lbl>Reason for Moving</Lbl><input className="input" value={f.reasonForMoving} onChange={(e) => u('reasonForMoving', e.target.value)} placeholder="Lease ending, relocating..." /></div>
           <div><Lbl>Urgency</Lbl>

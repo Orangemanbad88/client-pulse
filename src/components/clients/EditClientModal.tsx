@@ -15,6 +15,7 @@ import type {
 } from '@/types/client';
 import { LIFECYCLE_LABELS, PROPERTY_TYPE_LABELS, AMENITY_LABELS } from '@/types/client';
 import { cn } from '@/lib/utils';
+import { getRentalSeasonWeeks, getSeasonMonths } from '@/lib/rental-weeks';
 
 interface SavedPrefs {
   rental?: Record<string, unknown> | null;
@@ -103,7 +104,25 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
   const [rAmenities, setRAmenities] = useState<Amenity[]>(rp?.mustHaveAmenities ?? []);
   const [rPets, setRPets] = useState(rp?.pets ?? '');
   const [rMoveIn, setRMoveIn] = useState(rp?.moveInTimeline ?? '');
-  const [rRentalWeeks, setRRentalWeeks] = useState(rp?.leaseTermPref ?? '');
+  const [rRentalWeeks, setRRentalWeeks] = useState<string[]>(
+    rp?.leaseTermPref ? rp.leaseTermPref.split(', ').filter(Boolean) : [],
+  );
+
+  const seasonWeeks = getRentalSeasonWeeks();
+  const seasonMonths = getSeasonMonths(seasonWeeks);
+
+  const toggleWeek = (val: string) => {
+    setRRentalWeeks((prev) => prev.includes(val) ? prev.filter((w) => w !== val) : [...prev, val]);
+  };
+  const toggleMonth = (month: string) => {
+    const monthWeeks = seasonWeeks.filter((w) => w.month === month).map((w) => w.value);
+    const allSelected = monthWeeks.every((w) => rRentalWeeks.includes(w));
+    if (allSelected) {
+      setRRentalWeeks((prev) => prev.filter((w) => !monthWeeks.includes(w)));
+    } else {
+      setRRentalWeeks((prev) => [...new Set([...prev, ...monthWeeks])]);
+    }
+  };
 
   const bp = preferences?.buyer;
   const [bBudgetMin, setBBudgetMin] = useState(bp?.budgetMin ?? 0);
@@ -151,7 +170,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
         budgetMin: rBudgetMin, budgetMax: rBudgetMax, bedrooms: rBedrooms, bathrooms: rBathrooms,
         sqftMin: rSqftMin, preferredAreas: rAreas,
         propertyTypes: rPropertyTypes, mustHaveAmenities: rAmenities, pets: rPets,
-        moveInTimeline: rMoveIn, leaseTermPref: rRentalWeeks,
+        moveInTimeline: rMoveIn, leaseTermPref: rRentalWeeks.join(', '),
       } : null;
 
       const buyerPrefs = isB ? {
@@ -322,15 +341,32 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
                   <div><Lbl>Pets</Lbl><input className="input" value={rPets} onChange={(e) => setRPets(e.target.value)} placeholder="2 labs, cat..." /></div>
                   <div><Lbl>Move-in Timeline</Lbl><input className="input" value={rMoveIn} onChange={(e) => setRMoveIn(e.target.value)} placeholder="ASAP, 30 days..." /></div>
                 </div>
-                <div><Lbl>Rental Duration</Lbl>
-                  <select className="select" value={rRentalWeeks} onChange={(e) => setRRentalWeeks(e.target.value)}>
-                    <option value="">Select weeks...</option>
-                    <option value="1 week">1 Week</option>
-                    <option value="2 weeks">2 Weeks</option>
-                    <option value="3 weeks">3 Weeks</option>
-                    <option value="4 weeks">4 Weeks</option>
-                    <option value="full season">Full Season</option>
-                  </select>
+                <div>
+                  <Lbl>Rental Weeks</Lbl>
+                  <div className="flex flex-wrap gap-1.5 mt-1.5 mb-2">
+                    {seasonMonths.map((month) => {
+                      const monthWeeks = seasonWeeks.filter((w) => w.month === month).map((w) => w.value);
+                      const allSelected = monthWeeks.every((w) => rRentalWeeks.includes(w));
+                      return (
+                        <button key={month} onClick={() => toggleMonth(month)}
+                          className={cn('px-3 py-1.5 rounded-lg border text-[11px] font-bold transition-all',
+                            allSelected ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
+                          style={{ borderColor: allSelected ? 'var(--accent)' : 'var(--border)', color: allSelected ? 'var(--accent-text)' : 'var(--text-secondary)' }}>
+                          All {month}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto p-1">
+                    {seasonWeeks.map((week) => (
+                      <button key={week.value} onClick={() => toggleWeek(week.value)}
+                        className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
+                          rRentalWeeks.includes(week.value) ? 'border-[var(--accent)] bg-[var(--accent-muted)]' : '')}
+                        style={{ borderColor: rRentalWeeks.includes(week.value) ? 'var(--accent)' : 'var(--border)', color: rRentalWeeks.includes(week.value) ? 'var(--accent-text)' : 'var(--text-tertiary)' }}>
+                        {week.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </>}
               {isB && <>
