@@ -23,7 +23,7 @@ export const EmbedPage = ({ title, url, mobileIcon }: EmbedPageProps) => {
   return (
     <div className="flex flex-col h-[calc(100vh-0px)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 h-12 border-b border-[#1a1a24]/50 shrink-0" style={{ background: 'linear-gradient(135deg, #1a1a24 0%, #0a0a0f 50%, #1a1a24 100%)' }}>
+      <div className="flex items-center justify-between px-4 h-12 border-b border-[#1E293B]/50 shrink-0" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
         <div className="flex items-center gap-3">
           <Link
             href="/"
