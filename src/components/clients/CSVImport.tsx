@@ -133,9 +133,9 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+      <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="px-5 py-4 border-b border-orange-100/30 dark:border-gray-800/60 flex items-center justify-between shrink-0">
+        <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Import Clients from CSV</h2>
@@ -146,7 +146,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
         </div>
 
         {/* Step indicator */}
-        <div className="px-5 py-3 border-b border-orange-100/30 dark:border-gray-800/60 flex items-center gap-2 shrink-0">
+        <div className="px-5 py-3 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center gap-2 shrink-0">
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center gap-2">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
@@ -174,7 +174,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               onDrop={handleDrop}
               className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors ${
                 dragOver
-                  ? 'border-gold bg-orange-50/30 dark:bg-orange-900/10'
+                  ? 'border-gold bg-amber-50/30 dark:bg-amber-900/10'
                   : 'border-gray-200 dark:border-gray-700 hover:border-gold-light dark:hover:border-gold-muted'
               }`}
             >
@@ -223,7 +223,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                     }}
                     className={`flex-1 px-3 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold ${
                       columnMapping[idx]
-                        ? 'bg-orange-50/50 dark:bg-orange-900/10 border-gold-light dark:border-gold-muted/30 text-gold-muted dark:text-gold-light'
+                        ? 'bg-amber-50/50 dark:bg-amber-900/10 border-gold-light dark:border-gold-muted/30 text-gold-muted dark:text-gold-light'
                         : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400'
                     }`}
                   >
@@ -245,7 +245,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
                 Showing first {Math.min(5, csvRows.length)} of {csvRows.length} rows. Verify the data looks correct.
               </p>
-              <div className="overflow-x-auto rounded-lg border border-orange-200/25 dark:border-gray-800/60">
+              <div className="overflow-x-auto rounded-lg border border-amber-200/25 dark:border-gray-800/60">
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="bg-gray-50 dark:bg-gray-800">
@@ -256,9 +256,9 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-orange-100/30 dark:divide-gray-800/60">
+                  <tbody className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
                     {previewRows.map((row, i) => (
-                      <tr key={i} className="hover:bg-orange-50/20 dark:hover:bg-orange-900/5">
+                      <tr key={i} className="hover:bg-amber-50/20 dark:hover:bg-amber-900/5">
                         {Object.values(columnMapping).map((field) => (
                           <td key={field} className="px-3 py-2 text-gray-700 dark:text-gray-300 whitespace-nowrap max-w-[200px] truncate">
                             {row[field] || '—'}
@@ -274,7 +274,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-4 border-t border-orange-100/30 dark:border-gray-800/60 flex items-center justify-between shrink-0">
+        <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between shrink-0">
           <div className="text-xs text-gray-400">
             {fileName && <span>{fileName} — {csvRows.length} rows</span>}
           </div>

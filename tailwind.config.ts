@@ -22,9 +22,9 @@ const config: Config = {
         },
         walnut: '#475569',
         gold: {
-          DEFAULT: '#E8650A',
-          light: '#F28C38',
-          muted: '#D4760F',
+          DEFAULT: '#B8860B',
+          light: '#D4A84B',
+          muted: '#C9A227',
         },
         cream: '#faf8f5',
         charcoal: '#1a1a2e',

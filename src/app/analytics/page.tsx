@@ -7,10 +7,10 @@ import { LIFECYCLE_LABELS } from '@/types/client';
 import { useDark } from '@/hooks/useDark';
 
 const StatCard = ({ label, value, change, positive, icon: Icon }: { label: string; value: string; change: string; positive: boolean; icon: typeof Users }) => (
-  <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 p-5 shadow-sm">
+  <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-5 shadow-sm">
     <div className="flex items-center justify-between mb-3">
       <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{label}</span>
-      <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center">
+      <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
         <Icon size={16} className="text-gold dark:text-gold-light" />
       </div>
     </div>
@@ -48,8 +48,8 @@ export default function AnalyticsPage() {
   const dark = useDark();
 
   const stageColors = useMemo(() => [
-    dark ? '#F28C38' : '#E8650A',
-    dark ? '#D4760F' : '#E8650A',
+    dark ? '#D4A84B' : '#B8860B',
+    dark ? '#C9A227' : '#B8860B',
     '#f59e0b',
     '#8b5cf6',
     '#22c55e',
@@ -121,8 +121,8 @@ export default function AnalyticsPage() {
   return (
     <>
       <header
-        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}
+        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1a1a24]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #1a1a24 0%, #0a0a0f 50%, #1a1a24 100%)' }}
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">
@@ -146,7 +146,7 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pipeline Distribution */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Pipeline Distribution</h2>
@@ -159,7 +159,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Client Types */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold-light" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Client Types</h2>
@@ -172,7 +172,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Match Status Distribution */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Match Status Distribution</h2>
@@ -189,7 +189,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Trigger Activity */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold-light" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Trigger Activity</h2>

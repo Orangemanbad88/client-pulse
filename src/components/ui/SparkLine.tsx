@@ -1,4 +1,4 @@
-export const SparkLine = ({ data, color = "#E8650A", width = 80, height = 28 }: { data: number[]; color?: string; width?: number; height?: number }) => {
+export const SparkLine = ({ data, color = "#B8860B", width = 80, height = 28 }: { data: number[]; color?: string; width?: number; height?: number }) => {
   if (data.length < 2) return <svg width={width} height={height} className="shrink-0" />;
   const max = Math.max(...data);
   const min = Math.min(...data);

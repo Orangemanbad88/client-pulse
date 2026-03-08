@@ -23,7 +23,7 @@ export const EmbedPage = ({ title, url, mobileIcon }: EmbedPageProps) => {
   return (
     <div className="flex flex-col h-[calc(100vh-0px)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 h-12 border-b border-[#1E293B]/50 shrink-0" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
+      <div className="flex items-center justify-between px-4 h-12 border-b border-[#1a1a24]/50 shrink-0" style={{ background: 'linear-gradient(135deg, #1a1a24 0%, #0a0a0f 50%, #1a1a24 100%)' }}>
         <div className="flex items-center gap-3">
           <Link
             href="/"
@@ -51,8 +51,8 @@ export const EmbedPage = ({ title, url, mobileIcon }: EmbedPageProps) => {
       {/* Content */}
       {isMobile ? (
         <div className="flex-1 flex items-center justify-center p-6">
-          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 p-6 text-center max-w-sm w-full">
-            <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center mx-auto mb-3">
+          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-6 text-center max-w-sm w-full">
+            <div className="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-3">
               {mobileIcon}
             </div>
             <h2 className="text-[15px] font-semibold text-gray-800 dark:text-gray-100 mb-1">{title}</h2>

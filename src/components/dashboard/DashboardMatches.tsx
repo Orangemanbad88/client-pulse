@@ -42,8 +42,8 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
   const topMatches = localMatches.filter((m) => m.status === 'new' || m.status === 'sent').slice(0, 5);
 
   return (
-    <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
-      <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
+    <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
+      <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #1a1a24 0%, #0a0a0f 50%, #1a1a24 100%)' }}>
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-5 rounded-full bg-gold-light" />
           <h2 className="text-sm font-bold text-white tracking-tight">Property Matches</h2>
@@ -51,7 +51,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
         <button className="text-xs text-slate-300 hover:text-white font-medium transition-colors">View All</button>
       </div>
 
-      <div className="divide-y divide-orange-100/30 dark:divide-gray-800/60">
+      <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
         {topMatches.length === 0 && (
           <div className="px-5 py-8 text-center">
             <p className="text-sm text-gray-400 dark:text-gray-500">No matches yet</p>
@@ -60,7 +60,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
         {topMatches.map((match) => {
           const isWeekly = match.price < 10000;
           return (
-            <div key={match.id} className="card-hover-slide px-5 py-4 hover:bg-orange-50/30 dark:hover:bg-orange-900/10 transition-colors">
+            <div key={match.id} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors">
               <div className="flex items-start gap-3">
                 <MatchScore score={match.matchScore} dark={dark} />
                 <div className="flex-1 min-w-0">
@@ -77,7 +77,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
                   </div>
                   <div className="flex flex-wrap gap-1.5 mb-2">
                     {match.matchReasons.map((tag) => (
-                      <span key={tag} className="text-xs bg-orange-50/50 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light border border-gold-light/60 dark:border-gold-muted/30 px-2 py-0.5 rounded-md">
+                      <span key={tag} className="text-xs bg-amber-50/50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/60 dark:border-gold-muted/30 px-2 py-0.5 rounded-md">
                         {tag}
                       </span>
                     ))}

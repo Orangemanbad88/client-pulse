@@ -232,8 +232,8 @@ function CalendarContent() {
   return (
     <>
       <header
-        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}
+        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1a1a24]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #1a1a24 0%, #0a0a0f 50%, #1a1a24 100%)' }}
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">
@@ -267,7 +267,7 @@ function CalendarContent() {
                   setGoogleStatus('idle');
                   setGoogleError('');
                 }}
-                className="flex items-center gap-1.5 text-xs text-gold-light hover:text-red-400 font-medium px-3 py-2 bg-orange-900/20 hover:bg-red-900/20 rounded-lg border border-gold-muted/30 hover:border-red-800/30 transition-colors"
+                className="flex items-center gap-1.5 text-xs text-gold-light hover:text-red-400 font-medium px-3 py-2 bg-amber-900/20 hover:bg-red-900/20 rounded-lg border border-gold-muted/30 hover:border-red-800/30 transition-colors"
               >
                 <Link2 size={13} /> Unlink
               </button>
@@ -293,9 +293,9 @@ function CalendarContent() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Calendar Grid */}
           <div className="lg:col-span-8">
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
               {/* Month navigation */}
-              <div className="px-5 py-4 border-b border-orange-100/30 dark:border-gray-800/60 flex items-center justify-between">
+              <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <button onClick={prevMonth} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <ChevronLeft size={16} className="text-gray-500 dark:text-gray-400" />
@@ -307,13 +307,13 @@ function CalendarContent() {
                     <ChevronRight size={16} className="text-gray-500 dark:text-gray-400" />
                   </button>
                 </div>
-                <button onClick={goToday} className="text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light px-2 py-1 rounded hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-colors">
+                <button onClick={goToday} className="text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light px-2 py-1 rounded hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors">
                   Today
                 </button>
               </div>
 
               {/* Day headers */}
-              <div className="grid grid-cols-7 border-b border-orange-100/30 dark:border-gray-800/60">
+              <div className="grid grid-cols-7 border-b border-amber-100/30 dark:border-gray-800/60">
                 {DAYS.map((d) => (
                   <div key={d} className="py-2 text-center text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
                     {d}
@@ -336,10 +336,10 @@ function CalendarContent() {
                     <button
                       key={idx}
                       onClick={() => setSelectedDay(isSelected ? null : key)}
-                      className={`relative min-h-[80px] lg:min-h-[90px] p-1.5 border-b border-r border-orange-100/20 dark:border-gray-800/40 text-left transition-colors ${
+                      className={`relative min-h-[80px] lg:min-h-[90px] p-1.5 border-b border-r border-amber-100/20 dark:border-gray-800/40 text-left transition-colors ${
                         isSelected
-                          ? 'bg-orange-50/50 dark:bg-orange-900/20'
-                          : 'hover:bg-orange-50/20 dark:hover:bg-orange-900/5'
+                          ? 'bg-amber-50/50 dark:bg-amber-900/20'
+                          : 'hover:bg-amber-50/20 dark:hover:bg-amber-900/5'
                       } ${!isCurrentMonth ? 'opacity-40' : ''}`}
                     >
                       <span className={`text-xs font-medium inline-flex items-center justify-center w-6 h-6 rounded-full ${
@@ -354,7 +354,7 @@ function CalendarContent() {
                       <div className="mt-0.5 space-y-0.5">
                         {triggerCount > 0 && (
                           <div className="flex items-center gap-1">
-                            <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                             <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium truncate">{triggerCount} trigger{triggerCount > 1 ? 's' : ''}</span>
                           </div>
                         )}
@@ -379,29 +379,29 @@ function CalendarContent() {
 
             {/* Day detail panel */}
             {selectedDay && (
-              <div className="mt-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
-                <div className="px-5 py-4 border-b border-orange-100/30 dark:border-gray-800/60 flex items-center gap-3">
+              <div className="mt-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+                <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center gap-3">
                   <div className="w-1.5 h-5 rounded-full bg-gold" />
                   <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">
                     {new Date(selectedDay + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                   </h2>
-                  <span className="text-xs font-bold text-gold dark:text-gold-light bg-orange-50 dark:bg-orange-900/30 rounded-full px-2.5 py-0.5 font-data">{selectedDayEvents.length}</span>
+                  <span className="text-xs font-bold text-gold dark:text-gold-light bg-amber-50 dark:bg-amber-900/30 rounded-full px-2.5 py-0.5 font-data">{selectedDayEvents.length}</span>
                 </div>
-                <div className="divide-y divide-orange-100/30 dark:divide-gray-800/60">
+                <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
                   {selectedDayEvents.length === 0 ? (
                     <div className="px-5 py-8 text-center text-sm text-gray-400">No events this day</div>
                   ) : (
                     selectedDayEvents.map((ev) => {
                       const date = new Date(ev.date);
                       return (
-                        <div key={ev.id} className="px-5 py-4 hover:bg-orange-50/30 dark:hover:bg-orange-900/10 transition-colors">
+                        <div key={ev.id} className="px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors">
                           <div className="flex items-start gap-3">
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
                               ev.type === 'trigger'
-                                ? 'bg-orange-50 dark:bg-orange-900/20'
+                                ? 'bg-amber-50 dark:bg-amber-900/20'
                                 : ev.type === 'google'
                                 ? 'bg-blue-50 dark:bg-blue-900/20'
-                                : 'bg-orange-50 dark:bg-orange-900/30'
+                                : 'bg-amber-50 dark:bg-amber-900/30'
                             }`}>
                               {ev.type === 'trigger' ? (
                                 <Clock size={16} className="text-amber-600 dark:text-amber-400" />
@@ -435,7 +435,7 @@ function CalendarContent() {
                                     ev.urgency === 'critical'
                                       ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
                                       : ev.urgency === 'high'
-                                      ? 'bg-orange-50 dark:bg-orange-900/20 text-amber-600 dark:text-amber-400'
+                                      ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'
                                       : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
                                   }`}>
                                     {ev.urgency}
@@ -455,13 +455,13 @@ function CalendarContent() {
 
           {/* Right sidebar — Next 14 Days */}
           <div className="lg:col-span-4">
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
-              <div className="px-5 py-4 border-b border-orange-100/30 dark:border-gray-800/60 flex items-center gap-3">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+              <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center gap-3">
                 <div className="w-1.5 h-5 rounded-full bg-gold" />
                 <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Next 14 Days</h2>
-                <span className="text-xs font-bold text-gold dark:text-gold-light bg-orange-50 dark:bg-orange-900/30 rounded-full px-2.5 py-0.5 font-data">{next14Days.length}</span>
+                <span className="text-xs font-bold text-gold dark:text-gold-light bg-amber-50 dark:bg-amber-900/30 rounded-full px-2.5 py-0.5 font-data">{next14Days.length}</span>
               </div>
-              <div className="divide-y divide-orange-100/30 dark:divide-gray-800/60 max-h-[600px] overflow-y-auto">
+              <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60 max-h-[600px] overflow-y-auto">
                 {next14Days.length === 0 ? (
                   <div className="px-5 py-8 text-center text-sm text-gray-400">No upcoming events</div>
                 ) : (
@@ -472,10 +472,10 @@ function CalendarContent() {
                       <button
                         key={ev.id}
                         onClick={() => setSelectedDay(toDateKey(date))}
-                        className="w-full text-left px-5 py-3.5 hover:bg-orange-50/30 dark:hover:bg-orange-900/10 transition-colors"
+                        className="w-full text-left px-5 py-3.5 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors"
                       >
                         <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex flex-col items-center justify-center shrink-0">
+                          <div className="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex flex-col items-center justify-center shrink-0">
                             <span className="text-[10px] font-semibold text-gold dark:text-gold-light uppercase">{date.toLocaleDateString('en-US', { month: 'short' })}</span>
                             <span className="text-sm font-bold text-gold-muted dark:text-gold-light font-data leading-none">{date.getDate()}</span>
                           </div>
@@ -486,8 +486,8 @@ function CalendarContent() {
                                 <span className="text-xs text-gold dark:text-gold-light font-medium truncate">{ev.clientName}</span>
                               )}
                               <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                                daysOut <= 0 ? 'bg-orange-50 dark:bg-orange-900/20 text-gold dark:text-gold-light' :
-                                daysOut <= 2 ? 'bg-orange-50 dark:bg-orange-900/20 text-amber-600 dark:text-amber-400' :
+                                daysOut <= 0 ? 'bg-amber-50 dark:bg-amber-900/20 text-gold dark:text-gold-light' :
+                                daysOut <= 2 ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400' :
                                 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
                               }`}>
                                 {daysOut <= 0 ? 'Today' : daysOut === 1 ? 'Tomorrow' : `${daysOut}d`}
@@ -509,8 +509,8 @@ function CalendarContent() {
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowAddModal(false)} />
-          <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-md overflow-hidden">
-            <div className="px-5 py-4 border-b border-orange-100/30 dark:border-gray-800/60 flex items-center justify-between">
+          <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-md overflow-hidden">
+            <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-5 rounded-full bg-gold" />
                 <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Add Event</h2>
@@ -571,7 +571,7 @@ function CalendarContent() {
                 />
               </div>
             </div>
-            <div className="px-5 py-4 border-t border-orange-100/30 dark:border-gray-800/60 flex items-center justify-end gap-2">
+            <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 flex items-center justify-end gap-2">
               <button
                 onClick={() => setShowAddModal(false)}
                 className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"

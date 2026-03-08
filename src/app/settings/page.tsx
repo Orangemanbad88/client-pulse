@@ -63,8 +63,8 @@ export default function SettingsPage() {
   return (
     <>
       <header
-        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}
+        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1a1a24]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #1a1a24 0%, #0a0a0f 50%, #1a1a24 100%)' }}
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">
@@ -79,7 +79,7 @@ export default function SettingsPage() {
       <div className="px-4 lg:px-8 py-4 lg:py-6 space-y-6 max-w-3xl">
 
         {/* Integrations */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Integrations</h2>
@@ -87,7 +87,7 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
                   <Calendar size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
@@ -106,7 +106,7 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
                   <Database size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
@@ -117,7 +117,7 @@ export default function SettingsPage() {
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                 dataSource === 'supabase'
                   ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
-                  : 'bg-orange-50 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light'
+                  : 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
               }`}>
                 {dataSource === 'supabase' ? 'Supabase' : 'Mock Data'}
               </span>
@@ -125,7 +125,7 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
                   <Mail size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
@@ -144,7 +144,7 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
                   <Bell size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
@@ -168,13 +168,13 @@ export default function SettingsPage() {
         </div>
 
         {/* Agent Profile */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold-light" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Agent Profile</h2>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
               <User size={16} className="text-gold dark:text-gold-light" />
             </div>
             <div className="flex-1">
@@ -201,13 +201,13 @@ export default function SettingsPage() {
         </div>
 
         {/* Display */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Display</h2>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
               <Palette size={16} className="text-gold dark:text-gold-light" />
             </div>
             <div>

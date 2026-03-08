@@ -229,8 +229,8 @@ export default function PropertiesPage() {
     <>
       {/* Header */}
       <header
-        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}
+        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1a1a24]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #1a1a24 0%, #0a0a0f 50%, #1a1a24 100%)' }}
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">
@@ -271,7 +271,7 @@ export default function PropertiesPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by address, city, or zip..."
-            className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-orange-200/25 dark:border-gray-800/60 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all"
+            className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-amber-200/25 dark:border-gray-800/60 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all"
           />
           {search && (
             <button
@@ -314,7 +314,7 @@ export default function PropertiesPage() {
                 onClick={() => setFilter(f)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
                   filter === f
-                    ? 'bg-orange-50 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light shadow-sm'
+                    ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
                     : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
                 }`}
               >
@@ -328,7 +328,7 @@ export default function PropertiesPage() {
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
               showFilters || activeFiltersCount > 0
-                ? 'bg-orange-50 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light shadow-sm'
+                ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
                 : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
             }`}
           >
@@ -343,7 +343,7 @@ export default function PropertiesPage() {
 
         {/* Filter panel */}
         {showFilters && (
-          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-orange-200/25 dark:border-gray-800/60 p-4 shadow-sm">
+          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm">
             <div className="flex flex-wrap items-end gap-4">
               {/* Bedrooms */}
               <div className="flex-1 min-w-[140px]">
@@ -411,25 +411,25 @@ export default function PropertiesPage() {
             {activeFiltersCount > 0 && (
               <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
                 {search.trim() && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-orange-50/80 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
                     &ldquo;{search}&rdquo;
                     <button onClick={() => setSearch('')} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
                 )}
                 {bedFilter !== null && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-orange-50/80 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
                     {bedFilter}+ beds
                     <button onClick={() => setBedFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
                 )}
                 {bathFilter !== null && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-orange-50/80 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
                     {bathFilter}+ baths
                     <button onClick={() => setBathFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
                 )}
                 {townFilter && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-orange-50/80 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
                     {townFilter}
                     <button onClick={() => setTownFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
@@ -467,7 +467,7 @@ export default function PropertiesPage() {
             {featured && (
               <div ref={heroRef} className="relative group">
                 <div
-                  className="relative overflow-hidden rounded-2xl border border-orange-200/30 dark:border-gray-700/60 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-lg shadow-gold/5 dark:shadow-black/20 transition-all duration-500"
+                  className="relative overflow-hidden rounded-2xl border border-amber-200/30 dark:border-gray-700/60 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-lg shadow-gold/5 dark:shadow-black/20 transition-all duration-500"
                 >
                   <div className="flex flex-col lg:flex-row">
                     {/* Photo */}
@@ -561,7 +561,7 @@ export default function PropertiesPage() {
 
                         {/* Tags */}
                         <div className="flex flex-wrap gap-2">
-                          <span className="text-xs px-2.5 py-1 rounded-lg bg-orange-50/80 dark:bg-orange-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20 font-medium">
+                          <span className="text-xs px-2.5 py-1 rounded-lg bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20 font-medium">
                             {featured.propertyType}
                           </span>
                           <span className={`text-xs px-2.5 py-1 rounded-lg font-medium ${
@@ -635,7 +635,7 @@ export default function PropertiesPage() {
                     className={`group/card cursor-pointer rounded-xl border overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.01] ${
                       i === activeIndex
                         ? 'border-gold/40 dark:border-gold-light/30 shadow-md shadow-gold/10 ring-1 ring-gold/20'
-                        : 'border-orange-200/25 dark:border-gray-800/60 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md shadow-sm hover:shadow-gold/10'
+                        : 'border-amber-200/25 dark:border-gray-800/60 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md shadow-sm hover:shadow-gold/10'
                     }`}
                     style={{ animationDelay: `${i * 40}ms` }}
                   >
@@ -716,7 +716,7 @@ export default function PropertiesPage() {
                 <div className="flex justify-center mt-6">
                   <button
                     onClick={() => setVisibleCount((c) => c + 9)}
-                    className="px-5 py-2.5 rounded-xl text-sm font-medium text-gold dark:text-gold-light bg-orange-50/80 dark:bg-orange-900/15 border border-gold-light/30 dark:border-gold-muted/20 hover:bg-orange-100/80 dark:hover:bg-orange-900/25 hover:border-gold/40 transition-all duration-300 hover:shadow-md hover:shadow-gold/10"
+                    className="px-5 py-2.5 rounded-xl text-sm font-medium text-gold dark:text-gold-light bg-amber-50/80 dark:bg-amber-900/15 border border-gold-light/30 dark:border-gold-muted/20 hover:bg-amber-100/80 dark:hover:bg-amber-900/25 hover:border-gold/40 transition-all duration-300 hover:shadow-md hover:shadow-gold/10"
                   >
                     Show More
                     <span className="ml-2 text-xs text-gray-400 font-data">
