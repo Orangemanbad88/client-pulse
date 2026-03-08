@@ -66,21 +66,48 @@ function scoreAgainstPrefs(
   listing: ListingForMatch,
   prefs: { budgetMin: number; budgetMax: number; bedrooms: number; bathrooms: number; preferredAreas: string[]; propertyTypes: string[] },
 ): { score: number; reasons: string[] } {
+  // ---- Hard filters: disqualify immediately if these fail ----
+
+  // Must be in a preferred city
+  if (prefs.preferredAreas.length > 0) {
+    const listingCity = normalizeCity(listing.city);
+    if (!prefs.preferredAreas.some((area) => normalizeCity(area) === listingCity)) {
+      return { score: 0, reasons: [] };
+    }
+  }
+
+  // Must match exact bathroom count
+  if (prefs.bathrooms > 0 && listing.bathrooms !== prefs.bathrooms) {
+    return { score: 0, reasons: [] };
+  }
+
+  // Must be within budget range (no under, no over)
+  if (prefs.budgetMax > 0) {
+    if (listing.salePrice < prefs.budgetMin || listing.salePrice > prefs.budgetMax) {
+      return { score: 0, reasons: [] };
+    }
+  }
+
+  // ---- Soft scoring for remaining criteria ----
   let score = 0;
   const reasons: string[] = [];
 
-  // Budget (40 pts)
+  // Budget (40 pts) — already guaranteed within range by hard filter
   if (prefs.budgetMax > 0) {
-    if (listing.salePrice >= prefs.budgetMin && listing.salePrice <= prefs.budgetMax) {
-      score += 40;
-      reasons.push('Within budget');
-    } else if (listing.salePrice < prefs.budgetMin) {
-      score += 30;
-      reasons.push('Under budget');
-    } else if (listing.salePrice <= prefs.budgetMax * 1.1) {
-      score += 20;
-      reasons.push('Slightly over budget');
-    }
+    score += 40;
+    reasons.push('Within budget');
+  }
+
+  // Location (20 pts) — already guaranteed match by hard filter
+  if (prefs.preferredAreas.length > 0) {
+    score += 20;
+    reasons.push('Preferred area');
+  }
+
+  // Bathrooms (10 pts) — already guaranteed exact match by hard filter
+  if (prefs.bathrooms > 0) {
+    score += 10;
+    reasons.push('Exact bathroom match');
   }
 
   // Bedrooms (20 pts)
@@ -94,32 +121,12 @@ function scoreAgainstPrefs(
     }
   }
 
-  // Location (20 pts)
-  if (prefs.preferredAreas.length > 0) {
-    const listingCity = normalizeCity(listing.city);
-    const match = prefs.preferredAreas.some((area) => normalizeCity(area) === listingCity);
-    if (match) {
-      score += 20;
-      reasons.push('Preferred area');
-    }
-  }
-
   // Property type (10 pts)
   if (prefs.propertyTypes.length > 0) {
     const normalized = normalizePropertyType(listing.propertyType);
     if (prefs.propertyTypes.includes(normalized)) {
       score += 10;
       reasons.push('Preferred property type');
-    }
-  }
-
-  // Bathrooms (10 pts)
-  if (prefs.bathrooms > 0) {
-    if (listing.bathrooms >= prefs.bathrooms) {
-      score += 10;
-      reasons.push('Meets bathroom requirement');
-    } else if (listing.bathrooms === prefs.bathrooms - 1) {
-      score += 5;
     }
   }
 
