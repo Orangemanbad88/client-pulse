@@ -260,11 +260,10 @@ export const updateMatchStatus = async (id: string, status: 'sent' | 'dismissed'
   if (error) throw new Error(`updateMatchStatus: ${error.message}`);
 };
 
-// Known client columns — add 'alerts_enabled' after running migration 003
 const CLIENTS_COLUMNS = new Set([
   'first_name', 'last_name', 'email', 'phone', 'preferred_contact',
   'client_type', 'status', 'lifecycle_stage', 'source', 'assigned_agent',
-  'notes', 'last_contact', 'avatar_url',
+  'notes', 'last_contact', 'avatar_url', 'alerts_enabled',
 ]);
 
 export const updateClient = async (id: string, data: Partial<Client>): Promise<Client> => {
