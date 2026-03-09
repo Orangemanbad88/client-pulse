@@ -72,6 +72,54 @@
 - `src/app/analytics/page.tsx` — premium header
 - `src/app/properties/page.tsx` — premium header
 
+## Gmail + Outlook OAuth Email Integration (Completed)
+
+- [x] Database migration `004_email_accounts.sql` — email_accounts table with RLS
+- [x] `EmailAccount` type in `src/types/client.ts`
+- [x] Service layer — 5 new functions (getEmailAccounts, getEmailAccount, upsertEmailAccount, deleteEmailAccount, updateEmailTokens) in mock-service, supabase-service, and index.ts
+- [x] `src/lib/gmail.ts` — Gmail OAuth + send via Gmail API (reuses googleapis package)
+- [x] `src/lib/outlook.ts` — Outlook OAuth + send via Microsoft Graph API (plain fetch, no MSAL)
+- [x] `src/lib/email.ts` — Updated sendEmail to check connected accounts first, fallback to Resend
+- [x] API routes — gmail/connect, gmail/callback, outlook/connect, outlook/callback, email/accounts
+- [x] Settings page — Gmail/Outlook connect/disconnect buttons with status badges
+- [x] Email compose — "Sending as" label shows connected account or Resend fallback
+- [x] Build passes clean — zero errors, zero warnings
+
+### REMINDER: Test Gmail OAuth flow
+- Added redirect URI to Google Console? If not, do that first
+- Then: `bun dev` → `/settings` → Connect Gmail → sign in → verify connected
+- Then: `/email` → Compose → verify "Sending as" label
+
+### Pending — User Action Required (Email OAuth)
+- [ ] Add `gmail.send` + `userinfo.email` scopes in Google Cloud Console OAuth consent screen (required before publishing/verification — not blocking local dev but MUST do before going live)
+- [x] Enable Gmail API in Google Cloud Console
+- [ ] Set `GOOGLE_GMAIL_REDIRECT_URI=http://localhost:3003/api/auth/gmail/callback` in `.env.local`
+- [ ] Add production redirect URI in Google Console: `https://client-pulse-livid.vercel.app/api/auth/gmail/callback`
+- [ ] Set `GOOGLE_GMAIL_REDIRECT_URI=https://client-pulse-livid.vercel.app/api/auth/gmail/callback` in Vercel env vars
+- [ ] Register app in Azure Portal (Microsoft Entra ID) for Outlook OAuth
+- [ ] Set `MICROSOFT_CLIENT_ID`, `MICROSOFT_CLIENT_SECRET`, `MICROSOFT_REDIRECT_URI` in `.env.local`
+- [ ] Test: Settings → Connect Gmail → OAuth flow → verify connected email shows
+- [ ] Test: Settings → Connect Outlook → OAuth flow → verify connected email shows
+- [ ] Test: Compose email → verify "Sending as" shows connected account
+- [ ] Test: Disconnect → verify fallback to Resend
+
+### Files Changed (Email OAuth Integration)
+- `supabase/migrations/004_email_accounts.sql` — NEW
+- `src/types/client.ts` — added EmailAccount interface
+- `src/services/mock-service.ts` — 5 email account functions
+- `src/services/supabase-service.ts` — 5 email account functions
+- `src/services/index.ts` — 5 email account re-exports
+- `src/lib/gmail.ts` — NEW
+- `src/lib/outlook.ts` — NEW
+- `src/lib/email.ts` — MODIFIED (OAuth-first, Resend fallback)
+- `src/app/api/auth/gmail/connect/route.ts` — NEW
+- `src/app/api/auth/gmail/callback/route.ts` — NEW
+- `src/app/api/auth/outlook/connect/route.ts` — NEW
+- `src/app/api/auth/outlook/callback/route.ts` — NEW
+- `src/app/api/email/accounts/route.ts` — NEW
+- `src/app/settings/page.tsx` — MODIFIED (Gmail/Outlook connect/disconnect UI)
+- `src/app/email/page.tsx` — MODIFIED ("Sending as" label)
+
 ### Files Changed (Supabase Foundation)
 - `package.json` — added supabase deps
 - `src/lib/supabase.ts` — NEW

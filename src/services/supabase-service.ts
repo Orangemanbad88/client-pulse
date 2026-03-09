@@ -14,6 +14,7 @@ import type {
   CreateTriggerInput,
   NextAction,
   ClientAlert,
+  EmailAccount,
 } from '@/types/client';
 
 const db = () =>
@@ -512,6 +513,68 @@ export const getAlertsPending = async (): Promise<number> => {
 
   if (error) throw new Error(`getAlertsPending: ${error.message}`);
   return count ?? 0;
+};
+
+// ---- Email Accounts ----
+
+export const getEmailAccounts = async (): Promise<EmailAccount[]> => {
+  const { data, error } = await db()
+    .from('email_accounts')
+    .select('*')
+    .order('is_primary', { ascending: false });
+
+  if (error) throw new Error(`getEmailAccounts: ${error.message}`);
+  return snakeToCamelArray<EmailAccount>(data);
+};
+
+export const getEmailAccount = async (provider: string): Promise<EmailAccount | null> => {
+  const { data, error } = await db()
+    .from('email_accounts')
+    .select('*')
+    .eq('provider', provider)
+    .single();
+
+  if (error) {
+    if (error.code === 'PGRST116') return null;
+    throw new Error(`getEmailAccount: ${error.message}`);
+  }
+  return snakeToCamel<EmailAccount>(data);
+};
+
+export const upsertEmailAccount = async (
+  account: Omit<EmailAccount, 'id' | 'createdAt'>,
+): Promise<EmailAccount> => {
+  const { camelToSnake } = await import('@/lib/case-utils');
+  const snakeData = camelToSnake(account as unknown as Record<string, unknown>);
+
+  const { data, error } = await db()
+    .from('email_accounts')
+    .upsert(snakeData, { onConflict: 'provider' })
+    .select()
+    .single();
+
+  if (error) throw new Error(`upsertEmailAccount: ${error.message}`);
+  return snakeToCamel<EmailAccount>(data);
+};
+
+export const deleteEmailAccount = async (id: string): Promise<void> => {
+  const { error } = await db()
+    .from('email_accounts')
+    .delete()
+    .eq('id', id);
+  if (error) throw new Error(`deleteEmailAccount: ${error.message}`);
+};
+
+export const updateEmailTokens = async (
+  id: string,
+  accessToken: string,
+  tokenExpiresAt: string,
+): Promise<void> => {
+  const { error } = await db()
+    .from('email_accounts')
+    .update({ access_token: accessToken, token_expires_at: tokenExpiresAt })
+    .eq('id', id);
+  if (error) throw new Error(`updateEmailTokens: ${error.message}`);
 };
 
 // ---- App Settings ----

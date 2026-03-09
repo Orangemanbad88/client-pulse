@@ -13,10 +13,12 @@ import type {
   CreateTriggerInput,
   NextAction,
   ClientAlert,
+  EmailAccount,
 } from '@/types/client';
 
-// In-memory alert store
+// In-memory stores
 const clientAlerts: ClientAlert[] = [];
+const emailAccounts: EmailAccount[] = [];
 const appSettings: Record<string, string> = { autoAlertsEnabled: 'true' };
 
 // Simulated async to match future Supabase service interface
@@ -327,6 +329,52 @@ export const getAlertsSentToday = async (): Promise<number> => {
 
 export const getAlertsPending = async (): Promise<number> => {
   return clientAlerts.filter((a) => a.status === 'pending').length;
+};
+
+// ---- Email Accounts ----
+
+export const getEmailAccounts = async (): Promise<EmailAccount[]> => {
+  return emailAccounts;
+};
+
+export const getEmailAccount = async (provider: string): Promise<EmailAccount | null> => {
+  return emailAccounts.find((a) => a.provider === provider) || null;
+};
+
+export const upsertEmailAccount = async (
+  account: Omit<EmailAccount, 'id' | 'createdAt'>,
+): Promise<EmailAccount> => {
+  const idx = emailAccounts.findIndex((a) => a.provider === account.provider);
+  const now = new Date().toISOString();
+  if (idx !== -1) {
+    const updated = { ...emailAccounts[idx], ...account };
+    emailAccounts[idx] = updated;
+    return updated;
+  }
+  const created: EmailAccount = {
+    ...account,
+    id: `ea_${Date.now()}`,
+    createdAt: now,
+  };
+  emailAccounts.push(created);
+  return created;
+};
+
+export const deleteEmailAccount = async (id: string): Promise<void> => {
+  const idx = emailAccounts.findIndex((a) => a.id === id);
+  if (idx !== -1) emailAccounts.splice(idx, 1);
+};
+
+export const updateEmailTokens = async (
+  id: string,
+  accessToken: string,
+  tokenExpiresAt: string,
+): Promise<void> => {
+  const account = emailAccounts.find((a) => a.id === id);
+  if (account) {
+    account.accessToken = accessToken;
+    account.tokenExpiresAt = tokenExpiresAt;
+  }
 };
 
 // ---- App Settings ----

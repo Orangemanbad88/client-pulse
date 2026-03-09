@@ -175,3 +175,30 @@ export const setAppSetting = async (...args: Parameters<Awaited<ReturnType<typeo
   const s = await svc();
   return s.setAppSetting(...args);
 };
+
+// ---- Email Accounts ----
+
+export const getEmailAccounts = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['getEmailAccounts']>) => {
+  const s = await svc();
+  return s.getEmailAccounts(...args);
+};
+
+export const getEmailAccount = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['getEmailAccount']>) => {
+  const s = await svc();
+  return s.getEmailAccount(...args);
+};
+
+export const upsertEmailAccount = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['upsertEmailAccount']>) => {
+  const s = await svc();
+  return s.upsertEmailAccount(...args);
+};
+
+export const deleteEmailAccount = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['deleteEmailAccount']>) => {
+  const s = await svc();
+  return s.deleteEmailAccount(...args);
+};
+
+export const updateEmailTokens = async (...args: Parameters<Awaited<ReturnType<typeof svc>>['updateEmailTokens']>) => {
+  const s = await svc();
+  return s.updateEmailTokens(...args);
+};

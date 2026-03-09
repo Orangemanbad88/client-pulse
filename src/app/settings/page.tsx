@@ -1,7 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Settings, Plug, User, Palette, Calendar, Database, Mail, Check, Save, Bell } from 'lucide-react';
+import { Settings, User, Palette, Calendar, Database, Mail, Check, Save, Bell, LogOut } from 'lucide-react';
+
+interface ConnectedAccount {
+  id: string;
+  provider: 'gmail' | 'outlook';
+  email: string;
+  isPrimary: boolean;
+}
 
 export default function SettingsPage() {
   const [agentName, setAgentName] = useState('');
@@ -10,9 +17,23 @@ export default function SettingsPage() {
   const [mounted, setMounted] = useState(false);
   const [autoAlerts, setAutoAlerts] = useState(true);
   const [alertsToggling, setAlertsToggling] = useState(false);
+  const [emailAccounts, setEmailAccounts] = useState<ConnectedAccount[]>([]);
+  const [connectingProvider, setConnectingProvider] = useState<string | null>(null);
 
   const dataSource = process.env.NEXT_PUBLIC_DATA_SOURCE || 'mock';
   const resendConfigured = !!process.env.NEXT_PUBLIC_RESEND_CONFIGURED;
+
+  const fetchEmailAccounts = async () => {
+    try {
+      const res = await fetch('/api/email/accounts');
+      const data = await res.json();
+      if (data.success) {
+        setEmailAccounts(data.accounts);
+      }
+    } catch {
+      // Non-critical
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -30,6 +51,8 @@ export default function SettingsPage() {
         }
       })
       .catch(() => {});
+
+    fetchEmailAccounts();
   }, []);
 
   const handleToggleAlerts = async () => {
@@ -58,13 +81,48 @@ export default function SettingsPage() {
     setTimeout(() => setSaved(false), 2000);
   };
 
+  const handleConnect = async (provider: 'gmail' | 'outlook') => {
+    setConnectingProvider(provider);
+    try {
+      const endpoint = provider === 'gmail'
+        ? '/api/auth/gmail/connect'
+        : '/api/auth/outlook/connect';
+      const res = await fetch(endpoint);
+      const data = await res.json();
+      if (data.success && data.url) {
+        window.location.href = data.url;
+      }
+    } catch {
+      setConnectingProvider(null);
+    }
+  };
+
+  const handleDisconnect = async (id: string) => {
+    try {
+      const res = await fetch('/api/email/accounts', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setEmailAccounts((prev) => prev.filter((a) => a.id !== id));
+      }
+    } catch {
+      // Non-critical
+    }
+  };
+
+  const gmailAccount = emailAccounts.find((a) => a.provider === 'gmail');
+  const outlookAccount = emailAccounts.find((a) => a.provider === 'outlook');
+
   if (!mounted) return null;
 
   return (
     <>
       <header
-        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}
+        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#132a4a]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)' }}
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">
@@ -130,7 +188,7 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Email (Resend)</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">Transactional email delivery</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">Fallback transactional email delivery</p>
                 </div>
               </div>
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
@@ -140,6 +198,80 @@ export default function SettingsPage() {
               }`}>
                 {resendConfigured ? 'Configured' : 'Not configured'}
               </span>
+            </div>
+
+            {/* Gmail Account */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                  <Mail size={16} className="text-gold dark:text-gold-light" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Gmail</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                    {gmailAccount ? gmailAccount.email : 'Send emails from your Gmail account'}
+                  </p>
+                </div>
+              </div>
+              {gmailAccount ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400">
+                    Connected
+                  </span>
+                  <button
+                    onClick={() => handleDisconnect(gmailAccount.id)}
+                    className="p-1.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                    title="Disconnect Gmail"
+                  >
+                    <LogOut size={14} className="text-gray-400 hover:text-red-500" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => handleConnect('gmail')}
+                  disabled={connectingProvider === 'gmail'}
+                  className="text-xs font-medium px-3 py-1.5 rounded-lg bg-gold hover:bg-gold-muted text-white transition-colors shadow-sm shadow-gold/20 disabled:opacity-50"
+                >
+                  {connectingProvider === 'gmail' ? 'Connecting...' : 'Connect'}
+                </button>
+              )}
+            </div>
+
+            {/* Outlook Account */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                  <Mail size={16} className="text-gold dark:text-gold-light" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Outlook</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                    {outlookAccount ? outlookAccount.email : 'Send emails from your Outlook account'}
+                  </p>
+                </div>
+              </div>
+              {outlookAccount ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400">
+                    Connected
+                  </span>
+                  <button
+                    onClick={() => handleDisconnect(outlookAccount.id)}
+                    className="p-1.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                    title="Disconnect Outlook"
+                  >
+                    <LogOut size={14} className="text-gray-400 hover:text-red-500" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => handleConnect('outlook')}
+                  disabled={connectingProvider === 'outlook'}
+                  className="text-xs font-medium px-3 py-1.5 rounded-lg bg-gold hover:bg-gold-muted text-white transition-colors shadow-sm shadow-gold/20 disabled:opacity-50"
+                >
+                  {connectingProvider === 'outlook' ? 'Connecting...' : 'Connect'}
+                </button>
+              )}
             </div>
 
             <div className="flex items-center justify-between">

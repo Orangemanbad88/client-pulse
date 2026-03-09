@@ -101,6 +101,19 @@ export default function EmailPage() {
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState('');
   const [sendSuccess, setSendSuccess] = useState(false);
+  const [sendingAs, setSendingAs] = useState<{ provider: string; email: string } | null>(null);
+
+  useEffect(() => {
+    fetch('/api/email/accounts')
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success && d.accounts?.length > 0) {
+          const primary = d.accounts.find((a: { isPrimary: boolean }) => a.isPrimary) || d.accounts[0];
+          setSendingAs({ provider: primary.provider, email: primary.email });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     import('@/services').then((svc) =>
@@ -240,8 +253,8 @@ export default function EmailPage() {
   return (
     <>
       <header
-        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#1E293B]/50 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}
+        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#132a4a]/50 flex items-center justify-between"
+        style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)' }}
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">
@@ -541,7 +554,9 @@ export default function EmailPage() {
                 {sendError ? (
                   <p className="text-xs text-red-500 dark:text-red-400">{sendError}</p>
                 ) : (
-                  <div />
+                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                    Sending as: {sendingAs ? `${sendingAs.email} (${sendingAs.provider})` : 'Resend (default)'}
+                  </p>
                 )}
                 <div className="flex items-center gap-2">
                   <button

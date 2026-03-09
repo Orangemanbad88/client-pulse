@@ -108,7 +108,7 @@ export default function DashboardPage() {
   return (
     <>
       {/* Header */}
-      <header className="sticky top-0 z-10 hidden lg:block border-b border-[#1E293B]/50" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
+      <header className="sticky top-0 z-10 hidden lg:block border-b border-[#132a4a]/50" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)' }}>
         <div className="px-4 lg:px-8 py-3 lg:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-4 min-w-0">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15 shrink-0">
@@ -170,7 +170,7 @@ export default function DashboardPage() {
           <div className={`lg:col-span-5 flex flex-col gap-4 lg:gap-6 ${mounted ? 'animate-fade-slide-up' : ''}`} style={{ animationDelay: '400ms', animationFillMode: 'backwards' }}>
             {/* Client Overview Donut */}
             <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
-              <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, #334155 0%, #1E293B 50%, #334155 100%)' }}>
+              <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)' }}>
                 <div className="w-1.5 h-5 rounded-full bg-gold-light" />
                 <h2 className="text-sm font-bold text-white tracking-tight">Client Overview</h2>
               </div>

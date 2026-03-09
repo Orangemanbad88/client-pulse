@@ -318,6 +318,19 @@ export interface ClientAlert {
   createdAt: string;
 }
 
+// ---- Email Account (OAuth) ----
+
+export interface EmailAccount {
+  id: string;
+  provider: 'gmail' | 'outlook';
+  email: string;
+  accessToken: string;
+  refreshToken: string;
+  tokenExpiresAt: string;
+  isPrimary: boolean;
+  createdAt: string;
+}
+
 // ---- Dashboard Stats ----
 
 export interface DashboardStats {
