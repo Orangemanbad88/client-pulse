@@ -43,7 +43,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
 
   return (
     <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
-      <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)' }}>
+      <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #1a3456 50%, #1e3a5f 100%)' }}>
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-5 rounded-full bg-gold-light" />
           <h2 className="text-sm font-bold text-white tracking-tight">Property Matches</h2>

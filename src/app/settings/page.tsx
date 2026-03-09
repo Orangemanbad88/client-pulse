@@ -122,7 +122,7 @@ export default function SettingsPage() {
     <>
       <header
         className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#132a4a]/50 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #1a3456 50%, #1e3a5f 100%)' }}
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15">

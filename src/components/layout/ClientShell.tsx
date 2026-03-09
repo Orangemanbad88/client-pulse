@@ -175,7 +175,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
           {/* Mobile header bar */}
-          <div className="sticky top-0 z-10 backdrop-blur-xl border-b border-[#132a4a] lg:hidden" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)' }}>
+          <div className="sticky top-0 z-10 backdrop-blur-xl border-b border-[#132a4a] lg:hidden" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #1a3456 50%, #1e3a5f 100%)' }}>
             <div className="px-4 py-3 flex items-center gap-3">
               <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-white/10 transition-colors">
                 <Menu size={20} className="text-slate-400" />
