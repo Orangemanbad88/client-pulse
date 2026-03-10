@@ -150,13 +150,13 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Google Calendar</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">Sync showings and appointments</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-400">Sync showings and appointments</p>
                 </div>
               </div>
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                 calendarConnected
                   ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-400'
               }`}>
                 {calendarConnected ? 'Connected' : 'Not connected'}
               </span>
@@ -169,7 +169,7 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Data Source</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">Current backend connection</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-400">Current backend connection</p>
                 </div>
               </div>
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
@@ -188,13 +188,13 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Email (Resend)</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">Fallback transactional email delivery</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-400">Fallback transactional email delivery</p>
                 </div>
               </div>
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                 resendConfigured
                   ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-400'
               }`}>
                 {resendConfigured ? 'Configured' : 'Not configured'}
               </span>
@@ -208,7 +208,7 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Gmail</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                  <p className="text-xs text-gray-400 dark:text-gray-400">
                     {gmailAccount ? gmailAccount.email : 'Send emails from your Gmail account'}
                   </p>
                 </div>
@@ -245,7 +245,7 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Outlook</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                  <p className="text-xs text-gray-400 dark:text-gray-400">
                     {outlookAccount ? outlookAccount.email : 'Send emails from your Outlook account'}
                   </p>
                 </div>
@@ -281,7 +281,7 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Auto-Alerts</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">Email clients when new matches are found</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-400">Email clients when new matches are found</p>
                 </div>
               </div>
               <button
@@ -290,7 +290,7 @@ export default function SettingsPage() {
                 className={`text-xs font-medium px-2.5 py-1 rounded-full cursor-pointer transition-colors disabled:opacity-50 ${
                   autoAlerts
                     ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }`}
               >
                 {alertsToggling ? '...' : autoAlerts ? 'Enabled' : 'Disabled'}
@@ -327,7 +327,7 @@ export default function SettingsPage() {
                   {saved ? 'Saved' : 'Save'}
                 </button>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1.5">Used in email signatures and templates</p>
+              <p className="text-xs text-gray-400 dark:text-gray-400 mt-1.5">Used in email signatures and templates</p>
             </div>
           </div>
         </div>
@@ -344,7 +344,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Theme</p>
-              <p className="text-xs text-gray-400 dark:text-gray-500">
+              <p className="text-xs text-gray-400 dark:text-gray-400">
                 Dark navy/charcoal + gold/amber accent on warm cream. Toggle dark mode from the sidebar.
               </p>
             </div>

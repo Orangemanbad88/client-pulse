@@ -347,7 +347,7 @@ export default function PropertiesPage() {
             <div className="flex flex-wrap items-end gap-4">
               {/* Bedrooms */}
               <div className="flex-1 min-w-[140px]">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5 block">
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400 mb-1.5 block">
                   <Bed size={11} className="inline mr-1" />Bedrooms
                 </label>
                 <select
@@ -364,7 +364,7 @@ export default function PropertiesPage() {
 
               {/* Bathrooms */}
               <div className="flex-1 min-w-[140px]">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5 block">
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400 mb-1.5 block">
                   <Bath size={11} className="inline mr-1" />Bathrooms
                 </label>
                 <select
@@ -381,7 +381,7 @@ export default function PropertiesPage() {
 
               {/* Town */}
               <div className="flex-1 min-w-[180px]">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5 block">
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400 mb-1.5 block">
                   <MapPin size={11} className="inline mr-1" />Town
                 </label>
                 <select
@@ -434,7 +434,7 @@ export default function PropertiesPage() {
                     <button onClick={() => setTownFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
                 )}
-                <span className="text-xs text-gray-400 dark:text-gray-500 self-center font-data">
+                <span className="text-xs text-gray-400 dark:text-gray-400 self-center font-data">
                   {filtered.length} result{filtered.length !== 1 ? 's' : ''}
                 </span>
               </div>
@@ -446,7 +446,7 @@ export default function PropertiesPage() {
           <div className="text-center py-16">
             <Building2 size={40} className="text-gray-300 dark:text-gray-700 mx-auto mb-4" />
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{error}</p>
-            <p className="text-xs text-gray-400 dark:text-gray-500">
+            <p className="text-xs text-gray-400 dark:text-gray-400">
               Could not connect to McCann Realtors listing feed
             </p>
           </div>

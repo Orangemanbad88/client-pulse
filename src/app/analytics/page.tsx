@@ -9,7 +9,7 @@ import { useDark } from '@/hooks/useDark';
 const StatCard = ({ label, value, change, positive, icon: Icon }: { label: string; value: string; change: string; positive: boolean; icon: typeof Users }) => (
   <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-5 shadow-sm">
     <div className="flex items-center justify-between mb-3">
-      <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{label}</span>
+      <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">{label}</span>
       <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
         <Icon size={16} className="text-gold dark:text-gold-light" />
       </div>
@@ -28,8 +28,8 @@ const StatCard = ({ label, value, change, positive, icon: Icon }: { label: strin
 
 const BarSegment = ({ label, value, max, color }: { label: string; value: number; max: number; color: string }) => (
   <div className="flex items-center gap-3">
-    <span className="text-xs text-gray-500 dark:text-gray-400 w-28 shrink-0 truncate">{label}</span>
-    <div className="flex-1 h-6 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+    <span className="text-xs text-gray-500 dark:text-gray-300 w-28 shrink-0 truncate">{label}</span>
+    <div className="flex-1 h-6 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700/50">
       <div
         className="h-full rounded-full transition-all duration-700"
         style={{ width: `${Math.max((value / max) * 100, 8)}%`, backgroundColor: color }}
@@ -76,7 +76,7 @@ export default function AnalyticsPage() {
   if (error || !stats) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center">
-        <BarChart3 size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <BarChart3 size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
         <p className="text-sm text-gray-400 mb-1">Unable to load analytics</p>
         <p className="text-xs text-gray-400/60">Make sure the database schema has been set up</p>
       </div>
@@ -184,7 +184,7 @@ export default function AnalyticsPage() {
               ))}
             </div>
           ) : (
-            <p className="text-xs text-gray-400 dark:text-gray-500">No matches generated yet</p>
+            <p className="text-xs text-gray-400 dark:text-gray-400">No matches generated yet</p>
           )}
         </div>
 
@@ -201,7 +201,7 @@ export default function AnalyticsPage() {
               ))}
             </div>
           ) : (
-            <p className="text-xs text-gray-400 dark:text-gray-500">No triggers created yet</p>
+            <p className="text-xs text-gray-400 dark:text-gray-400">No triggers created yet</p>
           )}
         </div>
       </div>

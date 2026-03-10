@@ -74,9 +74,9 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
                     <Badge variant={variant}>{trigger.urgency}</Badge>
                     <span className="text-sm font-semibold text-gold-muted dark:text-gold-light">{trigger.clientName}</span>
                     <div className="ml-auto flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><Phone size={13} className="text-gray-400" /></button>
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><Mail size={13} className="text-gray-400" /></button>
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-gray-800 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"><Phone size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"><Mail size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
                     </div>
                   </div>
                   <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-1">{trigger.title}</p>

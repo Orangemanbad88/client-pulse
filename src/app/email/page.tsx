@@ -243,7 +243,7 @@ export default function EmailPage() {
   if (loadError) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center">
-        <Mail size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <Mail size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
         <p className="text-sm text-gray-400 mb-1">Unable to load email</p>
         <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
       </div>
@@ -285,7 +285,7 @@ export default function EmailPage() {
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   folder === f.id
                     ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
-                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50'
                 }`}
               >
                 <f.icon size={16} strokeWidth={folder === f.id ? 2 : 1.5} />
@@ -300,8 +300,8 @@ export default function EmailPage() {
           {/* Quick Email */}
           <div className="mt-6">
             <div className="flex items-center gap-2 mb-2 px-1">
-              <Users size={13} className="text-gray-400 dark:text-gray-500" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Quick Email</span>
+              <Users size={13} className="text-gray-400 dark:text-gray-400" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">Quick Email</span>
             </div>
             <div className="space-y-0.5">
               {clients.slice(0, 8).map((client) => (
@@ -375,12 +375,12 @@ export default function EmailPage() {
                     <Link href={`/clients/${selectedEmail.clientId}`} className="text-sm font-semibold text-gray-800 dark:text-gray-100 hover:text-gold dark:hover:text-gold-light">
                       {selectedEmail.clientName}
                     </Link>
-                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                    <p className="text-xs text-gray-400 dark:text-gray-400">
                       {new Date(selectedEmail.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}
                     </p>
                   </div>
                   {selectedEmail.hasAttachment && (
-                    <span className="ml-auto flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
+                    <span className="ml-auto flex items-center gap-1 text-xs text-gray-400 dark:text-gray-400">
                       <Paperclip size={12} /> Attachment
                     </span>
                   )}
@@ -431,13 +431,13 @@ export default function EmailPage() {
                               >
                                 <Star size={13} className={email.starred ? 'text-amber-400 fill-amber-400' : 'text-gray-300 dark:text-gray-700'} />
                               </button>
-                              <span className="text-xs text-gray-400 dark:text-gray-500 font-data">{timeStr}</span>
+                              <span className="text-xs text-gray-400 dark:text-gray-400 font-data">{timeStr}</span>
                             </div>
                           </div>
                           <p className={`text-sm truncate mb-0.5 ${!email.read ? 'font-semibold text-gray-800 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400'}`}>
                             {email.subject}
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-500 truncate">{email.preview}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{email.preview}</p>
                         </div>
                       </div>
                     </button>
@@ -445,7 +445,7 @@ export default function EmailPage() {
                 })}
                 {filtered.length === 0 && (
                   <div className="px-5 py-12 text-center">
-                    <Mail size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+                    <Mail size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
                     <p className="text-sm text-gray-400 mb-3">No emails yet</p>
                     <button
                       onClick={() => openCompose()}
@@ -488,7 +488,7 @@ export default function EmailPage() {
               <div className="px-5 py-3 border-b border-amber-100/30 dark:border-gray-800/60">
                 <div className="flex items-center gap-2 mb-2">
                   <FileText size={12} className="text-gray-400" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Templates</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">Templates</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {EMAIL_TEMPLATES.map((tpl) => (
@@ -554,7 +554,7 @@ export default function EmailPage() {
                 {sendError ? (
                   <p className="text-xs text-red-500 dark:text-red-400">{sendError}</p>
                 ) : (
-                  <p className="text-xs text-gray-400 dark:text-gray-500">
+                  <p className="text-xs text-gray-400 dark:text-gray-400">
                     Sending as: {sendingAs ? `${sendingAs.email} (${sendingAs.provider})` : 'Resend (default)'}
                   </p>
                 )}

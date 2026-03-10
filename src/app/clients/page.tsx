@@ -104,7 +104,7 @@ function ClientsContent() {
   if (error) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center">
-        <Users size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <Users size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
         <p className="text-sm text-gray-400 mb-1">Unable to load clients</p>
         <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
       </div>

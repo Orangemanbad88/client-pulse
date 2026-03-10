@@ -222,7 +222,7 @@ function CalendarContent() {
   if (error) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center">
-        <CalendarDays size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <CalendarDays size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
         <p className="text-sm text-gray-400 mb-1">Unable to load calendar</p>
         <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
       </div>
@@ -297,13 +297,13 @@ function CalendarContent() {
               {/* Month navigation */}
               <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <button onClick={prevMonth} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <button onClick={prevMonth} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
                     <ChevronLeft size={16} className="text-gray-500 dark:text-gray-400" />
                   </button>
                   <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight min-w-[160px] text-center">
                     {MONTHS[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                   </h2>
-                  <button onClick={nextMonth} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <button onClick={nextMonth} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
                     <ChevronRight size={16} className="text-gray-500 dark:text-gray-400" />
                   </button>
                 </div>
@@ -315,7 +315,7 @@ function CalendarContent() {
               {/* Day headers */}
               <div className="grid grid-cols-7 border-b border-amber-100/30 dark:border-gray-800/60">
                 {DAYS.map((d) => (
-                  <div key={d} className="py-2 text-center text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                  <div key={d} className="py-2 text-center text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider">
                     {d}
                   </div>
                 ))}
@@ -427,7 +427,7 @@ function CalendarContent() {
                                 ) : ev.clientName ? (
                                   <span className="text-xs text-gray-500 dark:text-gray-400">{ev.clientName}</span>
                                 ) : null}
-                                <span className="text-xs text-gray-400 dark:text-gray-500 font-data">
+                                <span className="text-xs text-gray-400 dark:text-gray-400 font-data">
                                   {date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
                                 </span>
                                 {ev.urgency && (
@@ -515,7 +515,7 @@ function CalendarContent() {
                 <div className="w-1.5 h-5 rounded-full bg-gold" />
                 <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Add Event</h2>
               </div>
-              <button onClick={() => setShowAddModal(false)} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <button onClick={() => setShowAddModal(false)} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
                 <X size={16} className="text-gray-400" />
               </button>
             </div>

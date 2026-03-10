@@ -98,7 +98,7 @@ export default function DashboardPage() {
   if (error && !stats) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center">
-        <TrendingUp size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <TrendingUp size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
         <p className="text-sm text-gray-400 mb-1">Unable to load dashboard</p>
         <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
       </div>
@@ -139,9 +139,9 @@ export default function DashboardPage() {
         {/* Metric Cards */}
         <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-4 lg:mb-6 ${mounted ? 'stagger-children' : ''}`}>
           {metricCards.map((card) => (
-            <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 border-t-2 border-t-transparent hover:border-t-[#D4A84B]/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+            <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-700/50 border-t-2 border-t-transparent hover:border-t-[#D4A84B]/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:-translate-y-0.5 transition-all duration-200 cursor-default">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{card.label}</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">{card.label}</span>
                 <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
                   <card.icon size={14} className="text-gold dark:text-gold-light" />
                 </div>
@@ -151,7 +151,7 @@ export default function DashboardPage() {
                   <span className="text-2xl lg:text-3xl font-bold text-gold-muted dark:text-gold-light">
                     <AnimatedNumber value={card.value} />
                   </span>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{card.change}</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-400 mt-1">{card.change}</p>
                 </div>
                 <SparkLine data={card.sparkData} color={dark ? "#D4A84B" : "#B8860B"} />
               </div>

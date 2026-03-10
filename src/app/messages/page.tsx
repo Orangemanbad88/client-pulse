@@ -62,7 +62,7 @@ export default function MessagesPage() {
   if (error) return (
     <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center">
-        <MessageSquare size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+        <MessageSquare size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
         <p className="text-sm text-gray-400 mb-1">Unable to load messages</p>
         <p className="text-xs text-gray-400/60">Check your connection and try refreshing</p>
       </div>
@@ -102,7 +102,7 @@ export default function MessagesPage() {
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               filter === f
                 ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
-                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50'
             }`}
           >
             {f !== 'all' && typeIcon(f)}
@@ -142,7 +142,7 @@ export default function MessagesPage() {
                         {typeIcon(msg.type)}
                         {msg.type}
                       </span>
-                      <span className="ml-auto flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
+                      <span className="ml-auto flex items-center gap-1 text-xs text-gray-400 dark:text-gray-400">
                         <Clock size={11} /> {timeAgo}
                       </span>
                     </div>
@@ -155,7 +155,7 @@ export default function MessagesPage() {
           })}
           {filtered.length === 0 && (
             <div className="px-5 py-12 text-center">
-              <MessageSquare size={32} className="text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+              <MessageSquare size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
               <p className="text-sm text-gray-400">No {filter} messages</p>
             </div>
           )}
