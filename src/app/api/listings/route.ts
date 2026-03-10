@@ -63,6 +63,15 @@ interface MLSListing {
   similarityScore: number;
 }
 
+/** Clean up city names from source data — collapse spaces, fix known variants */
+function normalizeCityName(raw: string): string {
+  const cleaned = raw.replace(/\s+/g, ' ').trim();
+  // Fix known variants: "Sea Isle" → "Sea Isle City", "Sea Isle city" → "Sea Isle City"
+  if (/^sea isle$/i.test(cleaned)) return 'Sea Isle City';
+  if (/^sea isle city$/i.test(cleaned)) return 'Sea Isle City';
+  return cleaned;
+}
+
 function normalizePropertyType(raw: string): string {
   const lower = raw.toLowerCase();
   if (lower.includes('condo')) return 'Condo';
@@ -106,7 +115,7 @@ async function fetchRentals() {
       return {
         id: `rental-${p.PropertyID}`,
         address,
-        city: d.City || 'Sea Isle City',
+        city: normalizeCityName(d.City || 'Sea Isle City'),
         state: d.State || 'NJ',
         zip: d.Zip || '',
         bedrooms: parseInt(d.BedRooms) || 0,

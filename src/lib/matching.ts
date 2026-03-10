@@ -30,7 +30,15 @@ export interface MatchResult {
   photoUrl: string;
 }
 
-const normalizeCity = (s: string) => s.toLowerCase().trim();
+/** Normalize city for comparison: lowercase, collapse whitespace, trim */
+const normalizeCity = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim();
+
+/** Fuzzy city match — handles "Sea Isle" matching "Sea Isle City", etc. */
+const citiesMatch = (listingCity: string, prefCity: string): boolean => {
+  const a = normalizeCity(listingCity);
+  const b = normalizeCity(prefCity);
+  return a === b || a.startsWith(b) || b.startsWith(a);
+};
 
 /** Parse selected week labels (e.g. "Jun 7 – Jun 13") into normalized YYYY-MM-DD start dates */
 function parseSelectedWeekDates(leaseTermPref: string): string[] {
@@ -98,10 +106,9 @@ function scoreAgainstPrefs(
 ): { score: number; reasons: string[] } {
   // ========== HARD FILTERS ==========
 
-  // 1. City — must be in a preferred area
+  // 1. City — must be in a preferred area (fuzzy: handles "Sea Isle" vs "Sea Isle City")
   if (prefs.preferredAreas.length > 0) {
-    const listingCity = normalizeCity(listing.city);
-    if (!prefs.preferredAreas.some((area) => normalizeCity(area) === listingCity)) {
+    if (!prefs.preferredAreas.some((area) => citiesMatch(listing.city, area))) {
       return { score: 0, reasons: [] };
     }
   }
