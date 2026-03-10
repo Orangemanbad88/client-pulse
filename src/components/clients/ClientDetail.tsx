@@ -379,12 +379,12 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
               };
               setPrefs(newPrefs);
 
-              // Check if enough fields to run matching (city + beds + baths)
+              // Auto-run matching if any meaningful preference is set (budget or area)
               const rp = newPrefs.rental;
               const bp = newPrefs.buyer;
               const canMatch =
-                (rp && rp.preferredAreas?.length > 0 && rp.bedrooms > 0 && rp.bathrooms > 0) ||
-                (bp && bp.preferredAreas?.length > 0 && bp.bedrooms > 0 && bp.bathrooms > 0);
+                (rp && (rp.preferredAreas?.length > 0 || rp.budgetMax > 0)) ||
+                (bp && (bp.preferredAreas?.length > 0 || bp.budgetMax > 0));
 
               if (canMatch) {
                 // Run matching directly from client

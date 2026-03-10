@@ -247,9 +247,11 @@ export function matchListings(
       });
     }
 
-    // Minimum 50 to qualify — with hard filters in place, anything that
-    // survives and scores 50+ is a genuinely relevant match
-    if (best.score >= 50) {
+    // Qualify if listing scored any points — hard filters already reject
+    // bad matches, and we take top 10 sorted by score, so low-scoring
+    // survivors just rank lower. This allows partial preferences
+    // (e.g. just budget + city) to still produce results.
+    if (best.score > 0) {
       results.push({
         listingId: listing.id,
         address: listing.address,
