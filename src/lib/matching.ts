@@ -80,11 +80,11 @@ interface MatchPrefs {
  *   1. City must be in preferredAreas (if any are set)
  *   2. Bathrooms must match exactly (if pref set)
  *   3. Bedrooms must be exact or +1 (never fewer than requested)
- *   4. Price must be within budgetMin–budgetMax (if budget set)
+ *   4. Price must be within ±$200 of budgetMin–budgetMax (if budget set)
  *   5. SqFt must be >= sqftMin (if pref set and listing has sqft data)
  *
  * Soft scoring (100 pts, ranks survivors):
- *   - Budget position   30 pts  (center of range = 30, edges = 20)
+ *   - Budget position   30 pts  (inside range = 30, ±$200 grace = 5-15)
  *   - Bedrooms          25 pts  (exact = 25, +1 = 12)
  *   - Bathrooms         15 pts  (exact match guaranteed by hard filter)
  *   - City              15 pts  (guaranteed by hard filter)
@@ -117,9 +117,9 @@ function scoreAgainstPrefs(
     }
   }
 
-  // 4. Budget — must be within min-max range
+  // 4. Budget — must be within ±$200 of the stated budget range
   if (prefs.budgetMax > 0) {
-    if (listing.salePrice < prefs.budgetMin || listing.salePrice > prefs.budgetMax) {
+    if (listing.salePrice < prefs.budgetMin - 200 || listing.salePrice > prefs.budgetMax + 200) {
       return { score: 0, reasons: [] };
     }
   }
@@ -133,19 +133,22 @@ function scoreAgainstPrefs(
   let score = 0;
   const reasons: string[] = [];
 
-  // Budget position (30 pts)
+  // Budget position (30 pts) — strict: full points inside range, reduced in ±$200 grace zone
   if (prefs.budgetMax > 0) {
-    const range = prefs.budgetMax - prefs.budgetMin;
-    if (range > 0) {
-      const mid = prefs.budgetMin + range / 2;
-      const distFromMid = Math.abs(listing.salePrice - mid) / (range / 2);
-      // 1.0 = at edge, 0.0 = at center
-      const budgetScore = Math.round(30 - distFromMid * 10);
-      score += Math.max(budgetScore, 20);
-    } else {
+    const price = listing.salePrice;
+    if (price >= prefs.budgetMin && price <= prefs.budgetMax) {
+      // Inside exact budget range — full 30 pts
       score += 30;
+      reasons.push('Within budget');
+    } else {
+      // In the ±$200 grace zone — scale down sharply (15→5 pts based on distance)
+      const overshoot = price < prefs.budgetMin
+        ? prefs.budgetMin - price
+        : price - prefs.budgetMax;
+      const penalty = Math.round((overshoot / 200) * 10);
+      score += Math.max(15 - penalty, 5);
+      reasons.push('Near budget');
     }
-    reasons.push('Within budget');
   }
 
   // Bedrooms (25 pts)
