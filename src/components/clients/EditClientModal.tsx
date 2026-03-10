@@ -315,7 +315,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
                 </div>
                 <div>
                   <Lbl>Cities</Lbl>
-                  <div className="flex flex-wrap gap-1.5 mt-1.5 max-h-[140px] overflow-y-auto p-1">
+                  <div className="flex flex-wrap gap-1.5 mt-1.5 max-h-[220px] overflow-y-auto scrollbar-visible p-1">
                     {CITIES.map((city) => (
                       <button key={city} onClick={() => toggleCity(city)}
                         className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',
@@ -382,7 +382,7 @@ export const EditClientModal = ({ client, preferences, onSave, onClose }: Props)
                 </div>
                 <div>
                   <Lbl>Cities</Lbl>
-                  <div className="flex flex-wrap gap-1.5 mt-1.5 max-h-[140px] overflow-y-auto p-1">
+                  <div className="flex flex-wrap gap-1.5 mt-1.5 max-h-[220px] overflow-y-auto scrollbar-visible p-1">
                     {CITIES.map((city) => (
                       <button key={city} onClick={() => toggleCity(city)}
                         className={cn('px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-all',

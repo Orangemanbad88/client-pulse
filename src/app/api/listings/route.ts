@@ -81,11 +81,23 @@ async function fetchRentals() {
 
     return properties.map((p) => {
       const d = p.PropertyDetails;
-      const weeklyRate = p.RateInfo?.[0]
-        ? parseFloat(p.RateInfo[0].Rate)
-        : p.Availability?.[0]
-          ? parseFloat(p.Availability[0].AverageRate)
-          : 0;
+
+      // Build per-week rate lookup from RateInfo (checkInDate → weekly rate)
+      const ratesByCheckIn: Record<string, number> = {};
+      for (const r of p.RateInfo || []) {
+        if (r.CheckInDate && r.Rate) {
+          ratesByCheckIn[r.CheckInDate] = parseFloat(r.Rate);
+        }
+      }
+
+      // Representative price: average of available rates, fallback to first RateInfo
+      const availableRates = (p.Availability || [])
+        .filter((a) => a.Status === 'Available' && a.AverageRate)
+        .map((a) => parseFloat(a.AverageRate));
+      const weeklyRate = availableRates.length > 0
+        ? Math.round(availableRates.reduce((s, r) => s + r, 0) / availableRates.length)
+        : p.RateInfo?.[0] ? parseFloat(p.RateInfo[0].Rate) : 0;
+
       const availableSlots = (p.Availability || []).filter(
         (a) => a.Status === 'Available',
       ).length;
@@ -109,6 +121,7 @@ async function fetchRentals() {
         availableCheckIns: (p.Availability || [])
           .filter((a) => a.Status === 'Available')
           .map((a) => a.CheckInDate),
+        ratesByCheckIn,
         listingType: 'rental' as const,
         description: d.Description || d.Headline || '',
         lat: parseFloat(d.Coordinates?.Latitude) || 0,

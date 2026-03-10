@@ -13,6 +13,7 @@ interface ListingForMatch {
   listingType: 'rental' | 'for_sale';
   photos: string[];
   availableCheckIns?: string[];
+  ratesByCheckIn?: Record<string, number>;
 }
 
 export interface MatchResult {
@@ -201,6 +202,7 @@ export function matchListings(
 
   for (const listing of listings) {
     let best = { score: 0, reasons: [] as string[] };
+    let displayPrice = listing.salePrice;
 
     // Score against rental preferences for rental listings
     if (listing.listingType === 'rental' && preferences.rental) {
@@ -210,15 +212,36 @@ export function matchListings(
       if (rp.preferredAreas.length === 0 && rp.budgetMax <= 0) continue;
 
       // Filter by selected weeks — skip rentals not available during any chosen week
+      // Also find the best week-specific rate for accurate budget matching
+      let weekSpecificPrice = 0;
       const selectedDates = parseSelectedWeekDates(rp.leaseTermPref);
       if (selectedDates.length > 0) {
         if (!listing.availableCheckIns || listing.availableCheckIns.length === 0) continue;
         const checkInKeys = listing.availableCheckIns.map(toDateKey).filter(Boolean);
-        const hasAvailability = selectedDates.some((sd) => checkInKeys.includes(sd));
-        if (!hasAvailability) continue;
+
+        // Find matching weeks and their rates
+        const rates = listing.ratesByCheckIn || {};
+        let bestRate = Infinity;
+        let hasMatch = false;
+        for (const sd of selectedDates) {
+          if (checkInKeys.includes(sd)) {
+            hasMatch = true;
+            // Find rate for this check-in from ratesByCheckIn (raw dates)
+            const matchingRaw = listing.availableCheckIns!.find((ci) => toDateKey(ci) === sd);
+            const rate = matchingRaw ? rates[matchingRaw] : 0;
+            if (rate > 0 && rate < bestRate) bestRate = rate;
+          }
+        }
+        if (!hasMatch) continue;
+        if (bestRate < Infinity) weekSpecificPrice = bestRate;
       }
 
-      best = scoreAgainstPrefs(listing, {
+      // Use week-specific rate if available, otherwise fall back to listing average
+      const effectivePrice = weekSpecificPrice > 0 ? weekSpecificPrice : listing.salePrice;
+      displayPrice = effectivePrice;
+      const listingForScore = { ...listing, salePrice: effectivePrice };
+
+      best = scoreAgainstPrefs(listingForScore, {
         budgetMin: rp.budgetMin,
         budgetMax: rp.budgetMax,
         bedrooms: rp.bedrooms,
@@ -256,7 +279,7 @@ export function matchListings(
         listingId: listing.id,
         address: listing.address,
         city: listing.city,
-        price: listing.salePrice,
+        price: displayPrice,
         bedrooms: listing.bedrooms,
         bathrooms: listing.bathrooms,
         sqft: listing.sqft,
