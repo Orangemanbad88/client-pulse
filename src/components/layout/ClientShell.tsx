@@ -73,23 +73,23 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         )}
 
         {/* Sidebar */}
-        <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 border-r border-[#132a4a] flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'linear-gradient(180deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)' }}>
+        <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 border-r border-[#D4A84B] flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'linear-gradient(180deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)', boxShadow: '4px 0 15px -2px rgba(212, 168, 75, 0.3), 2px 0 6px -1px rgba(212, 168, 75, 0.15), inset -8px 0 12px -6px rgba(0, 0, 0, 0.25)' }}>
           {/* Logo */}
-          <div className="px-5 py-5 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-md shadow-gold/15">
+          <div className="px-5 py-3.5 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center" style={{ boxShadow: '0 0 12px rgba(212,168,75,0.4), 0 0 4px rgba(212,168,75,0.3)' }}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 2L2 6v4l6 4 6-4V6L8 2z" stroke="white" strokeWidth="1.5" fill="none" />
                 <circle cx="8" cy="8" r="2" fill="white" />
               </svg>
             </div>
-            <span className="font-bold text-base tracking-tight text-gold-light">ClientPulse</span>
+            <span className="font-bold text-base tracking-tight text-gold-light" style={{ textShadow: '0 0 14px rgba(212, 168, 75, 0.35)' }}>ClientPulse</span>
             <button onClick={() => setSidebarOpen(false)} className="ml-auto p-1.5 rounded-lg hover:bg-white/10 lg:hidden transition-colors">
               <X size={18} className="text-slate-400" />
             </button>
           </div>
 
           {/* Search */}
-          <div className="px-4 mb-4">
+          <div className="px-4 mt-2 mb-3">
             <button
               onClick={() => { setCmdOpen(true); setSidebarOpen(false); }}
               className="w-full flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 text-sm text-slate-400 border border-white/10 transition-colors hover:bg-white/10"
@@ -102,7 +102,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
 
           {/* Nav */}
           <nav className="px-3 flex-1 overflow-y-auto">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 mb-2">Main</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 mb-2 flex items-center gap-2"><span className="w-3 h-[2px] rounded-full bg-[#D4A84B]/60" />Main</p>
             {navItems.map(item => {
               const active = isActive(item.href);
               return (
@@ -110,10 +110,10 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                   key={item.id}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all border-l-2 ${
                     active
-                      ? 'bg-gold/15 text-gold-light'
-                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+                      ? 'bg-gold/15 text-gold-light border-[#D4A84B] shadow-[0_0_10px_rgba(212,168,75,0.15)]'
+                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200 border-transparent hover:border-[#D4A84B]/40'
                   }`}
                 >
                   <item.icon size={18} strokeWidth={active ? 2 : 1.5} />
@@ -128,7 +128,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
               );
             })}
 
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 mb-2 mt-6">Tools</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 mb-2 mt-6 flex items-center gap-2"><span className="w-3 h-[2px] rounded-full bg-[#D4A84B]/60" />Tools</p>
             {toolItems.map((tool) => {
               const active = isActive(tool.href);
               return (
@@ -136,10 +136,10 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
                   key={tool.label}
                   href={tool.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all border-l-2 ${
                     active
-                      ? 'bg-gold/15 text-gold-light'
-                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+                      ? 'bg-gold/15 text-gold-light border-[#D4A84B] shadow-[0_0_10px_rgba(212,168,75,0.15)]'
+                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200 border-transparent hover:border-[#D4A84B]/40'
                   }`}
                 >
                   <tool.icon size={18} strokeWidth={active ? 2 : 1.5} />
@@ -150,21 +150,21 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
           </nav>
 
           {/* Bottom */}
-          <div className="px-3 py-4 border-t border-white/10">
+          <div className="px-3 py-4 border-t border-[#D4A84B]/25">
             <Link
               href="/settings"
               onClick={() => setSidebarOpen(false)}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all ${
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium mb-0.5 transition-all border-l-2 ${
                 isActive('/settings')
-                  ? 'bg-gold/15 text-gold-light'
-                  : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+                  ? 'bg-gold/15 text-gold-light border-[#D4A84B] shadow-[0_0_10px_rgba(212,168,75,0.15)]'
+                  : 'text-slate-400 hover:bg-white/5 hover:text-slate-200 border-transparent hover:border-[#D4A84B]/40'
               }`}
             >
               <Settings size={18} strokeWidth={isActive('/settings') ? 2 : 1.5} /> Settings
             </Link>
             <button
               onClick={() => setDark(d => !d)}
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-slate-200"
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-slate-200 border-l-2 border-transparent hover:border-[#D4A84B]/40 transition-all"
             >
               {dark ? <Sun size={18} strokeWidth={1.5} /> : <Moon size={18} strokeWidth={1.5} />}
               {dark ? 'Light Mode' : 'Dark Mode'}
@@ -175,7 +175,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
           {/* Mobile header bar */}
-          <div className="sticky top-0 z-10 backdrop-blur-xl border-b border-[#132a4a] lg:hidden" style={{ background: '#1e3a5f' }}>
+          <div className="sticky top-0 z-10 backdrop-blur-xl border-b-2 border-[#D4A84B]/40 lg:hidden" style={{ background: '#1e3a5f' }}>
             <div className="px-4 py-3 flex items-center gap-3">
               <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-white/10 transition-colors">
                 <Menu size={20} className="text-slate-400" />

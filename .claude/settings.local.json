@@ -12,7 +12,9 @@
       "Bash(vercel:*)",
       "Bash(python:*)",
       "WebFetch(domain:mccannrealtors.idxbroker.com)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)"
     ]
   }
 }

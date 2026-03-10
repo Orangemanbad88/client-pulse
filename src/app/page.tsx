@@ -108,7 +108,7 @@ export default function DashboardPage() {
   return (
     <>
       {/* Header */}
-      <header className="sticky top-0 z-10 hidden lg:block border-b border-[#132a4a]/50" style={{ background: '#1e3a5f' }}>
+      <header className="sticky top-0 z-10 hidden lg:block border-b-2 border-[#D4A84B]/40" style={{ background: '#1e3a5f' }}>
         <div className="px-4 lg:px-8 py-3 lg:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-4 min-w-0">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center shadow-sm shadow-gold/15 shrink-0">
@@ -139,7 +139,7 @@ export default function DashboardPage() {
         {/* Metric Cards */}
         <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-4 lg:mb-6 ${mounted ? 'stagger-children' : ''}`}>
           {metricCards.map((card) => (
-            <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:scale-[1.02] transition-all duration-200 cursor-default">
+            <div key={card.label} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 border-t-2 border-t-transparent hover:border-t-[#D4A84B]/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:-translate-y-0.5 transition-all duration-200 cursor-default">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{card.label}</span>
                 <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">

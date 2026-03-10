@@ -355,3 +355,26 @@ textarea.input { resize: vertical; min-height: 80px; }
 .scrollbar-visible::-webkit-scrollbar-track { background: var(--bg-1); border-radius: 5px; margin: 4px 0; }
 .scrollbar-visible::-webkit-scrollbar-thumb { background: var(--text-tertiary); border-radius: 5px; border: 2px solid var(--bg-1); }
 .scrollbar-visible::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ── Shimmer (loading skeletons) ───────── */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-1) 25%, var(--bg-2) 50%, var(--bg-1) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+/* ── Page fade transition ──────────────── */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-page-fade {
+  animation: pageFadeIn 200ms ease forwards;
+}

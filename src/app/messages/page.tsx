@@ -72,7 +72,7 @@ export default function MessagesPage() {
   return (
     <>
       <header
-        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b border-[#132a4a]/50 flex items-center justify-between"
+        className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b-2 border-[#D4A84B]/40 flex items-center justify-between"
         style={{ background: '#1e3a5f' }}
       >
         <div className="flex items-center gap-3">
