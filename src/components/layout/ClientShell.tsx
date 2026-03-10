@@ -75,7 +75,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
         {/* Sidebar */}
         <aside className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-60 border-r border-[#D4A84B] flex flex-col shrink-0 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'linear-gradient(180deg, #1e3a5f 0%, #132a4a 50%, #1e3a5f 100%)', boxShadow: '4px 0 15px -2px rgba(212, 168, 75, 0.3), 2px 0 6px -1px rgba(212, 168, 75, 0.15), inset -8px 0 12px -6px rgba(0, 0, 0, 0.25)' }}>
           {/* Logo */}
-          <div className="px-5 py-3.5 flex items-center gap-3">
+          <div className="px-5 pt-5 pb-3.5 flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-gold-muted flex items-center justify-center" style={{ boxShadow: '0 0 12px rgba(212,168,75,0.4), 0 0 4px rgba(212,168,75,0.3)' }}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 2L2 6v4l6 4 6-4V6L8 2z" stroke="white" strokeWidth="1.5" fill="none" />
