@@ -120,6 +120,36 @@
 - `src/app/settings/page.tsx` — MODIFIED (Gmail/Outlook connect/disconnect UI)
 - `src/app/email/page.tsx` — MODIFIED ("Sending as" label)
 
+## Email Full Sync: Gmail + Outlook Read/Reply (Completed)
+
+- [x] Added `EmailParticipant`, `EmailMessage`, `EmailThread`, `ReplyEmailInput` types to `src/types/client.ts`
+- [x] Added `gmail.readonly` scope to Gmail OAuth, `Mail.Read` scope to Outlook OAuth
+- [x] Gmail read/reply: `fetchGmailMessages()`, `parseGmailMessage()`, `replyGmailEmail()` in `src/lib/gmail.ts`
+- [x] Outlook read/reply: `fetchOutlookMessages()`, `parseOutlookMessage()`, `replyOutlookEmail()` in `src/lib/outlook.ts`
+- [x] Dispatcher functions: `ensureValidToken()`, `fetchInboxMessages()`, `groupIntoThreads()`, `replyToEmail()` in `src/lib/email.ts`
+- [x] Refactored `sendEmail()` to use `ensureValidToken()` (DRY)
+- [x] Created `GET /api/email/inbox` — fetches client-filtered inbox threads on demand
+- [x] Created `POST /api/email/reply` — sends threaded replies with zod validation
+- [x] Updated email page: inbox folder, thread conversation view, inline reply box, loading skeletons
+- [x] Header injection protection: `sanitizeHeader()` strips CR/LF from MIME headers
+- [x] Build passes clean — zero errors, zero warnings
+
+### Pending — User Action Required (Email Sync)
+- [ ] Users must reconnect Gmail/Outlook in Settings after deploy (new read scopes require re-consent)
+- [ ] Add `gmail.readonly` scope to Google Cloud Console OAuth consent screen
+- [ ] Add `Mail.Read` permission in Azure Portal app registration
+- [ ] Test: Email page → Inbox tab loads with client-filtered threads
+- [ ] Test: Click thread → see full conversation → reply → verify threaded in Gmail/Outlook
+
+### Files Changed (Email Full Sync)
+- `src/types/client.ts` — added email inbox types
+- `src/lib/gmail.ts` — added read scope, fetchGmailMessages, parseGmailMessage, replyGmailEmail, sanitizeHeader
+- `src/lib/outlook.ts` — added read scope, fetchOutlookMessages, parseOutlookMessage, replyOutlookEmail
+- `src/lib/email.ts` — added ensureValidToken, fetchInboxMessages, groupIntoThreads, replyToEmail; refactored sendEmail
+- `src/app/api/email/inbox/route.ts` — NEW
+- `src/app/api/email/reply/route.ts` — NEW
+- `src/app/email/page.tsx` — REWRITTEN (inbox + sent + reply)
+
 ### Files Changed (Supabase Foundation)
 - `package.json` — added supabase deps
 - `src/lib/supabase.ts` — NEW

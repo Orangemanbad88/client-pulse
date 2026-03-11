@@ -1,4 +1,6 @@
-const SCOPES = 'Mail.Send User.Read offline_access';
+import type { EmailMessage } from '@/types/client';
+
+const SCOPES = 'Mail.Send Mail.Read User.Read offline_access';
 
 const getCredentials = () => {
   const clientId = process.env.MICROSOFT_CLIENT_ID;
@@ -150,4 +152,130 @@ export const sendOutlookEmail = async ({
   }
 
   return { messageId: 'outlook-sent' };
+};
+
+// ---- Read / Reply ----
+
+interface OutlookGraphMessage {
+  id: string;
+  conversationId: string;
+  subject: string;
+  from: { emailAddress: { name: string; address: string } };
+  toRecipients: Array<{ emailAddress: { name: string; address: string } }>;
+  receivedDateTime: string;
+  body: { contentType: string; content: string };
+  bodyPreview: string;
+  isRead: boolean;
+  hasAttachments: boolean;
+  internetMessageId: string;
+}
+
+export const parseOutlookMessage = (msg: OutlookGraphMessage): EmailMessage => ({
+  id: msg.id,
+  threadId: msg.conversationId,
+  subject: msg.subject || '',
+  from: {
+    name: msg.from?.emailAddress?.name || '',
+    email: msg.from?.emailAddress?.address || '',
+  },
+  to: (msg.toRecipients || []).map((r) => ({
+    name: r.emailAddress?.name || '',
+    email: r.emailAddress?.address || '',
+  })),
+  date: msg.receivedDateTime || new Date().toISOString(),
+  bodyText: msg.body?.contentType === 'Text' ? msg.body.content : '',
+  bodyHtml: msg.body?.contentType === 'HTML' ? msg.body.content : '',
+  snippet: msg.bodyPreview || '',
+  isRead: msg.isRead,
+  hasAttachments: msg.hasAttachments,
+  provider: 'outlook',
+  messageIdHeader: msg.internetMessageId || '',
+  referencesHeader: '',
+});
+
+interface OutlookFetchInput {
+  accessToken: string;
+  clientEmails: string[];
+  maxResults?: number;
+}
+
+export const fetchOutlookMessages = async ({
+  accessToken,
+  clientEmails,
+  maxResults = 50,
+}: OutlookFetchInput): Promise<EmailMessage[]> => {
+  if (clientEmails.length === 0) return [];
+
+  const seen = new Set<string>();
+  const messages: EmailMessage[] = [];
+
+  // Cap at 20 client emails per batch to avoid $filter limits
+  const emailsToSearch = clientEmails.slice(0, 20);
+
+  // Build filter: (from/emailAddress/address eq '...' or toRecipients/any(...))
+  const filterParts = emailsToSearch.map(
+    (e) => `(from/emailAddress/address eq '${e}' or toRecipients/any(r: r/emailAddress/address eq '${e}'))`,
+  );
+  const filter = filterParts.join(' or ');
+
+  const selectFields = [
+    'id', 'conversationId', 'subject', 'from', 'toRecipients',
+    'receivedDateTime', 'body', 'bodyPreview', 'isRead', 'hasAttachments', 'internetMessageId',
+  ].join(',');
+
+  try {
+    const url = `https://graph.microsoft.com/v1.0/me/messages?$filter=${encodeURIComponent(filter)}&$select=${selectFields}&$orderby=receivedDateTime desc&$top=${maxResults}`;
+
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Outlook fetch failed: ${err}`);
+    }
+
+    const data = await res.json();
+    for (const msg of (data.value || []) as OutlookGraphMessage[]) {
+      if (!seen.has(msg.id)) {
+        seen.add(msg.id);
+        messages.push(parseOutlookMessage(msg));
+      }
+    }
+  } catch (err) {
+    throw err;
+  }
+
+  return messages;
+};
+
+interface OutlookReplyInput {
+  accessToken: string;
+  messageId: string;
+  body: string;
+}
+
+export const replyOutlookEmail = async ({
+  accessToken,
+  messageId,
+  body,
+}: OutlookReplyInput) => {
+  const res = await fetch(
+    `https://graph.microsoft.com/v1.0/me/messages/${encodeURIComponent(messageId)}/reply`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ comment: body }),
+    },
+  );
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Outlook reply failed: ${err}`);
+  }
+
+  return { messageId: 'outlook-reply-sent' };
 };

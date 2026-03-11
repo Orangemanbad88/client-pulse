@@ -318,6 +318,58 @@ export interface ClientAlert {
   createdAt: string;
 }
 
+// ---- Email Inbox ----
+
+export interface EmailParticipant {
+  name: string;
+  email: string;
+}
+
+export interface EmailMessage {
+  id: string;
+  threadId: string;
+  subject: string;
+  from: EmailParticipant;
+  to: EmailParticipant[];
+  date: string;
+  bodyText: string;
+  bodyHtml: string;
+  snippet: string;
+  isRead: boolean;
+  hasAttachments: boolean;
+  provider: 'gmail' | 'outlook';
+  messageIdHeader: string;
+  referencesHeader: string;
+  clientId?: string;
+  clientName?: string;
+}
+
+export interface EmailThread {
+  id: string;
+  subject: string;
+  participants: EmailParticipant[];
+  messages: EmailMessage[];
+  lastMessageDate: string;
+  snippet: string;
+  isRead: boolean;
+  hasAttachments: boolean;
+  messageCount: number;
+  clientId?: string;
+  clientName?: string;
+  provider: 'gmail' | 'outlook';
+}
+
+export interface ReplyEmailInput {
+  provider: 'gmail' | 'outlook';
+  inReplyToMessageId: string;
+  messageIdHeader: string;
+  referencesHeader: string;
+  threadId: string;
+  to: string;
+  subject: string;
+  body: string;
+}
+
 // ---- Email Account (OAuth) ----
 
 export interface EmailAccount {
