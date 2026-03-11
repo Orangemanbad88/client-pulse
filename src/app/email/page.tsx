@@ -293,6 +293,31 @@ export default function EmailPage() {
     }
   };
 
+  // ---- Connect handlers ----
+  const handleConnectGmail = async () => {
+    try {
+      const res = await fetch('/api/auth/gmail/connect');
+      const data = await res.json();
+      if (data.success && data.url) {
+        window.location.href = data.url;
+      }
+    } catch {
+      // Silently fail — user can try again
+    }
+  };
+
+  const handleConnectOutlook = async () => {
+    try {
+      const res = await fetch('/api/auth/outlook/connect');
+      const data = await res.json();
+      if (data.success && data.url) {
+        window.location.href = data.url;
+      }
+    } catch {
+      // Silently fail — user can try again
+    }
+  };
+
   // ---- Compose helpers ----
   const openCompose = (clientName?: string, clientId?: string) => {
     setComposeTo(clientName || '');
@@ -570,13 +595,21 @@ export default function EmailPage() {
           <div className="px-5 py-12 text-center">
             <AlertTriangle size={32} className="text-amber-400 mx-auto mb-3" />
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Session expired</p>
-            <p className="text-xs text-gray-400 mb-4">Please reconnect your email account in Settings.</p>
-            <Link
-              href="/settings"
-              className="text-xs font-medium text-gold hover:text-gold-muted transition-colors"
-            >
-              Go to Settings →
-            </Link>
+            <p className="text-xs text-gray-400 mb-4">Your email account needs to be reconnected.</p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={handleConnectGmail}
+                className="flex items-center gap-2 text-xs font-medium text-white bg-gold hover:bg-gold-muted px-4 py-2 rounded-lg transition-colors shadow-sm shadow-gold/20"
+              >
+                <Mail size={13} /> Reconnect Gmail
+              </button>
+              <button
+                onClick={handleConnectOutlook}
+                className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+              >
+                <Mail size={13} /> Reconnect Outlook
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -606,9 +639,20 @@ export default function EmailPage() {
             <Inbox size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400 mb-3">{inboxMessage}</p>
             {!sendingAs && (
-              <Link href="/settings" className="text-xs font-medium text-gold hover:text-gold-muted transition-colors">
-                Connect email in Settings →
-              </Link>
+              <div className="flex items-center justify-center gap-3 mt-4">
+                <button
+                  onClick={handleConnectGmail}
+                  className="flex items-center gap-2 text-xs font-medium text-white bg-gold hover:bg-gold-muted px-4 py-2 rounded-lg transition-colors shadow-sm shadow-gold/20"
+                >
+                  <Mail size={13} /> Connect Gmail
+                </button>
+                <button
+                  onClick={handleConnectOutlook}
+                  className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+                >
+                  <Mail size={13} /> Connect Outlook
+                </button>
+              </div>
             )}
           </div>
         </div>
