@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
     const matchResults = matchListings(listings, preferences);
 
     if (matchResults.length === 0) {
+      // Clear old matches even when no new ones found (e.g. client type switched)
+      await bulkInsertMatches(clientId, []);
       return NextResponse.json({ success: true, data: [], message: 'No matches found above threshold' });
     }
 

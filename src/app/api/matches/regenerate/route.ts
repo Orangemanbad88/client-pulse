@@ -55,6 +55,8 @@ export async function GET(request: NextRequest) {
       // Run matching
       const matchResults = matchListings(listings, preferences);
       if (matchResults.length === 0) {
+        // Clear stale matches for this client (e.g. type switched from rental→buyer)
+        insertPromises.push(bulkInsertMatches(client.id, []));
         clientsEvaluated++;
         continue;
       }

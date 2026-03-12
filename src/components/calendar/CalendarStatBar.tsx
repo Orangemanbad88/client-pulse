@@ -41,7 +41,7 @@ export const CalendarStatBar = ({ allEvents, currentMonth, googleConnected, goog
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm px-4 py-3 transition-all hover:-translate-y-0.5 border-t-2 border-t-transparent hover:border-t-[#D4A84B]/60"
+          className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm px-4 py-3 transition-all hover:-translate-y-0.5 border-t-2 border-t-transparent hover:border-t-[#D4A84B]/60"
         >
           <div className="flex items-center gap-2 mb-1">
             <stat.icon size={13} className={stat.accent ? 'text-gold dark:text-gold-light' : 'text-gray-400 dark:text-gray-500'} />

@@ -14,7 +14,7 @@ export default function PropertiesLoading() {
       <div className="px-4 lg:px-8 py-4 lg:py-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
+            <div key={i} className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
               <div className="skeleton h-48 w-full rounded-none" />
               <div className="p-4 space-y-3">
                 <div className="skeleton h-4 w-3/4" />

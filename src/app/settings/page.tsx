@@ -137,7 +137,7 @@ export default function SettingsPage() {
       <div className="px-4 lg:px-8 py-4 lg:py-6 space-y-6 max-w-3xl">
 
         {/* Integrations */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Integrations</h2>
@@ -300,7 +300,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Agent Profile */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold-light" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Agent Profile</h2>
@@ -317,7 +317,7 @@ export default function SettingsPage() {
                   value={agentName}
                   onChange={(e) => setAgentName(e.target.value)}
                   placeholder="e.g. Tom McCarthy"
-                  className="flex-1 px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                  className="flex-1 px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                 />
                 <button
                   onClick={handleSaveName}
@@ -333,7 +333,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Display */}
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
             <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Display</h2>

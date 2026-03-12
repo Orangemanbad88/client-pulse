@@ -113,7 +113,7 @@ export default function MessagesPage() {
       </div>
 
       {/* Message list */}
-      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
           {filtered.map((msg) => {
             const timeAgo = formatRelativeDate(msg.timestamp);

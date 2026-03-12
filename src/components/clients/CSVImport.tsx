@@ -133,7 +133,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+      <div className="relative bg-[#faf7f2] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
@@ -224,7 +224,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                     className={`flex-1 px-3 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold ${
                       columnMapping[idx]
                         ? 'bg-amber-50/50 dark:bg-amber-900/10 border-gold-light dark:border-gold-muted/30 text-gold-muted dark:text-gold-light'
-                        : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400'
+                        : 'bg-[#f5f0e8] dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400'
                     }`}
                   >
                     <option value="">— Skip —</option>
@@ -248,7 +248,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               <div className="overflow-x-auto rounded-lg border border-amber-200/25 dark:border-gray-800/60">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="bg-gray-50 dark:bg-gray-800">
+                    <tr className="bg-[#f5f0e8] dark:bg-gray-800">
                       {Object.values(columnMapping).map((field) => (
                         <th key={field} className="px-3 py-2 text-left font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">
                           {COLUMN_LABELS[field] || field}

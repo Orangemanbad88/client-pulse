@@ -16,10 +16,15 @@ import type {
   EmailAccount,
 } from '@/types/client';
 
-// In-memory stores
-const clientAlerts: ClientAlert[] = [];
-const emailAccounts: EmailAccount[] = [];
-const appSettings: Record<string, string> = { autoAlertsEnabled: 'true' };
+// In-memory stores — use globalThis to survive Next.js HMR in dev
+const g = globalThis as typeof globalThis & {
+  __mockClientAlerts?: ClientAlert[];
+  __mockEmailAccounts?: EmailAccount[];
+  __mockAppSettings?: Record<string, string>;
+};
+const clientAlerts: ClientAlert[] = g.__mockClientAlerts ??= [];
+const emailAccounts: EmailAccount[] = g.__mockEmailAccounts ??= [];
+const appSettings: Record<string, string> = g.__mockAppSettings ??= { autoAlertsEnabled: 'true' };
 
 // Simulated async to match future Supabase service interface
 

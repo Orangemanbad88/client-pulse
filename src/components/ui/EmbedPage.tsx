@@ -51,7 +51,7 @@ export const EmbedPage = ({ title, url, mobileIcon }: EmbedPageProps) => {
       {/* Content */}
       {isMobile ? (
         <div className="flex-1 flex items-center justify-center p-6">
-          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-6 text-center max-w-sm w-full">
+          <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-6 text-center max-w-sm w-full">
             <div className="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-3">
               {mobileIcon}
             </div>

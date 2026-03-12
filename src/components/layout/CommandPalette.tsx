@@ -56,7 +56,7 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[18vh]" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="relative w-[520px] max-h-[380px] bg-white dark:bg-gray-900 border border-amber-200/25 dark:border-gray-800 rounded-xl overflow-hidden shadow-2xl"
+        className="relative w-[520px] max-h-[380px] bg-[#faf7f2] dark:bg-gray-900border border-amber-200/25 dark:border-gray-800 rounded-xl overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-2 px-4 border-b border-amber-100/30 dark:border-gray-800">

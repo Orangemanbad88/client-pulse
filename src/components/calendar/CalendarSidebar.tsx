@@ -8,7 +8,7 @@ interface CalendarSidebarProps {
 
 export const CalendarSidebar = ({ next14Days, onSelectDay }: CalendarSidebarProps) => {
   return (
-    <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+    <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
       <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center gap-3">
         <div className="w-1.5 h-5 rounded-full bg-gold" />
         <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Next 14 Days</h2>
@@ -50,7 +50,7 @@ export const CalendarSidebar = ({ next14Days, onSelectDay }: CalendarSidebarProp
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                         daysOut <= 0 ? 'bg-amber-50 dark:bg-amber-900/20 text-gold dark:text-gold-light' :
                         daysOut <= 2 ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400' :
-                        'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
+                        'bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400'
                       }`}>
                         {daysOut <= 0 ? 'Today' : daysOut === 1 ? 'Tomorrow' : `${daysOut}d`}
                       </span>

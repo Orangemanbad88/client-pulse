@@ -14,7 +14,15 @@
       "WebFetch(domain:mccannrealtors.idxbroker.com)",
       "Bash(git commit:*)",
       "Bash(netstat:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(git pull:*)",
+      "Bash(npx tsc:*)",
+      "Bash(bunx tsc:*)",
+      "Bash(pkill:*)",
+      "Bash(xargs:*)",
+      "Bash(npx next build:*)",
+      "Bash(npx next dev:*)",
+      "Bash(bun dev:*)"
     ]
   }
 }

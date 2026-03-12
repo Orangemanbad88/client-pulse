@@ -10,7 +10,7 @@ interface CalendarDayDetailProps {
 
 export const CalendarDayDetail = ({ selectedDay, events }: CalendarDayDetailProps) => {
   return (
-    <div key={selectedDay} className="mt-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden animate-slide-up-fade">
+    <div key={selectedDay} className="mt-4 bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden animate-slide-up-fade">
       <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center gap-3">
         <div className="w-1.5 h-5 rounded-full bg-gold" />
         <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">
@@ -68,7 +68,7 @@ export const CalendarDayDetail = ({ selectedDay, events }: CalendarDayDetailProp
                             ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
                             : ev.urgency === 'high'
                             ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'
-                            : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
+                            : 'bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400'
                         }`}>
                           {ev.urgency}
                         </span>

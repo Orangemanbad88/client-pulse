@@ -23,7 +23,7 @@ export default function AnalyticsLoading() {
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
+            <div key={i} className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
               <div className="px-5 py-4" style={{ background: '#1e3a5f' }}>
                 <div className="skeleton h-4 w-32" />
               </div>

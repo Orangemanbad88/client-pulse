@@ -6,13 +6,13 @@
 
 /* ── Design System Variables ────────────── */
 :root {
-  --bg-0: #faf8f5;
-  --bg-1: #f5f0ea;
-  --bg-2: #e8e0d6;
-  --bg-3: #d4cac0;
-  --surface: #fffdfb;
-  --surface-hover: #faf8f5;
-  --surface-elevated: #fffdfb;
+  --bg-0: #f5f0e8;
+  --bg-1: #ede6db;
+  --bg-2: #dfd6c9;
+  --bg-3: #cfc3b4;
+  --surface: #faf7f2;
+  --surface-hover: #f5f0e8;
+  --surface-elevated: #faf7f2;
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-tertiary: #94a3b8;

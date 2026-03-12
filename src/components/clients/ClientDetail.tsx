@@ -379,6 +379,9 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
               };
               setPrefs(newPrefs);
 
+              // Clear old matches immediately (handles type switch rental→buyer etc.)
+              setMatchList([]);
+
               // Auto-run matching if any meaningful preference is set (budget or area)
               const rp = newPrefs.rental;
               const bp = newPrefs.buyer;
@@ -415,7 +418,7 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => !deleting && setShowDeleteConfirm(false)}>
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-          <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-sm p-6 text-center" onClick={(e) => e.stopPropagation()}>
+          <div className="relative bg-[#faf7f2] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-sm p-6 text-center" onClick={(e) => e.stopPropagation()}>
             <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center mx-auto mb-4">
               <Trash2 size={20} className="text-red-500" />
             </div>

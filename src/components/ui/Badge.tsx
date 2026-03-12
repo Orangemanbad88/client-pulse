@@ -5,8 +5,8 @@ const styles: Record<BadgeVariant, string> = {
   high: "bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800/30",
   medium: "bg-amber-50 dark:bg-amber-900/20 text-gold dark:text-gold-light border border-gold-light dark:border-gold-muted/30",
   new: "bg-amber-50 dark:bg-amber-900/20 text-gold dark:text-gold-light border border-gold-light dark:border-gold-muted/30",
-  sent: "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700",
-  default: "bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700",
+  sent: "bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700",
+  default: "bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700",
 };
 
 export const Badge = ({ children, variant = "default" }: { children: React.ReactNode; variant?: BadgeVariant }) => (

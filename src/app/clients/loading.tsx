@@ -23,7 +23,7 @@ export default function ClientsLoading() {
         {/* Client rows */}
         <div className="space-y-2">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 flex items-center gap-4">
+            <div key={i} className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 flex items-center gap-4">
               <div className="skeleton w-10 h-10 rounded-full" />
               <div className="flex-1 space-y-2">
                 <div className="skeleton h-4 w-32" />

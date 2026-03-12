@@ -436,7 +436,7 @@ export default function EmailPage() {
   const renderThreadDetail = () => {
     if (!selectedThread) return null;
     return (
-      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         {/* Header */}
         <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
           <button
@@ -536,7 +536,7 @@ export default function EmailPage() {
   const renderSentDetail = () => {
     if (!selectedSentItem) return null;
     return (
-      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
           <button
             onClick={() => setSelectedSentItem(null)}
@@ -570,7 +570,7 @@ export default function EmailPage() {
   const renderInboxList = () => {
     if (inboxLoading) {
       return (
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="px-5 py-4 animate-pulse">
@@ -591,7 +591,7 @@ export default function EmailPage() {
 
     if (needsReconnect) {
       return (
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <AlertTriangle size={32} className="text-amber-400 mx-auto mb-3" />
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Session expired</p>
@@ -617,7 +617,7 @@ export default function EmailPage() {
 
     if (inboxError && !needsReconnect) {
       return (
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <AlertTriangle size={32} className="text-red-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400 mb-3">{inboxError}</p>
@@ -634,7 +634,7 @@ export default function EmailPage() {
 
     if (inboxMessage && inboxThreads.length === 0) {
       return (
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <Inbox size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400 mb-3">{inboxMessage}</p>
@@ -661,7 +661,7 @@ export default function EmailPage() {
 
     if (inboxThreads.length === 0) {
       return (
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <Inbox size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400">No client emails found</p>
@@ -671,7 +671,7 @@ export default function EmailPage() {
     }
 
     return (
-      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
           {inboxThreads.map((thread) => (
             <button
@@ -720,7 +720,7 @@ export default function EmailPage() {
   const renderSentList = () => {
     if (sentEmails.length === 0) {
       return (
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <Send size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400 mb-3">No sent emails yet</p>
@@ -736,7 +736,7 @@ export default function EmailPage() {
     }
 
     return (
-      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
           {sentEmails.map((email) => (
             <button
@@ -802,7 +802,7 @@ export default function EmailPage() {
 
     if (allItems.length === 0) {
       return (
-        <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <Mail size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400">No emails yet</p>
@@ -812,7 +812,7 @@ export default function EmailPage() {
     }
 
     return (
-      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
           {allItems.map((item) => {
             const name = item.type === 'thread'
@@ -994,7 +994,7 @@ export default function EmailPage() {
     {showCompose && (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => !sending && setShowCompose(false)} />
-        <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl overflow-hidden">
+        <div className="relative bg-[#faf7f2] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl overflow-hidden">
           {sendSuccess ? (
             <div className="px-5 py-12 text-center">
               <CheckCircle size={40} className="text-green-500 mx-auto mb-3" />
@@ -1026,7 +1026,7 @@ export default function EmailPage() {
                       className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
                         selectedTemplate === tpl.name
                           ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light dark:border-gold-muted/30'
-                          : 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          : 'bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                     >
                       {tpl.name}
@@ -1047,7 +1047,7 @@ export default function EmailPage() {
                       if (match) setComposeToClientId(match.id);
                     }}
                     list="client-list"
-                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                    className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                     placeholder="Client name"
                   />
                   <datalist id="client-list">
@@ -1062,7 +1062,7 @@ export default function EmailPage() {
                     type="text"
                     value={composeSubject}
                     onChange={(e) => setComposeSubject(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                    className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                     placeholder="Email subject"
                   />
                 </div>
@@ -1072,7 +1072,7 @@ export default function EmailPage() {
                     value={composeBody}
                     onChange={(e) => setComposeBody(e.target.value)}
                     rows={10}
-                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
+                    className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
                     placeholder="Write your message..."
                   />
                 </div>

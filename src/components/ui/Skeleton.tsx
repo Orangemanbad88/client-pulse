@@ -11,7 +11,7 @@ export const SkeletonText = ({ lines = 3, className = '' }: { lines?: number; cl
 );
 
 export const SkeletonCard = ({ className = '' }: { className?: string }) => (
-  <div className={`bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 ${className}`}>
+  <div className={`bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 ${className}`}>
     <div className="flex items-center justify-between mb-3">
       <div className="skeleton h-3 w-20" />
       <div className="skeleton w-7 h-7 rounded-lg" />

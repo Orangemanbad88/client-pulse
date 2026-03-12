@@ -271,7 +271,7 @@ export default function PropertiesPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by address, city, or zip..."
-            className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-amber-200/25 dark:border-gray-800/60 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all"
+            className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-md border border-amber-200/25 dark:border-gray-800/60 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all"
           />
           {search && (
             <button
@@ -343,7 +343,7 @@ export default function PropertiesPage() {
 
         {/* Filter panel */}
         {showFilters && (
-          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm">
+          <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm">
             <div className="flex flex-wrap items-end gap-4">
               {/* Bedrooms */}
               <div className="flex-1 min-w-[140px]">
@@ -572,7 +572,7 @@ export default function PropertiesPage() {
                             {featured.listingType === 'rental' ? 'Rental' : 'For Sale'}
                           </span>
                           {featured.photos.length > 1 && (
-                            <span className="text-xs px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200/40 dark:border-gray-700/40">
+                            <span className="text-xs px-2.5 py-1 rounded-lg bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200/40 dark:border-gray-700/40">
                               {featured.photos.length} photos
                             </span>
                           )}
@@ -635,7 +635,7 @@ export default function PropertiesPage() {
                     className={`group/card cursor-pointer rounded-xl border overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.01] ${
                       i === activeIndex
                         ? 'border-gold/40 dark:border-gold-light/30 shadow-md shadow-gold/10 ring-1 ring-gold/20'
-                        : 'border-amber-200/25 dark:border-gray-800/60 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md shadow-sm hover:shadow-gold/10'
+                        : 'border-amber-200/25 dark:border-gray-800/60 bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-md shadow-sm hover:shadow-gold/10'
                     }`}
                     style={{ animationDelay: `${i * 40}ms` }}
                   >

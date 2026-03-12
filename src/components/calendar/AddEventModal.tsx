@@ -13,7 +13,7 @@ export const AddEventModal = ({ newEvent, onChangeEvent, onAdd, onClose }: AddEv
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-md overflow-hidden animate-scale-in">
+      <div className="relative bg-[#faf7f2] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-md overflow-hidden animate-scale-in">
         <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
@@ -30,7 +30,7 @@ export const AddEventModal = ({ newEvent, onChangeEvent, onAdd, onClose }: AddEv
               type="text"
               value={newEvent.title}
               onChange={(e) => onChangeEvent({ ...newEvent, title: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+              className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
               placeholder="e.g. Property showing"
             />
           </div>
@@ -41,7 +41,7 @@ export const AddEventModal = ({ newEvent, onChangeEvent, onAdd, onClose }: AddEv
                 type="date"
                 value={newEvent.date}
                 onChange={(e) => onChangeEvent({ ...newEvent, date: e.target.value })}
-                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
               />
             </div>
             <div>
@@ -50,7 +50,7 @@ export const AddEventModal = ({ newEvent, onChangeEvent, onAdd, onClose }: AddEv
                 type="time"
                 value={newEvent.time}
                 onChange={(e) => onChangeEvent({ ...newEvent, time: e.target.value })}
-                className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
               />
             </div>
           </div>
@@ -60,7 +60,7 @@ export const AddEventModal = ({ newEvent, onChangeEvent, onAdd, onClose }: AddEv
               type="text"
               value={newEvent.clientName}
               onChange={(e) => onChangeEvent({ ...newEvent, clientName: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+              className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
               placeholder="Optional"
             />
           </div>
@@ -70,7 +70,7 @@ export const AddEventModal = ({ newEvent, onChangeEvent, onAdd, onClose }: AddEv
               value={newEvent.description}
               onChange={(e) => onChangeEvent({ ...newEvent, description: e.target.value })}
               rows={3}
-              className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
+              className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
               placeholder="Optional"
             />
           </div>

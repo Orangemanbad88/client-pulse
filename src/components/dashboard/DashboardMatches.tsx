@@ -42,7 +42,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
   const topMatches = localMatches.filter((m) => m.status === 'new' || m.status === 'sent').slice(0, 5);
 
   return (
-    <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
+    <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
       <div className="px-5 py-4 flex items-center justify-between" style={{ background: '#1e3a5f' }}>
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-5 rounded-full bg-gold-light" />
