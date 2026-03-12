@@ -4,7 +4,7 @@ export default function DashboardLoading() {
   return (
     <>
       {/* Header skeleton */}
-      <div className="sticky top-0 z-10 hidden lg:block border-b-2 border-[#D4A84B]/40" style={{ background: '#1e3a5f' }}>
+      <div className="sticky top-3 z-10 hidden lg:block mx-4 lg:mx-6 rounded-xl border border-[#D4A84B]/20 shadow-lg shadow-black/20" style={{ background: '#1e3a5f' }}>
         <div className="px-4 lg:px-8 py-3 lg:py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="skeleton w-10 h-10 rounded-xl" />

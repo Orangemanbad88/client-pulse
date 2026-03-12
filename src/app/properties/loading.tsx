@@ -1,7 +1,7 @@
 export default function PropertiesLoading() {
   return (
     <>
-      <div className="sticky top-0 z-10 px-4 lg:px-8 py-3 lg:py-4 border-b-2 border-[#D4A84B]/40 flex items-center justify-between" style={{ background: '#1e3a5f' }}>
+      <div className="sticky top-3 z-10 mx-4 lg:mx-6 px-4 lg:px-6 py-3 lg:py-4 rounded-xl border border-[#D4A84B]/20 shadow-lg shadow-black/20 flex items-center justify-between" style={{ background: '#1e3a5f' }}>
         <div className="flex items-center gap-3">
           <div className="skeleton w-10 h-10 rounded-xl" />
           <div className="space-y-2">
