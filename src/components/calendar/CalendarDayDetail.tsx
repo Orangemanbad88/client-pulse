@@ -10,13 +10,13 @@ interface CalendarDayDetailProps {
 
 export const CalendarDayDetail = ({ selectedDay, events }: CalendarDayDetailProps) => {
   return (
-    <div key={selectedDay} className="mt-4 bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden animate-slide-up-fade">
+    <div key={selectedDay} className="mt-4 bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden animate-slide-up-fade">
       <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center gap-3">
         <div className="w-1.5 h-5 rounded-full bg-gold" />
-        <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">
+        <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">
           {new Date(selectedDay + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
         </h2>
-        <span className="text-xs font-bold text-gold dark:text-gold-light bg-amber-50 dark:bg-amber-900/30 rounded-full px-2.5 py-0.5 font-data">{events.length}</span>
+        <span className="text-xs font-bold text-gold dark:text-gold-light bg-amber-900/30 dark:bg-amber-900/30 rounded-full px-2.5 py-0.5 font-data">{events.length}</span>
       </div>
       <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60 stagger">
         {events.length === 0 ? (
@@ -30,7 +30,7 @@ export const CalendarDayDetail = ({ selectedDay, events }: CalendarDayDetailProp
             return (
               <div
                 key={ev.id}
-                className="px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors event-accent-bar"
+                className="px-5 py-4 hover:bg-amber-900/20 dark:hover:bg-amber-900/10 transition-colors event-accent-bar"
                 style={{ '--event-accent-color': accentColor } as React.CSSProperties}
               >
                 <div className="flex items-start gap-3 pl-2">
@@ -44,7 +44,7 @@ export const CalendarDayDetail = ({ selectedDay, events }: CalendarDayDetailProp
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-0.5">{ev.title}</p>
+                    <p className="text-sm font-semibold text-gray-100 dark:text-gray-100 mb-0.5">{ev.title}</p>
                     {ev.description && (
                       <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">{ev.description}</p>
                     )}
@@ -67,8 +67,8 @@ export const CalendarDayDetail = ({ selectedDay, events }: CalendarDayDetailProp
                           ev.urgency === 'critical'
                             ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
                             : ev.urgency === 'high'
-                            ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'
-                            : 'bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400'
+                            ? 'bg-amber-900/30 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'
+                            : 'bg-[#1c3050] dark:bg-gray-800 text-gray-500 dark:text-gray-400'
                         }`}>
                           {ev.urgency}
                         </span>

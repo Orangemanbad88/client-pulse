@@ -41,21 +41,21 @@ export const CalendarWeekGrid = ({
   const slideClass = slideDirection === 'left' ? 'animate-slide-left' : slideDirection === 'right' ? 'animate-slide-right' : '';
 
   return (
-    <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+    <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
       {/* Week navigation */}
       <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={onPrevWeek} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
+          <button onClick={onPrevWeek} className="p-1.5 rounded-md hover:bg-gray-700/50 dark:hover:bg-gray-700/50 transition-colors">
             <ChevronLeft size={16} className="text-gray-500 dark:text-gray-400" />
           </button>
-          <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight min-w-[200px] text-center">
+          <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight min-w-[200px] text-center">
             {weekLabel}
           </h2>
-          <button onClick={onNextWeek} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
+          <button onClick={onNextWeek} className="p-1.5 rounded-md hover:bg-gray-700/50 dark:hover:bg-gray-700/50 transition-colors">
             <ChevronRight size={16} className="text-gray-500 dark:text-gray-400" />
           </button>
         </div>
-        <button onClick={onGoToday} className="text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light px-2 py-1 rounded hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors">
+        <button onClick={onGoToday} className="text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light px-2 py-1 rounded hover:bg-amber-900/30 dark:hover:bg-amber-900/20 transition-colors">
           Today
         </button>
       </div>
@@ -73,7 +73,7 @@ export const CalendarWeekGrid = ({
                 {/* Day header */}
                 <button
                   onClick={() => onSelectDay(key)}
-                  className="w-full px-2 py-3 text-center border-b border-amber-100/20 dark:border-gray-800/40 hover:bg-amber-50/20 dark:hover:bg-amber-900/5 transition-colors"
+                  className="w-full px-2 py-3 text-center border-b border-amber-100/20 dark:border-gray-800/40 hover:bg-amber-900/15 dark:hover:bg-amber-900/5 transition-colors"
                 >
                   <div className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
                     {DAYS[idx]}
@@ -100,7 +100,7 @@ export const CalendarWeekGrid = ({
                         style={{ '--event-accent-color': accentColor } as React.CSSProperties}
                       >
                         <div className="pl-2">
-                          <p className="text-[11px] font-semibold text-gray-800 dark:text-gray-100 truncate">{ev.title}</p>
+                          <p className="text-[11px] font-semibold text-gray-100 dark:text-gray-100 truncate">{ev.title}</p>
                           <div className="flex items-center gap-1 mt-0.5">
                             {ev.type === 'trigger' ? (
                               <Clock size={9} className="text-amber-500 dark:text-amber-400" />

@@ -31,7 +31,7 @@ export default function DashboardLoading() {
         {/* Main grid skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
           <div className="lg:col-span-7">
-            <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
+            <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
               <div className="px-5 py-4" style={{ background: '#1e3a5f' }}>
                 <div className="skeleton h-4 w-32" />
               </div>
@@ -43,7 +43,7 @@ export default function DashboardLoading() {
             </div>
           </div>
           <div className="lg:col-span-5 space-y-4 lg:space-y-6">
-            <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
+            <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
               <div className="px-5 py-4" style={{ background: '#1e3a5f' }}>
                 <div className="skeleton h-4 w-28" />
               </div>
@@ -51,7 +51,7 @@ export default function DashboardLoading() {
                 <div className="skeleton h-32 w-full rounded-lg" />
               </div>
             </div>
-            <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
+            <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
               <div className="px-5 py-4" style={{ background: '#1e3a5f' }}>
                 <div className="skeleton h-4 w-36" />
               </div>

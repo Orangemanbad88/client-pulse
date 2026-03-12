@@ -42,7 +42,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
   const topMatches = localMatches.filter((m) => m.status === 'new' || m.status === 'sent').slice(0, 5);
 
   return (
-    <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
+    <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden flex-1">
       <div className="px-5 py-4 flex items-center justify-between" style={{ background: '#1e3a5f' }}>
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-5 rounded-full bg-gold-light" />
@@ -60,12 +60,12 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
         {topMatches.map((match) => {
           const isWeekly = match.price < 10000;
           return (
-            <div key={match.id} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors">
+            <div key={match.id} className="card-hover-slide px-5 py-4 hover:bg-amber-900/20 dark:hover:bg-amber-900/10 transition-colors">
               <div className="flex items-start gap-3">
                 <MatchScore score={match.matchScore} dark={dark} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{match.address}</span>
+                    <span className="text-sm font-bold text-gray-100 dark:text-gray-100">{match.address}</span>
                     <Badge variant={statusVariant(match.status)}>{match.status}</Badge>
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
@@ -77,7 +77,7 @@ export const DashboardMatches = ({ matches, onSend }: Props) => {
                   </div>
                   <div className="flex flex-wrap gap-1.5 mb-2">
                     {match.matchReasons.map((tag) => (
-                      <span key={tag} className="text-xs bg-amber-50/50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/60 dark:border-gold-muted/30 px-2 py-0.5 rounded-md">
+                      <span key={tag} className="text-xs bg-amber-900/30 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/60 dark:border-gold-muted/30 px-2 py-0.5 rounded-md">
                         {tag}
                       </span>
                     ))}

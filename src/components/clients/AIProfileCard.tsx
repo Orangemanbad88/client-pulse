@@ -65,7 +65,7 @@ export const AIProfileCard = ({ profile }: { profile: AIProfile | null }) => {
           <button
             disabled
             title="API key required"
-            className="text-[10px] font-medium px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+            className="text-[10px] font-medium px-2 py-1 rounded bg-gray-800 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed"
           >
             Regenerate
           </button>

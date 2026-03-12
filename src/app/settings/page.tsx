@@ -137,26 +137,26 @@ export default function SettingsPage() {
       <div className="px-4 lg:px-8 py-4 lg:py-6 space-y-6 max-w-3xl">
 
         {/* Integrations */}
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
-            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Integrations</h2>
+            <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">Integrations</h2>
           </div>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
                   <Calendar size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Google Calendar</p>
+                  <p className="text-sm font-medium text-gray-100 dark:text-gray-100">Google Calendar</p>
                   <p className="text-xs text-gray-400 dark:text-gray-400">Sync showings and appointments</p>
                 </div>
               </div>
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                 calendarConnected
                   ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-400'
+                  : 'bg-gray-800 dark:bg-gray-800 text-gray-400 dark:text-gray-400'
               }`}>
                 {calendarConnected ? 'Connected' : 'Not connected'}
               </span>
@@ -164,18 +164,18 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
                   <Database size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Data Source</p>
+                  <p className="text-sm font-medium text-gray-100 dark:text-gray-100">Data Source</p>
                   <p className="text-xs text-gray-400 dark:text-gray-400">Current backend connection</p>
                 </div>
               </div>
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                 dataSource === 'supabase'
                   ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
-                  : 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
+                  : 'bg-amber-900/30 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
               }`}>
                 {dataSource === 'supabase' ? 'Supabase' : 'Mock Data'}
               </span>
@@ -183,18 +183,18 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
                   <Mail size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Email (Resend)</p>
+                  <p className="text-sm font-medium text-gray-100 dark:text-gray-100">Email (Resend)</p>
                   <p className="text-xs text-gray-400 dark:text-gray-400">Fallback transactional email delivery</p>
                 </div>
               </div>
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                 resendConfigured
                   ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-400'
+                  : 'bg-gray-800 dark:bg-gray-800 text-gray-400 dark:text-gray-400'
               }`}>
                 {resendConfigured ? 'Configured' : 'Not configured'}
               </span>
@@ -203,11 +203,11 @@ export default function SettingsPage() {
             {/* Gmail Account */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
                   <Mail size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Gmail</p>
+                  <p className="text-sm font-medium text-gray-100 dark:text-gray-100">Gmail</p>
                   <p className="text-xs text-gray-400 dark:text-gray-400">
                     {gmailAccount ? gmailAccount.email : 'Send emails from your Gmail account'}
                   </p>
@@ -240,11 +240,11 @@ export default function SettingsPage() {
             {/* Outlook Account */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
                   <Mail size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Outlook</p>
+                  <p className="text-sm font-medium text-gray-100 dark:text-gray-100">Outlook</p>
                   <p className="text-xs text-gray-400 dark:text-gray-400">
                     {outlookAccount ? outlookAccount.email : 'Send emails from your Outlook account'}
                   </p>
@@ -276,11 +276,11 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
                   <Bell size={16} className="text-gold dark:text-gold-light" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Auto-Alerts</p>
+                  <p className="text-sm font-medium text-gray-100 dark:text-gray-100">Auto-Alerts</p>
                   <p className="text-xs text-gray-400 dark:text-gray-400">Email clients when new matches are found</p>
                 </div>
               </div>
@@ -290,7 +290,7 @@ export default function SettingsPage() {
                 className={`text-xs font-medium px-2.5 py-1 rounded-full cursor-pointer transition-colors disabled:opacity-50 ${
                   autoAlerts
                     ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-gray-800 dark:bg-gray-800 text-gray-400 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-700'
                 }`}
               >
                 {alertsToggling ? '...' : autoAlerts ? 'Enabled' : 'Disabled'}
@@ -300,24 +300,24 @@ export default function SettingsPage() {
         </div>
 
         {/* Agent Profile */}
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold-light" />
-            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Agent Profile</h2>
+            <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">Agent Profile</h2>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
               <User size={16} className="text-gold dark:text-gold-light" />
             </div>
             <div className="flex-1">
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Agent Name</label>
+              <label className="block text-xs font-medium text-gray-400 dark:text-gray-400 mb-1.5">Agent Name</label>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
                   value={agentName}
                   onChange={(e) => setAgentName(e.target.value)}
                   placeholder="e.g. Tom McCarthy"
-                  className="flex-1 px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                  className="flex-1 px-3 py-2 text-sm bg-[#1c3050] dark:bg-gray-800 border border-gray-700 dark:border-gray-700 rounded-lg text-gray-100 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                 />
                 <button
                   onClick={handleSaveName}
@@ -333,17 +333,17 @@ export default function SettingsPage() {
         </div>
 
         {/* Display */}
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
-            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Display</h2>
+            <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">Display</h2>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
               <Palette size={16} className="text-gold dark:text-gold-light" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Theme</p>
+              <p className="text-sm font-medium text-gray-100 dark:text-gray-100">Theme</p>
               <p className="text-xs text-gray-400 dark:text-gray-400">
                 Dark navy/charcoal + gold/amber accent on warm cream. Toggle dark mode from the sidebar.
               </p>

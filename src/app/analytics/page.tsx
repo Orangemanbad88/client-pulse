@@ -7,14 +7,14 @@ import { LIFECYCLE_LABELS } from '@/types/client';
 import { useDark } from '@/hooks/useDark';
 
 const StatCard = ({ label, value, change, positive, icon: Icon }: { label: string; value: string; change: string; positive: boolean; icon: typeof Users }) => (
-  <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-5 shadow-sm">
+  <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-5 shadow-sm">
     <div className="flex items-center justify-between mb-3">
       <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">{label}</span>
-      <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+      <div className="w-8 h-8 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
         <Icon size={16} className="text-gold dark:text-gold-light" />
       </div>
     </div>
-    <p className="text-2xl font-bold text-gray-800 dark:text-gray-100 font-data mb-1">{value}</p>
+    <p className="text-2xl font-bold text-gray-100 dark:text-gray-100 font-data mb-1">{value}</p>
     <div className="flex items-center gap-1">
       {positive ? (
         <ArrowUpRight size={14} className="text-emerald-500" />
@@ -29,13 +29,13 @@ const StatCard = ({ label, value, change, positive, icon: Icon }: { label: strin
 const BarSegment = ({ label, value, max, color }: { label: string; value: number; max: number; color: string }) => (
   <div className="flex items-center gap-3">
     <span className="text-xs text-gray-500 dark:text-gray-300 w-28 shrink-0 truncate">{label}</span>
-    <div className="flex-1 h-6 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700/50">
+    <div className="flex-1 h-6 rounded-full overflow-hidden bg-gray-800 dark:bg-gray-700/50">
       <div
         className="h-full rounded-full transition-all duration-700"
         style={{ width: `${Math.max((value / max) * 100, 8)}%`, backgroundColor: color }}
       />
     </div>
-    <span className="text-xs font-bold text-gray-800 dark:text-gray-100 font-data w-6 text-right">{value}</span>
+    <span className="text-xs font-bold text-gray-100 dark:text-gray-100 font-data w-6 text-right">{value}</span>
   </div>
 );
 
@@ -146,10 +146,10 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pipeline Distribution */}
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
-            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Pipeline Distribution</h2>
+            <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">Pipeline Distribution</h2>
           </div>
           <div className="space-y-3">
             {Object.entries(stageCounts).map(([label, value], i) => (
@@ -159,10 +159,10 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Client Types */}
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold-light" />
-            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Client Types</h2>
+            <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">Client Types</h2>
           </div>
           <div className="space-y-3">
             {Object.entries(typeCounts).map(([label, value], i) => (
@@ -172,10 +172,10 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Match Status Distribution */}
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
-            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Match Status Distribution</h2>
+            <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">Match Status Distribution</h2>
           </div>
           {Object.keys(matchStatusCounts).length > 0 ? (
             <div className="space-y-3">
@@ -189,10 +189,10 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Trigger Activity */}
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1.5 h-5 rounded-full bg-gold-light" />
-            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Trigger Activity</h2>
+            <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">Trigger Activity</h2>
           </div>
           {Object.keys(triggerStatusCounts).length > 0 ? (
             <div className="space-y-3">

@@ -22,7 +22,7 @@ export const MiniDonut = ({ segments, size = 120, dark }: { segments: { label: s
         })}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xl font-bold font-data text-gray-800 dark:text-gray-100">{total}</span>
+        <span className="text-xl font-bold font-data text-gray-100 dark:text-gray-100">{total}</span>
         <span className="text-xs text-gray-400 dark:text-gray-500">total</span>
       </div>
     </div>

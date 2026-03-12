@@ -436,7 +436,7 @@ export default function EmailPage() {
   const renderThreadDetail = () => {
     if (!selectedThread) return null;
     return (
-      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         {/* Header */}
         <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
           <button
@@ -457,12 +457,12 @@ export default function EmailPage() {
 
         {/* Subject */}
         <div className="px-5 py-3 border-b border-amber-100/30 dark:border-gray-800/60">
-          <h2 className="text-base font-bold text-gray-800 dark:text-gray-100">{selectedThread.subject}</h2>
+          <h2 className="text-base font-bold text-gray-100 dark:text-gray-100">{selectedThread.subject}</h2>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-xs text-gray-400">{selectedThread.messageCount} message{selectedThread.messageCount !== 1 ? 's' : ''}</span>
             {selectedThread.clientName && (
               <>
-                <span className="text-gray-300 dark:text-gray-600">·</span>
+                <span className="text-gray-300 dark:text-gray-400">·</span>
                 <span className="text-xs font-medium text-gold dark:text-gold-light">{selectedThread.clientName}</span>
               </>
             )}
@@ -474,12 +474,12 @@ export default function EmailPage() {
           {selectedThread.messages.map((msg, idx) => (
             <div key={msg.id} className="px-5 py-4">
               <div className="flex items-start gap-3 mb-2">
-                <div className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-[10px] font-bold text-gold dark:text-gold-light shrink-0">
+                <div className="w-8 h-8 rounded-full bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center text-[10px] font-bold text-gold dark:text-gold-light shrink-0">
                   {getInitials(msg.from.name || msg.from.email)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">
+                    <span className="text-sm font-semibold text-gray-100 dark:text-gray-100 truncate">
                       {msg.from.name || msg.from.email}
                     </span>
                     <span className="text-xs text-gray-400 shrink-0">{formatFullDate(msg.date)}</span>
@@ -497,7 +497,7 @@ export default function EmailPage() {
               </div>
               {idx === selectedThread.messages.length - 1 && !msg.isRead && (
                 <div className="pl-11 mt-2">
-                  <span className="inline-block text-[10px] font-medium text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-1.5 py-0.5 rounded">New</span>
+                  <span className="inline-block text-[10px] font-medium text-amber-600 dark:text-amber-400 bg-amber-900/30 dark:bg-amber-900/20 px-1.5 py-0.5 rounded">New</span>
                 </div>
               )}
             </div>
@@ -505,7 +505,7 @@ export default function EmailPage() {
         </div>
 
         {/* Reply box */}
-        <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 bg-gray-50/50 dark:bg-gray-900/80">
+        <div className="px-5 py-4 border-t border-amber-100/30 dark:border-gray-800/60 bg-[#152640]/50 dark:bg-gray-900/80">
           <div className="flex items-center gap-2 mb-2">
             <Reply size={13} className="text-gray-400" />
             <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Reply</span>
@@ -514,7 +514,7 @@ export default function EmailPage() {
             value={replyBody}
             onChange={(e) => setReplyBody(e.target.value)}
             rows={3}
-            className="w-full px-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
+            className="w-full px-3 py-2 text-sm bg-[#1c3050] dark:bg-gray-800 border border-gray-700 dark:border-gray-700 rounded-lg text-gray-100 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
             placeholder="Type your reply..."
           />
           {replyError && <p className="text-xs text-red-500 mt-1">{replyError}</p>}
@@ -536,7 +536,7 @@ export default function EmailPage() {
   const renderSentDetail = () => {
     if (!selectedSentItem) return null;
     return (
-      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
           <button
             onClick={() => setSelectedSentItem(null)}
@@ -546,13 +546,13 @@ export default function EmailPage() {
           </button>
         </div>
         <div className="p-5">
-          <h2 className="text-base font-bold text-gray-800 dark:text-gray-100 mb-3">{selectedSentItem.subject}</h2>
+          <h2 className="text-base font-bold text-gray-100 dark:text-gray-100 mb-3">{selectedSentItem.subject}</h2>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-9 h-9 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light">
+            <div className="w-9 h-9 rounded-full bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light">
               {getInitials(selectedSentItem.clientName)}
             </div>
             <div>
-              <Link href={`/clients/${selectedSentItem.clientId}`} className="text-sm font-semibold text-gray-800 dark:text-gray-100 hover:text-gold dark:hover:text-gold-light">
+              <Link href={`/clients/${selectedSentItem.clientId}`} className="text-sm font-semibold text-gray-100 dark:text-gray-100 hover:text-gold dark:hover:text-gold-light">
                 {selectedSentItem.clientName}
               </Link>
               <p className="text-xs text-gray-400">{formatFullDate(selectedSentItem.date)}</p>
@@ -570,16 +570,16 @@ export default function EmailPage() {
   const renderInboxList = () => {
     if (inboxLoading) {
       return (
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="px-5 py-4 animate-pulse">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-700 shrink-0" />
+                  <div className="w-9 h-9 rounded-full bg-gray-700 dark:bg-gray-700 shrink-0" />
                   <div className="flex-1 space-y-2">
-                    <div className="h-3.5 bg-gray-200 dark:bg-gray-700 rounded w-1/3" />
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
-                    <div className="h-2.5 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
+                    <div className="h-3.5 bg-gray-700 dark:bg-gray-700 rounded w-1/3" />
+                    <div className="h-3 bg-gray-700 dark:bg-gray-700 rounded w-2/3" />
+                    <div className="h-2.5 bg-gray-700 dark:bg-gray-700 rounded w-1/2" />
                   </div>
                 </div>
               </div>
@@ -591,7 +591,7 @@ export default function EmailPage() {
 
     if (needsReconnect) {
       return (
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <AlertTriangle size={32} className="text-amber-400 mx-auto mb-3" />
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Session expired</p>
@@ -605,7 +605,7 @@ export default function EmailPage() {
               </button>
               <button
                 onClick={handleConnectOutlook}
-                className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+                className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-800 dark:bg-gray-800 hover:bg-gray-700 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
               >
                 <Mail size={13} /> Reconnect Outlook
               </button>
@@ -617,7 +617,7 @@ export default function EmailPage() {
 
     if (inboxError && !needsReconnect) {
       return (
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <AlertTriangle size={32} className="text-red-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400 mb-3">{inboxError}</p>
@@ -634,7 +634,7 @@ export default function EmailPage() {
 
     if (inboxMessage && inboxThreads.length === 0) {
       return (
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <Inbox size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400 mb-3">{inboxMessage}</p>
@@ -648,7 +648,7 @@ export default function EmailPage() {
                 </button>
                 <button
                   onClick={handleConnectOutlook}
-                  className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+                  className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-gray-800 dark:bg-gray-800 hover:bg-gray-700 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
                 >
                   <Mail size={13} /> Connect Outlook
                 </button>
@@ -661,7 +661,7 @@ export default function EmailPage() {
 
     if (inboxThreads.length === 0) {
       return (
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <Inbox size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400">No client emails found</p>
@@ -671,18 +671,18 @@ export default function EmailPage() {
     }
 
     return (
-      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
           {inboxThreads.map((thread) => (
             <button
               key={thread.id}
               onClick={() => { setSelectedThread(thread); setReplyBody(''); setReplyError(''); }}
-              className={`w-full text-left px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors ${
-                !thread.isRead ? 'bg-amber-50/20 dark:bg-amber-900/5' : ''
+              className={`w-full text-left px-5 py-4 hover:bg-amber-900/20 dark:hover:bg-amber-900/10 transition-colors ${
+                !thread.isRead ? 'bg-amber-900/15 dark:bg-amber-900/5' : ''
               }`}
             >
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-full bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0 mt-0.5">
                   {getInitials(thread.clientName || thread.participants[0]?.name || '?')}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -692,7 +692,7 @@ export default function EmailPage() {
                     </span>
                     <div className="ml-auto flex items-center gap-2 shrink-0">
                       {thread.messageCount > 1 && (
-                        <span className="text-[10px] font-data text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full px-1.5 py-0.5">
+                        <span className="text-[10px] font-data text-gray-400 bg-gray-800 dark:bg-gray-800 rounded-full px-1.5 py-0.5">
                           {thread.messageCount}
                         </span>
                       )}
@@ -703,7 +703,7 @@ export default function EmailPage() {
                       <span className="text-xs text-gray-400 font-data">{formatDate(thread.lastMessageDate)}</span>
                     </div>
                   </div>
-                  <p className={`text-sm truncate mb-0.5 ${!thread.isRead ? 'font-semibold text-gray-800 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400'}`}>
+                  <p className={`text-sm truncate mb-0.5 ${!thread.isRead ? 'font-semibold text-gray-100 dark:text-gray-100' : 'text-gray-400 dark:text-gray-400'}`}>
                     {thread.subject}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{thread.snippet}</p>
@@ -720,7 +720,7 @@ export default function EmailPage() {
   const renderSentList = () => {
     if (sentEmails.length === 0) {
       return (
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <Send size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400 mb-3">No sent emails yet</p>
@@ -736,16 +736,16 @@ export default function EmailPage() {
     }
 
     return (
-      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
           {sentEmails.map((email) => (
             <button
               key={email.id}
               onClick={() => setSelectedSentItem(email)}
-              className="w-full text-left px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors"
+              className="w-full text-left px-5 py-4 hover:bg-amber-900/20 dark:hover:bg-amber-900/10 transition-colors"
             >
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-full bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0 mt-0.5">
                   {getInitials(email.clientName)}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -759,12 +759,12 @@ export default function EmailPage() {
                         onClick={(e) => { e.stopPropagation(); toggleStar(email.id); }}
                         className="p-0.5"
                       >
-                        <Star size={13} className={email.starred ? 'text-amber-400 fill-amber-400' : 'text-gray-300 dark:text-gray-600'} />
+                        <Star size={13} className={email.starred ? 'text-amber-400 fill-amber-400' : 'text-gray-300 dark:text-gray-400'} />
                       </button>
                       <span className="text-xs text-gray-400 font-data">{formatDate(email.date)}</span>
                     </div>
                   </div>
-                  <p className="text-sm truncate mb-0.5 text-gray-600 dark:text-gray-400">{email.subject}</p>
+                  <p className="text-sm truncate mb-0.5 text-gray-400 dark:text-gray-400">{email.subject}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{email.preview}</p>
                 </div>
               </div>
@@ -802,7 +802,7 @@ export default function EmailPage() {
 
     if (allItems.length === 0) {
       return (
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
           <div className="px-5 py-12 text-center">
             <Mail size={32} className="text-gray-300 dark:text-gray-400 mx-auto mb-3" />
             <p className="text-sm text-gray-400">No emails yet</p>
@@ -812,7 +812,7 @@ export default function EmailPage() {
     }
 
     return (
-      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
           {allItems.map((item) => {
             const name = item.type === 'thread'
@@ -838,12 +838,12 @@ export default function EmailPage() {
                     setSelectedThread(null);
                   }
                 }}
-                className={`w-full text-left px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors ${
-                  isUnread ? 'bg-amber-50/20 dark:bg-amber-900/5' : ''
+                className={`w-full text-left px-5 py-4 hover:bg-amber-900/20 dark:hover:bg-amber-900/10 transition-colors ${
+                  isUnread ? 'bg-amber-900/15 dark:bg-amber-900/5' : ''
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0 mt-0.5">
+                  <div className="w-9 h-9 rounded-full bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0 mt-0.5">
                     {getInitials(name)}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -853,10 +853,10 @@ export default function EmailPage() {
                       </span>
                       <div className="ml-auto flex items-center gap-2 shrink-0">
                         {item.type === 'sent' && (
-                          <span className="text-[10px] font-medium text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full px-1.5 py-0.5">Sent</span>
+                          <span className="text-[10px] font-medium text-gray-400 bg-gray-800 dark:bg-gray-800 rounded-full px-1.5 py-0.5">Sent</span>
                         )}
                         {item.type === 'thread' && (item.data as InboxThread).messageCount > 1 && (
-                          <span className="text-[10px] font-data text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full px-1.5 py-0.5">
+                          <span className="text-[10px] font-data text-gray-400 bg-gray-800 dark:bg-gray-800 rounded-full px-1.5 py-0.5">
                             {(item.data as InboxThread).messageCount}
                           </span>
                         )}
@@ -864,7 +864,7 @@ export default function EmailPage() {
                         <span className="text-xs text-gray-400 font-data">{formatDate(date)}</span>
                       </div>
                     </div>
-                    <p className={`text-sm truncate mb-0.5 ${isUnread ? 'font-semibold text-gray-800 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400'}`}>
+                    <p className={`text-sm truncate mb-0.5 ${isUnread ? 'font-semibold text-gray-100 dark:text-gray-100' : 'text-gray-400 dark:text-gray-400'}`}>
                       {subject}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{snippet}</p>
@@ -926,17 +926,17 @@ export default function EmailPage() {
                 onClick={() => { setFolder(f.id); setSelectedThread(null); setSelectedSentItem(null); }}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   folder === f.id
-                    ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
-                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50'
+                    ? 'bg-amber-900/30 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
+                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-700/50 dark:hover:bg-gray-700/50'
                 }`}
               >
                 <f.icon size={16} strokeWidth={folder === f.id ? 2 : 1.5} />
                 {f.label}
                 {f.id === 'inbox' && unreadCount > 0 && (
-                  <span className="ml-auto text-xs font-bold text-gold dark:text-gold-light bg-amber-50 dark:bg-amber-900/30 rounded-full px-1.5 py-0.5 font-data">{unreadCount}</span>
+                  <span className="ml-auto text-xs font-bold text-gold dark:text-gold-light bg-amber-900/30 dark:bg-amber-900/30 rounded-full px-1.5 py-0.5 font-data">{unreadCount}</span>
                 )}
                 {f.id === 'sent' && f.count > 0 && (
-                  <span className="ml-auto text-xs font-bold text-gold dark:text-gold-light bg-amber-50 dark:bg-amber-900/30 rounded-full px-1.5 py-0.5 font-data">{f.count}</span>
+                  <span className="ml-auto text-xs font-bold text-gold dark:text-gold-light bg-amber-900/30 dark:bg-amber-900/30 rounded-full px-1.5 py-0.5 font-data">{f.count}</span>
                 )}
               </button>
             ))}
@@ -953,9 +953,9 @@ export default function EmailPage() {
                 <button
                   key={client.id}
                   onClick={() => openCompose(`${client.firstName} ${client.lastName}`, client.id)}
-                  className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-amber-50/50 dark:hover:bg-amber-900/10 transition-colors"
+                  className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-gray-400 dark:text-gray-400 hover:bg-amber-900/30 dark:hover:bg-amber-900/10 transition-colors"
                 >
-                  <div className="w-5 h-5 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-[9px] font-bold text-gold dark:text-gold-light shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center text-[9px] font-bold text-gold dark:text-gold-light shrink-0">
                     {getInitials(`${client.firstName} ${client.lastName}`)}
                   </div>
                   <span className="truncate">{client.firstName} {client.lastName}</span>
@@ -973,7 +973,7 @@ export default function EmailPage() {
               onClick={() => { setFolder(f.id); setSelectedThread(null); setSelectedSentItem(null); }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 folder === f.id
-                  ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
+                  ? 'bg-amber-900/30 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
                   : 'text-gray-500 dark:text-gray-400'
               }`}
             >
@@ -994,20 +994,20 @@ export default function EmailPage() {
     {showCompose && (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => !sending && setShowCompose(false)} />
-        <div className="relative bg-[#faf7f2] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl overflow-hidden">
+        <div className="relative bg-[#162b48] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl overflow-hidden">
           {sendSuccess ? (
             <div className="px-5 py-12 text-center">
               <CheckCircle size={40} className="text-green-500 mx-auto mb-3" />
-              <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">Email sent successfully!</p>
+              <p className="text-sm font-semibold text-gray-100 dark:text-gray-100">Email sent successfully!</p>
             </div>
           ) : (
             <>
               <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-1.5 h-5 rounded-full bg-gold" />
-                  <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">New Email</h2>
+                  <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">New Email</h2>
                 </div>
-                <button onClick={() => setShowCompose(false)} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <button onClick={() => setShowCompose(false)} className="p-1.5 rounded-md hover:bg-gray-700/50 dark:hover:bg-gray-800 transition-colors">
                   <X size={16} className="text-gray-400" />
                 </button>
               </div>
@@ -1025,8 +1025,8 @@ export default function EmailPage() {
                       onClick={() => applyTemplate(tpl)}
                       className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
                         selectedTemplate === tpl.name
-                          ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light dark:border-gold-muted/30'
-                          : 'bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          ? 'bg-amber-900/30 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light dark:border-gold-muted/30'
+                          : 'bg-[#1c3050] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-700 dark:border-gray-700 hover:bg-gray-700/50 dark:hover:bg-gray-700'
                       }`}
                     >
                       {tpl.name}
@@ -1037,7 +1037,7 @@ export default function EmailPage() {
 
               <div className="p-5 space-y-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">To</label>
+                  <label className="block text-xs font-medium text-gray-400 dark:text-gray-400 mb-1.5">To</label>
                   <input
                     type="text"
                     value={composeTo}
@@ -1047,7 +1047,7 @@ export default function EmailPage() {
                       if (match) setComposeToClientId(match.id);
                     }}
                     list="client-list"
-                    className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                    className="w-full px-3 py-2 text-sm bg-[#1c3050] dark:bg-gray-800 border border-gray-700 dark:border-gray-700 rounded-lg text-gray-100 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                     placeholder="Client name"
                   />
                   <datalist id="client-list">
@@ -1057,22 +1057,22 @@ export default function EmailPage() {
                   </datalist>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Subject</label>
+                  <label className="block text-xs font-medium text-gray-400 dark:text-gray-400 mb-1.5">Subject</label>
                   <input
                     type="text"
                     value={composeSubject}
                     onChange={(e) => setComposeSubject(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+                    className="w-full px-3 py-2 text-sm bg-[#1c3050] dark:bg-gray-800 border border-gray-700 dark:border-gray-700 rounded-lg text-gray-100 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                     placeholder="Email subject"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Message</label>
+                  <label className="block text-xs font-medium text-gray-400 dark:text-gray-400 mb-1.5">Message</label>
                   <textarea
                     value={composeBody}
                     onChange={(e) => setComposeBody(e.target.value)}
                     rows={10}
-                    className="w-full px-3 py-2 text-sm bg-[#f5f0e8] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
+                    className="w-full px-3 py-2 text-sm bg-[#1c3050] dark:bg-gray-800 border border-gray-700 dark:border-gray-700 rounded-lg text-gray-100 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold resize-none"
                     placeholder="Write your message..."
                   />
                 </div>
@@ -1090,7 +1090,7 @@ export default function EmailPage() {
                   <button
                     onClick={() => setShowCompose(false)}
                     disabled={sending}
-                    className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 px-4 py-2 rounded-lg transition-colors"
+                    className="text-xs font-medium text-gray-400 dark:text-gray-300 bg-gray-800 dark:bg-gray-800 hover:bg-gray-700 dark:hover:bg-gray-700 disabled:opacity-50 px-4 py-2 rounded-lg transition-colors"
                   >
                     Discard
                   </button>

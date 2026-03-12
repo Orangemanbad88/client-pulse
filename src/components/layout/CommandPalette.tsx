@@ -31,7 +31,7 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
       id: c.id,
       label: getClientName(c),
       sublabel: `${c.clientType} · ${LIFECYCLE_LABELS[c.lifecycleStage]}`,
-      icon: <div className="w-5 h-5 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-[9px] font-bold text-gold dark:text-gold-light">{getInitials(c.firstName, c.lastName)}</div>,
+      icon: <div className="w-5 h-5 rounded-full bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center text-[9px] font-bold text-gold dark:text-gold-light">{getInitials(c.firstName, c.lastName)}</div>,
       action: () => { router.push(`/clients/${c.id}`); onClose(); },
     })),
   ];
@@ -56,7 +56,7 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[18vh]" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="relative w-[520px] max-h-[380px] bg-[#faf7f2] dark:bg-gray-900border border-amber-200/25 dark:border-gray-800 rounded-xl overflow-hidden shadow-2xl"
+        className="relative w-[520px] max-h-[380px] bg-[#162b48] dark:bg-gray-900border border-amber-200/25 dark:border-gray-800 rounded-xl overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-2 px-4 border-b border-amber-100/30 dark:border-gray-800">
@@ -67,9 +67,9 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onKeyDown}
             placeholder="Search clients, navigate..."
-            className="flex-1 py-3 bg-transparent text-sm outline-none text-gray-800 dark:text-gray-100 placeholder:text-gray-400"
+            className="flex-1 py-3 bg-transparent text-sm outline-none text-gray-100 dark:text-gray-100 placeholder:text-gray-400"
           />
-          <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-400 border border-gray-200 dark:border-gray-700">ESC</kbd>
+          <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gray-800 dark:bg-gray-800 text-gray-400 border border-gray-700 dark:border-gray-700">ESC</kbd>
         </div>
         <div className="max-h-[310px] overflow-y-auto p-1.5">
           {filtered.length === 0 && (
@@ -83,13 +83,13 @@ export const CommandPalette = ({ isOpen, onClose, clients }: CommandPaletteProps
               onClick={item.action}
               className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                 idx === activeIdx
-                  ? 'bg-amber-50 dark:bg-amber-900/20'
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                  ? 'bg-amber-900/30 dark:bg-amber-900/20'
+                  : 'hover:bg-[#1c3050] dark:hover:bg-gray-800/50'
               }`}
             >
               <span className={idx === activeIdx ? 'text-gold dark:text-gold-light' : 'text-gray-400'}>{item.icon}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-medium truncate text-gray-800 dark:text-gray-100">{item.label}</p>
+                <p className="text-[13px] font-medium truncate text-gray-100 dark:text-gray-100">{item.label}</p>
                 <p className="text-[11px] truncate text-gray-400 dark:text-gray-500">{item.sublabel}</p>
               </div>
               {idx === activeIdx && (

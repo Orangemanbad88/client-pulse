@@ -15,7 +15,7 @@ export default function CalendarLoading() {
         </div>
       </div>
       <div className="px-4 lg:px-8 py-4 lg:py-6">
-        <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
+        <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 overflow-hidden">
           {/* Calendar header row */}
           <div className="grid grid-cols-7 gap-px border-b border-amber-200/25 dark:border-gray-800/60">
             {Array.from({ length: 7 }).map((_, i) => (

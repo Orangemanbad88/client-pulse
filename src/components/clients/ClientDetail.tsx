@@ -191,7 +191,7 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
                   'flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-full transition-colors disabled:opacity-50',
                   alertsEnabled
                     ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500',
+                    : 'bg-gray-800 dark:bg-gray-800 text-gray-400 dark:text-gray-500',
                 )}
               >
                 <Bell size={10} />
@@ -315,7 +315,7 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
                         <button
                           disabled={triggerLoading === t.id}
                           onClick={() => handleTriggerAction(t.id, 'dismissed')}
-                          className={cn('text-[11px] font-medium px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors', triggerLoading === t.id && 'opacity-50 cursor-wait')}
+                          className={cn('text-[11px] font-medium px-2 py-1 rounded bg-gray-800 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors', triggerLoading === t.id && 'opacity-50 cursor-wait')}
                         >
                           Dismiss
                         </button>
@@ -418,17 +418,17 @@ export const ClientDetail = ({ client: initialClient, preferences: initialPrefs,
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => !deleting && setShowDeleteConfirm(false)}>
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-          <div className="relative bg-[#faf7f2] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-sm p-6 text-center" onClick={(e) => e.stopPropagation()}>
+          <div className="relative bg-[#162b48] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-sm p-6 text-center" onClick={(e) => e.stopPropagation()}>
             <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center mx-auto mb-4">
               <Trash2 size={20} className="text-red-500" />
             </div>
-            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-100 mb-2">Delete {getClientName(client)}?</h3>
+            <h3 className="text-sm font-bold text-gray-100 dark:text-gray-100 mb-2">Delete {getClientName(client)}?</h3>
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-5">This will permanently remove the client and all associated data. This cannot be undone.</p>
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
                 disabled={deleting}
-                className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 px-4 py-2 rounded-lg transition-colors"
+                className="text-xs font-medium text-gray-400 dark:text-gray-300 bg-gray-800 dark:bg-gray-800 hover:bg-gray-700 dark:hover:bg-gray-700 disabled:opacity-50 px-4 py-2 rounded-lg transition-colors"
               >
                 Cancel
               </button>

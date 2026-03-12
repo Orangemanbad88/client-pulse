@@ -44,7 +44,7 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
   };
 
   return (
-    <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+    <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
       <div className="px-5 py-4 flex items-center justify-between rounded-t-xl" style={{ background: '#1e3a5f' }}>
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-5 rounded-full bg-gold-light" />
@@ -66,7 +66,7 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
           const variant = urgencyToBadgeVariant(trigger.urgency);
           const days = daysLeft(trigger.fireDate);
           return (
-            <div key={trigger.id} className="card-hover-slide px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors group">
+            <div key={trigger.id} className="card-hover-slide px-5 py-4 hover:bg-amber-900/20 dark:hover:bg-amber-900/10 transition-colors group">
               <div className="flex items-start gap-3">
                 <Avatar name={trigger.clientName} size={38} />
                 <div className="flex-1 min-w-0">
@@ -74,12 +74,12 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
                     <Badge variant={variant}>{trigger.urgency}</Badge>
                     <span className="text-sm font-semibold text-gold-muted dark:text-gold-light">{trigger.clientName}</span>
                     <div className="ml-auto flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"><Phone size={13} className="text-gray-400" /></button>
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"><Mail size={13} className="text-gray-400" /></button>
-                      <button className="p-1.5 rounded-md hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-amber-900/30 dark:hover:bg-amber-900/20 transition-colors"><Phone size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-amber-900/30 dark:hover:bg-amber-900/20 transition-colors"><Mail size={13} className="text-gray-400" /></button>
+                      <button className="p-1.5 rounded-md hover:bg-amber-900/30 dark:hover:bg-amber-900/20 transition-colors"><MessageSquare size={13} className="text-gray-400" /></button>
                     </div>
                   </div>
-                  <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-1">{trigger.title}</p>
+                  <p className="text-sm font-semibold text-gray-100 dark:text-gray-100 mb-1">{trigger.title}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-2.5">{trigger.description}</p>
 
                   <div className="flex items-center gap-2 mb-3">
@@ -99,7 +99,7 @@ export const DashboardActions = ({ triggers, onComplete }: Props) => {
                       disabled={loading === trigger.id}
                       onClick={() => handleDone(trigger.id)}
                       className={cn(
-                        'flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors active:scale-[0.97]',
+                        'flex items-center gap-1.5 text-xs font-medium text-gray-400 dark:text-gray-300 bg-gray-800 dark:bg-gray-800 hover:bg-gray-700 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors active:scale-[0.97]',
                         loading === trigger.id && 'opacity-50 cursor-wait',
                       )}
                     >

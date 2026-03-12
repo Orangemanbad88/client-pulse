@@ -271,12 +271,12 @@ export default function PropertiesPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by address, city, or zip..."
-            className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-md border border-amber-200/25 dark:border-gray-800/60 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all"
+            className="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-md border border-amber-200/25 dark:border-gray-800/60 text-gray-100 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all"
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors"
             >
               <X size={14} className="text-gray-400" />
             </button>
@@ -296,7 +296,7 @@ export default function PropertiesPage() {
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 ${
                 listingTypeFilter === t.key
                   ? 'bg-gold text-white shadow-sm shadow-gold/20'
-                  : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                  : 'text-gray-500 dark:text-gray-400 hover:bg-gray-700/50 dark:hover:bg-gray-800/50'
               }`}
             >
               {t.label}
@@ -314,8 +314,8 @@ export default function PropertiesPage() {
                 onClick={() => setFilter(f)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
                   filter === f
-                    ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
-                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                    ? 'bg-amber-900/30 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-700/50 dark:hover:bg-gray-800/50'
                 }`}
               >
                 {f === 'all' ? 'All' : f}
@@ -328,8 +328,8 @@ export default function PropertiesPage() {
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
               showFilters || activeFiltersCount > 0
-                ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
-                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                ? 'bg-amber-900/30 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light shadow-sm'
+                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-700/50 dark:hover:bg-gray-800/50'
             }`}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
@@ -343,7 +343,7 @@ export default function PropertiesPage() {
 
         {/* Filter panel */}
         {showFilters && (
-          <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm">
+          <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 p-4 shadow-sm">
             <div className="flex flex-wrap items-end gap-4">
               {/* Bedrooms */}
               <div className="flex-1 min-w-[140px]">
@@ -353,7 +353,7 @@ export default function PropertiesPage() {
                 <select
                   value={bedFilter ?? ''}
                   onChange={(e) => setBedFilter(e.target.value ? Number(e.target.value) : null)}
-                  className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-[#1c3050] dark:bg-gray-800 border border-gray-700 dark:border-gray-700 text-gray-100 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">Any</option>
                   {bedOptions.map((b) => (
@@ -370,7 +370,7 @@ export default function PropertiesPage() {
                 <select
                   value={bathFilter ?? ''}
                   onChange={(e) => setBathFilter(e.target.value ? Number(e.target.value) : null)}
-                  className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-[#1c3050] dark:bg-gray-800 border border-gray-700 dark:border-gray-700 text-gray-100 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">Any</option>
                   {bathOptions.map((b) => (
@@ -387,7 +387,7 @@ export default function PropertiesPage() {
                 <select
                   value={townFilter ?? ''}
                   onChange={(e) => setTownFilter(e.target.value || null)}
-                  className="w-full px-3 py-2 rounded-lg text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-[#1c3050] dark:bg-gray-800 border border-gray-700 dark:border-gray-700 text-gray-100 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/40 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">All Towns</option>
                   {towns.map((t) => (
@@ -411,25 +411,25 @@ export default function PropertiesPage() {
             {activeFiltersCount > 0 && (
               <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
                 {search.trim() && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-900/40 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
                     &ldquo;{search}&rdquo;
                     <button onClick={() => setSearch('')} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
                 )}
                 {bedFilter !== null && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-900/40 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
                     {bedFilter}+ beds
                     <button onClick={() => setBedFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
                 )}
                 {bathFilter !== null && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-900/40 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
                     {bathFilter}+ baths
                     <button onClick={() => setBathFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
                 )}
                 {townFilter && (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-900/40 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20">
                     {townFilter}
                     <button onClick={() => setTownFilter(null)} className="hover:text-red-500 transition-colors"><X size={11} /></button>
                   </span>
@@ -467,11 +467,11 @@ export default function PropertiesPage() {
             {featured && (
               <div ref={heroRef} className="relative group">
                 <div
-                  className="relative overflow-hidden rounded-2xl border border-amber-200/30 dark:border-gray-700/60 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-lg shadow-gold/5 dark:shadow-black/20 transition-all duration-500"
+                  className="relative overflow-hidden rounded-2xl border border-amber-200/30 dark:border-gray-700/60 bg-[#162b48]/70 dark:bg-gray-900/70 backdrop-blur-md shadow-lg shadow-gold/5 dark:shadow-black/20 transition-all duration-500"
                 >
                   <div className="flex flex-col lg:flex-row">
                     {/* Photo */}
-                    <div className="relative lg:w-[420px] h-[240px] lg:h-[320px] flex-shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                    <div className="relative lg:w-[420px] h-[240px] lg:h-[320px] flex-shrink-0 overflow-hidden bg-gray-800 dark:bg-gray-800">
                       {getPhotoUrl(featured) ? (
                         <Image
                           key={featured.id}
@@ -523,7 +523,7 @@ export default function PropertiesPage() {
                         </div>
 
                         {/* Address */}
-                        <h2 className="text-base lg:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-0.5">
+                        <h2 className="text-base lg:text-lg font-semibold text-gray-100 dark:text-gray-100 mb-0.5">
                           {featured.address}
                         </h2>
                         <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 mb-4">
@@ -533,25 +533,25 @@ export default function PropertiesPage() {
 
                         {/* Stats row */}
                         <div className="flex items-center gap-5 mb-4">
-                          <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                          <div className="flex items-center gap-1.5 text-sm text-gray-400 dark:text-gray-300">
                             <Bed size={16} className="text-gray-400" />
                             <span className="font-data font-semibold">{featured.bedrooms}</span>
                             <span className="text-xs text-gray-400">beds</span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                          <div className="flex items-center gap-1.5 text-sm text-gray-400 dark:text-gray-300">
                             <Bath size={16} className="text-gray-400" />
                             <span className="font-data font-semibold">{featured.bathrooms}</span>
                             <span className="text-xs text-gray-400">baths</span>
                           </div>
                           {featured.listingType === 'rental' && featured.sleeps > 0 && (
-                            <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                            <div className="flex items-center gap-1.5 text-sm text-gray-400 dark:text-gray-300">
                               <Users size={16} className="text-gray-400" />
                               <span className="font-data font-semibold">{featured.sleeps}</span>
                               <span className="text-xs text-gray-400">sleeps</span>
                             </div>
                           )}
                           {featured.listingType === 'for_sale' && featured.sqft > 0 && (
-                            <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
+                            <div className="flex items-center gap-1.5 text-sm text-gray-400 dark:text-gray-300">
                               <Building2 size={16} className="text-gray-400" />
                               <span className="font-data font-semibold">{featured.sqft.toLocaleString()}</span>
                               <span className="text-xs text-gray-400">sqft</span>
@@ -561,7 +561,7 @@ export default function PropertiesPage() {
 
                         {/* Tags */}
                         <div className="flex flex-wrap gap-2">
-                          <span className="text-xs px-2.5 py-1 rounded-lg bg-amber-50/80 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20 font-medium">
+                          <span className="text-xs px-2.5 py-1 rounded-lg bg-amber-900/40 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light border border-gold-light/40 dark:border-gold-muted/20 font-medium">
                             {featured.propertyType}
                           </span>
                           <span className={`text-xs px-2.5 py-1 rounded-lg font-medium ${
@@ -572,7 +572,7 @@ export default function PropertiesPage() {
                             {featured.listingType === 'rental' ? 'Rental' : 'For Sale'}
                           </span>
                           {featured.photos.length > 1 && (
-                            <span className="text-xs px-2.5 py-1 rounded-lg bg-[#f5f0e8] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200/40 dark:border-gray-700/40">
+                            <span className="text-xs px-2.5 py-1 rounded-lg bg-[#1c3050] dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-700/40 dark:border-gray-700/40">
                               {featured.photos.length} photos
                             </span>
                           )}
@@ -603,13 +603,13 @@ export default function PropertiesPage() {
                 {/* Nav arrows */}
                 <button
                   onClick={prev}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center text-gray-600 dark:text-gray-300 opacity-0 group-hover:opacity-100 hover:scale-110 transition-all duration-300"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#1c3050]/90 dark:bg-gray-800/90 shadow-lg border border-gray-700/50 dark:border-gray-700/50 flex items-center justify-center text-gray-400 dark:text-gray-300 opacity-0 group-hover:opacity-100 hover:scale-110 transition-all duration-300"
                 >
                   <ChevronLeft size={18} />
                 </button>
                 <button
                   onClick={next}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center text-gray-600 dark:text-gray-300 opacity-0 group-hover:opacity-100 hover:scale-110 transition-all duration-300"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#1c3050]/90 dark:bg-gray-800/90 shadow-lg border border-gray-700/50 dark:border-gray-700/50 flex items-center justify-center text-gray-400 dark:text-gray-300 opacity-0 group-hover:opacity-100 hover:scale-110 transition-all duration-300"
                 >
                   <ChevronRight size={18} />
                 </button>
@@ -635,12 +635,12 @@ export default function PropertiesPage() {
                     className={`group/card cursor-pointer rounded-xl border overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.01] ${
                       i === activeIndex
                         ? 'border-gold/40 dark:border-gold-light/30 shadow-md shadow-gold/10 ring-1 ring-gold/20'
-                        : 'border-amber-200/25 dark:border-gray-800/60 bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-md shadow-sm hover:shadow-gold/10'
+                        : 'border-amber-200/25 dark:border-gray-800/60 bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-md shadow-sm hover:shadow-gold/10'
                     }`}
                     style={{ animationDelay: `${i * 40}ms` }}
                   >
                     {/* Thumbnail */}
-                    <div className="relative h-36 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                    <div className="relative h-36 overflow-hidden bg-gray-800 dark:bg-gray-800">
                       {getPhotoUrl(listing) ? (
                         <Image
                           src={getPhotoUrl(listing)}
@@ -672,7 +672,7 @@ export default function PropertiesPage() {
 
                     {/* Card body */}
                     <div className="p-3.5">
-                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate mb-0.5">
+                      <p className="text-sm font-semibold text-gray-100 dark:text-gray-100 truncate mb-0.5">
                         {listing.address}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mb-2.5">
@@ -716,7 +716,7 @@ export default function PropertiesPage() {
                 <div className="flex justify-center mt-6">
                   <button
                     onClick={() => setVisibleCount((c) => c + 9)}
-                    className="px-5 py-2.5 rounded-xl text-sm font-medium text-gold dark:text-gold-light bg-amber-50/80 dark:bg-amber-900/15 border border-gold-light/30 dark:border-gold-muted/20 hover:bg-amber-100/80 dark:hover:bg-amber-900/25 hover:border-gold/40 transition-all duration-300 hover:shadow-md hover:shadow-gold/10"
+                    className="px-5 py-2.5 rounded-xl text-sm font-medium text-gold dark:text-gold-light bg-amber-900/40 dark:bg-amber-900/15 border border-gold-light/30 dark:border-gold-muted/20 hover:bg-amber-100/80 dark:hover:bg-amber-900/25 hover:border-gold/40 transition-all duration-300 hover:shadow-md hover:shadow-gold/10"
                   >
                     Show More
                     <span className="ml-2 text-xs text-gray-400 font-data">

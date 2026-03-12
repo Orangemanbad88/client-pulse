@@ -133,14 +133,14 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-[#faf7f2] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+      <div className="relative bg-[#162b48] dark:bg-gray-900 rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-1.5 h-5 rounded-full bg-gold" />
-            <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight">Import Clients from CSV</h2>
+            <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight">Import Clients from CSV</h2>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-md hover:bg-gray-700/50 dark:hover:bg-gray-800 transition-colors">
             <X size={16} className="text-gray-400" />
           </button>
         </div>
@@ -152,14 +152,14 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                 step >= s
                   ? 'bg-gold text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-400'
+                  : 'bg-gray-800 dark:bg-gray-800 text-gray-400'
               }`}>
                 {step > s ? <Check size={12} /> : s}
               </div>
-              <span className={`text-xs font-medium ${step >= s ? 'text-gray-800 dark:text-gray-100' : 'text-gray-400'}`}>
+              <span className={`text-xs font-medium ${step >= s ? 'text-gray-100 dark:text-gray-100' : 'text-gray-400'}`}>
                 {s === 1 ? 'Upload' : s === 2 ? 'Map Columns' : 'Preview'}
               </span>
-              {s < 3 && <ChevronRight size={14} className="text-gray-300 dark:text-gray-600 mx-1" />}
+              {s < 3 && <ChevronRight size={14} className="text-gray-300 dark:text-gray-400 mx-1" />}
             </div>
           ))}
         </div>
@@ -174,12 +174,12 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               onDrop={handleDrop}
               className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors ${
                 dragOver
-                  ? 'border-gold bg-amber-50/30 dark:bg-amber-900/10'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-gold-light dark:hover:border-gold-muted'
+                  ? 'border-gold bg-amber-900/20 dark:bg-amber-900/10'
+                  : 'border-gray-700 dark:border-gray-700 hover:border-gold-light dark:hover:border-gold-muted'
               }`}
             >
               <FileSpreadsheet size={40} className="text-gold mx-auto mb-4" />
-              <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-1">Drag & drop your CSV file here</p>
+              <p className="text-sm font-semibold text-gray-100 dark:text-gray-100 mb-1">Drag & drop your CSV file here</p>
               <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">or click to browse</p>
               <input ref={fileRef} type="file" accept=".csv" onChange={handleInputChange} className="hidden" />
               <button
@@ -204,10 +204,10 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               </p>
               {csvHeaders.map((header, idx) => (
                 <div key={idx} className="flex items-center gap-3">
-                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400 w-40 truncate shrink-0" title={header}>
+                  <span className="text-xs font-medium text-gray-400 dark:text-gray-400 w-40 truncate shrink-0" title={header}>
                     {header}
                   </span>
-                  <ChevronRight size={14} className="text-gray-300 dark:text-gray-600 shrink-0" />
+                  <ChevronRight size={14} className="text-gray-300 dark:text-gray-400 shrink-0" />
                   <select
                     value={columnMapping[idx] || ''}
                     onChange={(e) => {
@@ -223,8 +223,8 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                     }}
                     className={`flex-1 px-3 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold ${
                       columnMapping[idx]
-                        ? 'bg-amber-50/50 dark:bg-amber-900/10 border-gold-light dark:border-gold-muted/30 text-gold-muted dark:text-gold-light'
-                        : 'bg-[#f5f0e8] dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400'
+                        ? 'bg-amber-900/30 dark:bg-amber-900/10 border-gold-light dark:border-gold-muted/30 text-gold-muted dark:text-gold-light'
+                        : 'bg-[#1c3050] dark:bg-gray-800 border-gray-700 dark:border-gray-700 text-gray-400 dark:text-gray-400'
                     }`}
                   >
                     <option value="">— Skip —</option>
@@ -248,9 +248,9 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
               <div className="overflow-x-auto rounded-lg border border-amber-200/25 dark:border-gray-800/60">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="bg-[#f5f0e8] dark:bg-gray-800">
+                    <tr className="bg-[#1c3050] dark:bg-gray-800">
                       {Object.values(columnMapping).map((field) => (
-                        <th key={field} className="px-3 py-2 text-left font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">
+                        <th key={field} className="px-3 py-2 text-left font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">
                           {COLUMN_LABELS[field] || field}
                         </th>
                       ))}
@@ -258,7 +258,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                   </thead>
                   <tbody className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
                     {previewRows.map((row, i) => (
-                      <tr key={i} className="hover:bg-amber-50/20 dark:hover:bg-amber-900/5">
+                      <tr key={i} className="hover:bg-amber-900/15 dark:hover:bg-amber-900/5">
                         {Object.values(columnMapping).map((field) => (
                           <td key={field} className="px-3 py-2 text-gray-700 dark:text-gray-300 whitespace-nowrap max-w-[200px] truncate">
                             {row[field] || '—'}
@@ -282,7 +282,7 @@ export const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
             {step > 1 && (
               <button
                 onClick={() => setStep((s) => (s - 1) as 1 | 2 | 3)}
-                className="text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+                className="text-xs font-medium text-gray-400 dark:text-gray-300 bg-gray-800 dark:bg-gray-800 hover:bg-gray-700 dark:hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
               >
                 Back
               </button>

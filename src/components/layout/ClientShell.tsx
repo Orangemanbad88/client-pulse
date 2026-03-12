@@ -64,7 +64,7 @@ export const ClientShell = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <div className={`flex h-screen bg-dot-grid text-gray-800 dark:text-gray-200`} style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", background: dark ? undefined : 'linear-gradient(145deg, #faf8f5 0%, #f5f0e8 40%, #faf5ee 70%, #f7f5f0 100%)' }}>
+      <div className={`flex h-screen bg-dot-grid text-gray-100 dark:text-gray-200`} style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", background: dark ? undefined : 'linear-gradient(145deg, #0f1d32 0%, #152640 40%, #0f1d32 70%, #132a4a 100%)' }}>
         {/* Mobile Sidebar Overlay */}
         {sidebarOpen && (
           <div className="fixed inset-0 z-40 lg:hidden" onClick={() => setSidebarOpen(false)}>

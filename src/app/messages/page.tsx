@@ -101,8 +101,8 @@ export default function MessagesPage() {
             onClick={() => setFilter(f)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               filter === f
-                ? 'bg-amber-50 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
-                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50'
+                ? 'bg-amber-900/30 dark:bg-amber-900/20 text-gold-muted dark:text-gold-light'
+                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-700/50 dark:hover:bg-gray-700/50'
             }`}
           >
             {f !== 'all' && typeIcon(f)}
@@ -113,22 +113,22 @@ export default function MessagesPage() {
       </div>
 
       {/* Message list */}
-      <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+      <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
         <div className="divide-y divide-amber-100/30 dark:divide-gray-800/60">
           {filtered.map((msg) => {
             const timeAgo = formatRelativeDate(msg.timestamp);
 
             return (
-              <div key={msg.id} className="px-5 py-4 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-colors group">
+              <div key={msg.id} className="px-5 py-4 hover:bg-amber-900/20 dark:hover:bg-amber-900/10 transition-colors group">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center text-xs font-bold text-gold dark:text-gold-light shrink-0">
                     {getInitials(msg.clientId)}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <Link
                         href={`/clients/${msg.clientId}`}
-                        className="text-sm font-semibold text-gray-800 dark:text-gray-100 hover:text-gold dark:hover:text-gold-light transition-colors"
+                        className="text-sm font-semibold text-gray-100 dark:text-gray-100 hover:text-gold dark:hover:text-gold-light transition-colors"
                       >
                         {getClientName(msg.clientId)}
                       </Link>

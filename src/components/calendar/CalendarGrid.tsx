@@ -54,21 +54,21 @@ export const CalendarGrid = ({
   const slideClass = slideDirection === 'left' ? 'animate-slide-left' : slideDirection === 'right' ? 'animate-slide-right' : '';
 
   return (
-    <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+    <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
       {/* Month navigation */}
       <div className="px-5 py-4 border-b border-amber-100/30 dark:border-gray-800/60 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={onPrevMonth} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
+          <button onClick={onPrevMonth} className="p-1.5 rounded-md hover:bg-gray-700/50 dark:hover:bg-gray-700/50 transition-colors">
             <ChevronLeft size={16} className="text-gray-500 dark:text-gray-400" />
           </button>
-          <h2 className="text-sm font-bold text-gray-800 dark:text-gray-100 tracking-tight min-w-[160px] text-center">
+          <h2 className="text-sm font-bold text-gray-100 dark:text-gray-100 tracking-tight min-w-[160px] text-center">
             {MONTHS[currentMonth.getMonth()]} {currentMonth.getFullYear()}
           </h2>
-          <button onClick={onNextMonth} className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
+          <button onClick={onNextMonth} className="p-1.5 rounded-md hover:bg-gray-700/50 dark:hover:bg-gray-700/50 transition-colors">
             <ChevronRight size={16} className="text-gray-500 dark:text-gray-400" />
           </button>
         </div>
-        <button onClick={onGoToday} className="text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light px-2 py-1 rounded hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors">
+        <button onClick={onGoToday} className="text-xs text-gold dark:text-gold-light font-medium hover:text-gold-muted dark:hover:text-gold-light px-2 py-1 rounded hover:bg-amber-900/30 dark:hover:bg-amber-900/20 transition-colors">
           Today
         </button>
       </div>
@@ -100,8 +100,8 @@ export const CalendarGrid = ({
                 onClick={() => onSelectDay(isSelected ? null : key)}
                 className={`relative min-h-[80px] lg:min-h-[90px] p-1.5 border-b border-r border-amber-100/20 dark:border-gray-800/40 text-left transition-colors ${
                   isSelected
-                    ? 'bg-amber-50/50 dark:bg-amber-900/20'
-                    : 'hover:bg-amber-50/20 dark:hover:bg-amber-900/5'
+                    ? 'bg-amber-900/30 dark:bg-amber-900/20'
+                    : 'hover:bg-amber-900/15 dark:hover:bg-amber-900/5'
                 } ${!isCurrentMonth ? 'opacity-40' : ''}`}
               >
                 <span className={`text-xs font-medium inline-flex items-center justify-center w-6 h-6 rounded-full ${
@@ -109,7 +109,7 @@ export const CalendarGrid = ({
                     ? 'bg-gold text-white font-bold'
                     : isSelected
                     ? 'text-gold-muted dark:text-gold-light font-bold'
-                    : 'text-gray-600 dark:text-gray-400'
+                    : 'text-gray-400 dark:text-gray-400'
                 }`}>
                   {date.getDate()}
                 </span>

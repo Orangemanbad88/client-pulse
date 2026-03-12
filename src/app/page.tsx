@@ -139,10 +139,10 @@ export default function DashboardPage() {
         {/* Metric Cards */}
         <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-4 lg:mb-6 ${mounted ? 'stagger-children' : ''}`}>
           {metricCards.map((card) => (
-            <div key={card.label} className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-700/50 border-t-2 border-t-transparent hover:border-t-[#D4A84B]/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+            <div key={card.label} className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-700/50 border-t-2 border-t-transparent hover:border-t-[#D4A84B]/60 p-4 shadow-sm shadow-gold/5 dark:shadow-none hover:shadow-md hover:shadow-gold/10 dark:hover:shadow-gold/5 hover:-translate-y-0.5 transition-all duration-200 cursor-default">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400">{card.label}</span>
-                <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-amber-900/30 dark:bg-amber-900/30 flex items-center justify-center">
                   <card.icon size={14} className="text-gold dark:text-gold-light" />
                 </div>
               </div>
@@ -169,7 +169,7 @@ export default function DashboardPage() {
           {/* Right Column */}
           <div className={`lg:col-span-5 flex flex-col gap-4 lg:gap-6 ${mounted ? 'animate-fade-slide-up' : ''}`} style={{ animationDelay: '400ms', animationFillMode: 'backwards' }}>
             {/* Client Overview Donut */}
-            <div className="bg-[#faf7f2]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
+            <div className="bg-[#162b48]/80 dark:bg-gray-900/60 backdrop-blur-xl rounded-xl border border-amber-200/25 dark:border-gray-800/60 shadow-sm overflow-hidden">
               <div className="px-5 py-4 flex items-center gap-3" style={{ background: '#1e3a5f' }}>
                 <div className="w-1.5 h-5 rounded-full bg-gold-light" />
                 <h2 className="text-sm font-bold text-white tracking-tight">Client Overview</h2>
@@ -181,9 +181,9 @@ export default function DashboardPage() {
                     <div key={seg.label} className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: seg.color }} />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{seg.label}</span>
+                        <span className="text-sm text-gray-400 dark:text-gray-400">{seg.label}</span>
                       </div>
-                      <span className="text-sm font-bold text-gray-800 dark:text-gray-100 font-data">{seg.value}</span>
+                      <span className="text-sm font-bold text-gray-100 dark:text-gray-100 font-data">{seg.value}</span>
                     </div>
                   ))}
                 </div>
