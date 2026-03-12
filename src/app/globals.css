@@ -6,20 +6,20 @@
 
 /* ── Design System Variables ────────────── */
 :root {
-  --bg-0: #f8fafc;
-  --bg-1: #f1f5f9;
-  --bg-2: #e2e8f0;
-  --bg-3: #cbd5e1;
-  --surface: #ffffff;
-  --surface-hover: #f8fafc;
-  --surface-elevated: #ffffff;
+  --bg-0: #faf8f5;
+  --bg-1: #f5f0ea;
+  --bg-2: #e8e0d6;
+  --bg-3: #d4cac0;
+  --surface: #fffdfb;
+  --surface-hover: #faf8f5;
+  --surface-elevated: #fffdfb;
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-tertiary: #94a3b8;
   --text-quaternary: #cbd5e1;
-  --border: #e2e8f0;
-  --border-subtle: #f1f5f9;
-  --border-strong: #cbd5e1;
+  --border: #e5ddd4;
+  --border-subtle: #f0ebe5;
+  --border-strong: #d4cac0;
   --accent: #B8860B;
   --accent-hover: #D4A84B;
   --accent-muted: rgba(184, 134, 11, 0.1);
