@@ -6,7 +6,9 @@
  * (which uses server-only APIs) into client bundles.
  */
 
-const isSupabase = process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase';
+// Hardcoded to mock until Supabase project is re-provisioned. To go back to live data,
+// restore `process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase'` and set that env var.
+const isSupabase = false;
 
 async function svc() {
   if (isSupabase) {
